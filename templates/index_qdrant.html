@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Qdrant Chatbot</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input[type=text] { width: 60%; padding: 10px; font-size: 16px; }
+        button { padding: 10px 20px; font-size: 16px; }
+        #answer { margin-top: 20px; padding: 10px; border: 1px solid #007bff; border-radius: 5px; background-color: #f1f8ff; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h2>Qdrant Chatbot</h2>
+    <input type="text" id="query" placeholder="Type your question here">
+    <button onclick="sendQuery()">Ask</button>
+
+    <div id="answer"></div>
+
+    <script>
+        async function sendQuery() {
+            const query = document.getElementById('query').value;
+            const answerDiv = document.getElementById('answer');
+            if (!query) return;
+
+            answerDiv.textContent = "Loading...";
+
+            try {
+                const response = await fetch('/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query })
+                });
+
+                if (!response.ok) {
+                    answerDiv.textContent = "⚠️ Error: " + response.statusText;
+                    return;
+                }
+
+                const data = await response.json();
+
+                // Show only the final answer
+                answerDiv.textContent = data.answer || "No answer returned.";
+
+            } catch (err) {
+                console.error(err);
+                answerDiv.textContent = "⚠️ Network or server error.";
+            }
+        }
+    </script>
+</body>
+</html>
