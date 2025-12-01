@@ -59,6 +59,23 @@ def retrieve(query: str, top_k: int = TOP_K):
     
     return retrieved_items
 
+
+def truncate_history(history, max_exchanges=6, max_chars=30000):
+
+    if not isinstance(history, list):
+        return []
+
+    # Keep only last max_exchanges
+    hist = history[-max_exchanges:]
+
+    # Ensure combined length under max_chars: if too long, drop older ones
+    total = sum(len(str(h.get("question","")))+len(str(h.get("answer",""))) for h in hist)
+    while total > max_chars and len(hist) > 1:
+        hist.pop(0)
+        total = sum(len(str(h.get("question","")))+len(str(h.get("answer",""))) for h in hist)
+    return hist
+
+
 def generate_with_deepseek(system_prompt: str, user_prompt: str):
     messages = [
         {"role": "system", "content": system_prompt},
