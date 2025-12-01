@@ -76,11 +76,23 @@ def truncate_history(history, max_exchanges=6, max_chars=30000):
     return hist
 
 
-def generate_with_deepseek(system_prompt: str, user_prompt: str):
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt},
-    ]
+def generate_with_deepseek(system_prompt: str, user_prompt: str, history=None):
+    messages = []
+    messages.append({"role": "system", "content": system_prompt})
+
+    # If provided, append history pairs (user then assistant)
+    if history:
+        for turn in history:
+            q = turn.get("question", "")
+            a = turn.get("answer", "")
+            if q:
+                messages.append({"role": "user", "content": q})
+            if a:
+                messages.append({"role": "assistant", "content": a})
+
+    # Finally append the current user prompt
+    messages.append({"role": "user", "content": user_prompt})
+
     print("Messages sent to Ollama:", messages)
 
     try:
@@ -107,15 +119,18 @@ def generate_with_deepseek(system_prompt: str, user_prompt: str):
 # -----------------------------
 @app.route("/")
 def home():
-    return render_template("index_qdrant.html")
+    return render_template("index.html")
 
 @app.route("/query", methods=["POST"])
 def query():
     try:
         data = request.json
         user_query = data.get("query", "")
+        history = data.get("history", [])
         if not user_query:
             return jsonify({"error": "No query provided"}), 400
+
+        history = truncate_history(history, max_exchanges=6, max_chars=30000)
 
         results = retrieve(user_query, top_k=TOP_K)
 
@@ -176,7 +191,7 @@ def query():
         # Step 3: Call Deepseek
 
         # Ollama chat returns a list of message objects; get content of first
-        answer = generate_with_deepseek(system_prompt, user_prompt)
+        answer = generate_with_deepseek(system_prompt, user_prompt, history=history)
 
         # Step 4: Return JSON response
         return jsonify({
