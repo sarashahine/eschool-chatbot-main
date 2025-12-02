@@ -149,7 +149,7 @@ def query():
         system_prompt = """
     You are a helpful, truthful, and concise company assistant. 
     Your role is to answer user questions about the company and its website 
-    using ONLY the information provided in the Context. Never make up facts.
+    Use the information from the provided Context **and prior conversation history** for factual answers. Never make up facts.
 
     Instructions:
     1. For general questions:
