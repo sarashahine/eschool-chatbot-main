@@ -194,6 +194,86 @@
             margin-top: 50px;
             font-size: 18px;
         }
+
+        .admin-panel {
+            background-color: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            padding: 12px 20px 16px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 -1px 3px rgba(0,0,0,0.03);
+        }
+
+        .admin-section {
+            flex: 1 1 260px;
+            min-width: 240px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            background-color: #fafafa;
+        }
+
+        .admin-section h3 {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .admin-section label {
+            display: block;
+            font-size: 12px;
+            margin-top: 6px;
+            margin-bottom: 2px;
+            color: #555;
+        }
+
+        .admin-section input,
+        .admin-section textarea {
+            width: 100%;
+            font-size: 12px;
+            padding: 6px 8px;
+            border-radius: 4px;
+            border: 1px solid #d0d0d0;
+            resize: vertical;
+        }
+
+        .admin-section textarea {
+            min-height: 50px;
+        }
+
+        .admin-actions {
+            margin-top: 8px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .admin-btn {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .admin-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .view-text {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #333;
+            max-height: 80px;
+            overflow-y: auto;
+            padding: 6px 8px;
+            border-radius: 4px;
+            border: 1px dashed #d0d0d0;
+            background-color: #fff;
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 <body>
@@ -204,6 +284,54 @@
     
     <div id="chatContainer">
         <div class="empty-state">Start a conversation by asking a question below...</div>
+    </div>
+
+    <!-- Simple chunk management panel -->
+    <div class="admin-panel">
+        <div class="admin-section">
+            <h3>Insert Chunk</h3>
+            <label for="insert-text">Text *</label>
+            <textarea id="insert-text" placeholder="Chunk text"></textarea>
+            <label for="insert-page-title">Page title</label>
+            <input id="insert-page-title" type="text" placeholder="Optional page title">
+            <label for="insert-url">URL</label>
+            <input id="insert-url" type="text" placeholder="Optional URL">
+            <label for="insert-section-title">Section title</label>
+            <input id="insert-section-title" type="text" placeholder="Optional section title">
+            <div class="admin-actions">
+                <button class="admin-btn" id="insert-btn" onclick="handleInsertChunk()">Insert</button>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h3>Update Chunk</h3>
+            <label for="update-id">Chunk ID *</label>
+            <div style="display: flex; gap: 6px; align-items: center;">
+                <input id="update-id" type="number" min="1" placeholder="Existing chunk ID" style="flex: 1;">
+                <button class="admin-btn" type="button" onclick="handleViewChunk()">View</button>
+            </div>
+            <label for="update-text">New text (optional)</label>
+            <textarea id="update-text" placeholder="Leave empty to keep existing text"></textarea>
+            <label for="update-page-title">Page title (optional)</label>
+            <input id="update-page-title" type="text" placeholder="New or updated page title">
+            <label for="update-url">URL (optional)</label>
+            <input id="update-url" type="text" placeholder="New or updated URL">
+            <label for="update-section-title">Section title (optional)</label>
+            <input id="update-section-title" type="text" placeholder="New or updated section title">
+            <div id="view-chunk-text" class="view-text" style="display:none;"></div>
+            <div class="admin-actions">
+                <button class="admin-btn" id="update-btn" onclick="handleUpdateChunk()">Update</button>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h3>Delete Chunk</h3>
+            <label for="delete-id">Chunk ID *</label>
+            <input id="delete-id" type="number" min="1" placeholder="Existing chunk ID">
+            <div class="admin-actions">
+                <button class="admin-btn" id="delete-btn" onclick="handleDeleteChunk()">Delete</button>
+            </div>
+        </div>
     </div>
     
     <div class="input-container">
@@ -365,6 +493,147 @@
                 queryInput.focus();
             }
         }
+
+        function buildMetadata(prefix) {
+            const pageTitle = document.getElementById(prefix + '-page-title')?.value.trim();
+            const url = document.getElementById(prefix + '-url')?.value.trim();
+            const sectionTitle = document.getElementById(prefix + '-section-title')?.value.trim();
+            const meta = {};
+            if (pageTitle) meta.page_title = pageTitle;
+            if (url) meta.url = url;
+            if (sectionTitle) meta.section_title = sectionTitle;
+            return meta;
+        }
+
+        async function handleInsertChunk() {
+            const btn = document.getElementById('insert-btn');
+            const textEl = document.getElementById('insert-text');
+            const text = textEl.value.trim();
+            if (!text) {
+                alert('Text is required to insert a chunk.');
+                return;
+            }
+            btn.disabled = true;
+            try {
+                const metadata = buildMetadata('insert');
+                const res = await fetch('/chunks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text, metadata })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert('Insert failed: ' + (data.error || res.statusText));
+                } else {
+                    alert('Inserted chunk with ID ' + data.id);
+                    textEl.value = '';
+                    const pageTitleEl = document.getElementById('insert-page-title');
+                    const urlEl = document.getElementById('insert-url');
+                    const sectionTitleEl = document.getElementById('insert-section-title');
+                    if (pageTitleEl) pageTitleEl.value = '';
+                    if (urlEl) urlEl.value = '';
+                    if (sectionTitleEl) sectionTitleEl.value = '';
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Network error while inserting chunk.');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function handleUpdateChunk() {
+            const btn = document.getElementById('update-btn');
+            const idValue = document.getElementById('update-id').value;
+            const chunkId = parseInt(idValue, 10);
+            if (!chunkId || chunkId <= 0) {
+                alert('Please enter a valid numeric chunk ID to update.');
+                return;
+            }
+            const newText = document.getElementById('update-text').value.trim();
+            const metadata = buildMetadata('update');
+            if (!newText && Object.keys(metadata).length === 0) {
+                alert('Provide new text and/or metadata to update.');
+                return;
+            }
+            btn.disabled = true;
+            try {
+                const body = {};
+                if (newText) body.text = newText;
+                if (Object.keys(metadata).length > 0) body.metadata = metadata;
+                const res = await fetch('/chunks/' + chunkId, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert('Update failed: ' + (data.error || res.statusText));
+                } else {
+                    alert(data.message || ('Updated chunk ' + chunkId));
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Network error while updating chunk.');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function handleDeleteChunk() {
+            const btn = document.getElementById('delete-btn');
+            const idValue = document.getElementById('delete-id').value;
+            const chunkId = parseInt(idValue, 10);
+            if (!chunkId || chunkId <= 0) {
+                alert('Please enter a valid numeric chunk ID to delete.');
+                return;
+            }
+            if (!confirm('Are you sure you want to delete chunk ID ' + chunkId + '?')) {
+                return;
+            }
+            btn.disabled = true;
+            try {
+                const res = await fetch('/chunks/' + chunkId, { method: 'DELETE' });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert('Delete failed: ' + (data.error || res.statusText));
+                } else {
+                    alert(data.message || ('Deleted chunk ' + chunkId));
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Network error while deleting chunk.');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function handleViewChunk() {
+            const idValue = document.getElementById('update-id').value;
+            const chunkId = parseInt(idValue, 10);
+            const viewBox = document.getElementById('view-chunk-text');
+            if (!chunkId || chunkId <= 0) {
+                alert('Please enter a valid numeric chunk ID to view.');
+                return;
+            }
+            viewBox.style.display = 'none';
+            viewBox.textContent = '';
+            try {
+                const res = await fetch('/chunks/' + chunkId);
+                const data = await res.json();
+                if (!res.ok) {
+                    alert('View failed: ' + (data.error || res.statusText));
+                    return;
+                }
+                const text = data.text || '';
+                viewBox.textContent = text ? text : '(No text payload on this chunk)';
+                viewBox.style.display = 'block';
+            } catch (e) {
+                console.error(e);
+                alert('Network error while viewing chunk.');
+            }
+        }
     </script>
 </body>
 </html>
+

@@ -1,6 +1,7 @@
-from flask import Flask, Response, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template
 from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
+from qdrant_client.http import models as rest
 import os
 from ollama import Client
 from dotenv import load_dotenv
@@ -9,24 +10,63 @@ import tiktoken
 # -----------------------------
 # Configuration
 # -----------------------------
-COLLECTION_NAME = "docs"
-QDRANT_HTTP = "http://localhost:6333"
-EMBEDDING_MODEL = r"C:\Users\ADMIN\Documents\GitHub\eschool-chatbot\embeddinggemma\embeddinggemma-300m"
-TOP_K = 30  # number of results to retrieve
+from config import COLLECTION_NAME, QDRANT_HTTP, EMBEDDING_MODEL, TOP_K, MODEL_NAME
 load_dotenv()
+
+OLLAMA_KEY = os.getenv("OLLAMA_API_KEY")
 
 # -----------------------------
 # Initialize
 # -----------------------------
 app = Flask(__name__)
 model = SentenceTransformer(EMBEDDING_MODEL)
-qdrant_client = QdrantClient(url=QDRANT_HTTP)
-OLLAMA_KEY = os.getenv("OLLAMA_API_KEY")
-MODEL_NAME = "deepseek-v3.1:671b"
 ollama_client = Client(
                     host="https://ollama.com",
                     headers={'Authorization': 'Bearer ' + OLLAMA_KEY}
                 )
+qdrant_client = QdrantClient(url=QDRANT_HTTP)
+
+# -----------------------------
+# Global auto-increment ID
+# -----------------------------
+NEXT_CHUNK_ID = None
+
+
+def init_next_chunk_id():
+    """
+    Initialize NEXT_CHUNK_ID as (max existing numeric id in collection) + 1.
+    Falls back to 1 if collection is empty or on error.
+    """
+    global NEXT_CHUNK_ID
+    try:
+        max_id = 0
+        offset = None
+        while True:
+            points, offset = qdrant_client.scroll(
+                collection_name=COLLECTION_NAME,
+                limit=1000,
+                with_payload=False,
+                with_vectors=False,
+                offset=offset,
+            )
+            if not points:
+                break
+            for p in points:
+                try:
+                    max_id = max(max_id, int(p.id))
+                except Exception:
+                    # Ignore non-numeric ids
+                    continue
+            if offset is None:
+                break
+        NEXT_CHUNK_ID = max_id + 1
+    except Exception:
+        # safest fallback
+        NEXT_CHUNK_ID = 1
+
+
+init_next_chunk_id()
+
 try:
     tokenizer = tiktoken.get_encoding("cl100k_base")
 except:
@@ -84,7 +124,7 @@ def truncate_history(history, max_exchanges=6, max_chars=30000):
     return hist
 
 
-def generate_with_deepseek(system_prompt: str, user_prompt: str, history_prompt: str, history=None):
+def generate_with_deepseek(system_prompt: str, user_prompt: str, history_prompt: str):
     messages = []
     messages.append({"role": "system", "content": system_prompt})
     messages.append({"role": "system", "content": history_prompt})
@@ -109,6 +149,7 @@ def query():
         data = request.json
         user_query = data.get("query", "")
         history = data.get("history", [])
+
         if not user_query:
             return jsonify({"error": "No query provided"}), 400
 
@@ -116,16 +157,7 @@ def query():
 
         results = retrieve(user_query, top_k=TOP_K)
 
-        if not results:
-            # No context to generate from
-            return jsonify({
-                "query": user_query,
-                "answer": "I don't have enough information in the provided context to answer that.",
-                "context_count": 0
-            })
 
-        # Step 3: Build prompt for instruction-tuned model
-        # Include URL and section title along with text for each chunk
         context_block = "\n\n".join(
             f"Text: {r['text']}\nSection: {r['metadata'].get('section_title','')}\nURL: {r['metadata'].get('url','')}"
             for r in results
@@ -145,6 +177,8 @@ def query():
             history_text = "\n".join(f"{item['role']}: {item['content']}" for item in history_entries)
         else:
             history_text = ""
+
+
 
         system_prompt = """
     You are a helpful, truthful, and concise company assistant. 
@@ -220,23 +254,143 @@ def query():
     Answer:
     """
         
-        # Step 3: Call Deepseek
+        answer = generate_with_deepseek(system_prompt, user_prompt, history_prompt)
 
-        # Ollama chat returns a list of message objects; get content of first
-        answer = generate_with_deepseek(system_prompt, user_prompt, history_prompt, history=history)
-
-        # Step 4: Return JSON response
         return jsonify({
-            "query": user_query,
-            "answer": answer,
-            "context_count": len(results),
-            "context_results": results
+            "answer": answer
         })
 
     except Exception as e:
         import traceback
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
+
+@app.route("/chunks", methods=["POST"])
+def insert_chunk():
+    try:
+        data = request.json or {}
+        text = (data.get("text") or "").strip()
+        metadata = data.get("metadata") or {}
+
+        if not text:
+            return jsonify({"error": "'text' is required."}), 400
+
+        global NEXT_CHUNK_ID
+        if NEXT_CHUNK_ID is None:
+            init_next_chunk_id()
+
+        chunk_id = NEXT_CHUNK_ID
+        NEXT_CHUNK_ID += 1
+
+        vector = model.encode([text], convert_to_tensor=False)[0].tolist()
+
+        payload = {"text": text, **metadata}
+        point = rest.PointStruct(id=int(chunk_id), vector=vector, payload=payload)
+        qdrant_client.upsert(collection_name=COLLECTION_NAME, points=[point], wait=True)
+
+        return jsonify({"message": f"Inserted chunk {chunk_id}.", "id": chunk_id})
+    except Exception as exc:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/chunks/<int:chunk_id>", methods=["GET"])
+def get_chunk(chunk_id: int):
+    """Return a chunk's text and metadata by numeric ID."""
+    try:
+        existing = qdrant_client.retrieve(
+            collection_name=COLLECTION_NAME,
+            ids=[chunk_id],
+            with_vectors=False,
+        )
+        if not existing:
+            return jsonify({"error": f"Chunk {chunk_id} not found."}), 404
+        record = existing[0]
+        payload = dict(record.payload or {})
+        return jsonify({
+            "id": chunk_id,
+            "text": payload.get("text", ""),
+            "metadata": {
+                "page_title": payload.get("page_title", ""),
+                "url": payload.get("url", ""),
+                "section_title": payload.get("section_title", ""),
+            },
+        })
+    except Exception as exc:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/chunks/<int:chunk_id>", methods=["PUT"])
+def update_chunk(chunk_id: int):
+    """
+    Update an existing chunk's text and/or metadata.
+    If 'text' is provided, its embedding is recomputed.
+    Metadata is shallow-merged into the existing payload.
+    """
+    try:
+        data = request.json or {}
+        new_text = data.get("text")
+        metadata_updates = data.get("metadata")
+
+        existing = qdrant_client.retrieve(
+            collection_name=COLLECTION_NAME,
+            ids=[chunk_id],
+            with_vectors=True
+        )
+
+        if not existing:
+            return jsonify({"error": f"Chunk {chunk_id} not found."}), 404
+
+        record = existing[0]
+        current_payload = dict(record.payload or {})
+        vector = record.vector
+
+        if new_text is not None:
+            new_text = new_text.strip()
+            if not new_text:
+                return jsonify({"error": "Provided text is empty."}), 400
+            vector = model.encode([new_text], convert_to_tensor=False)[0].tolist()
+            current_payload["text"] = new_text
+        elif vector is None:
+            return jsonify({"error": "Vector missing; provide new text to recompute embedding."}), 400
+
+        if metadata_updates:
+            if not isinstance(metadata_updates, dict):
+                return jsonify({"error": "'metadata' must be an object."}), 400
+            current_payload.update(metadata_updates)
+
+        updated_point = rest.PointStruct(
+            id=chunk_id,
+            vector=vector,
+            payload=current_payload
+        )
+        qdrant_client.upsert(collection_name=COLLECTION_NAME, points=[updated_point], wait=True)
+
+        return jsonify({"message": f"Updated chunk {chunk_id}."})
+    except Exception as exc:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/chunks/<int:chunk_id>", methods=["DELETE"])
+def delete_chunk(chunk_id: int):
+    """Delete a chunk by numeric ID."""
+    try:
+        qdrant_client.delete(
+            collection_name=COLLECTION_NAME,
+            points_selector=rest.PointIdsList(points=[chunk_id]),
+            wait=True
+        )
+        return jsonify({"message": f"Deleted chunk {chunk_id}."})
+    except Exception as exc:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(exc)}), 500
 
 # -----------------------------
 # Run server
