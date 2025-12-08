@@ -8,3 +8,5 @@ EMBEDDING_MODEL = r"C:\Users\ADMIN\Documents\GitHub\eschool-chatbot\embeddinggem
 TOP_K = 15  # number of results to retrieve
 OLLAMA_KEY = os.getenv("OLLAMA_API_KEY")
 MODEL_NAME = "deepseek-v3.1:671b"
+VECTOR_SIZE = 768
+TOKEN_LIMIT = 128000

@@ -11,15 +11,13 @@ from ollama import Client
 # -----------------------------
 # Configuration
 # -----------------------------
-COLLECTION_NAME = "docs_api"
-QDRANT_HTTP = "http://localhost:6333"
-TOP_K = 15  # number of results to retrieve
-VECTOR_SIZE = 768
+from config import COLLECTION_NAME, QDRANT_HTTP, TOP_K, VECTOR_SIZE, MODEL_NAME
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 OLLAMA_KEY = os.getenv("OLLAMA_API_KEY")
-MODEL_NAME = "deepseek-v3.1:671b"
+
+
 # -----------------------------
 # Initialize
 # -----------------------------
@@ -29,11 +27,6 @@ ollama_client = Client(
                     host="https://ollama.com",
                     headers={'Authorization': 'Bearer ' + OLLAMA_KEY}
                 )
-try:
-    tokenizer = tiktoken.get_encoding("cl100k_base")
-except:
-    # Fallback: try o200k_base for newer models, or estimate with cl100k_base
-    tokenizer = tiktoken.get_encoding("o200k_base")
 
 genai_client = genai.Client(api_key=GOOGLE_API_KEY)
 
@@ -56,10 +49,6 @@ def embed_texts(texts):
 
 
 def init_next_chunk_id():
-    """
-    Initialize NEXT_CHUNK_ID as (max existing numeric id in collection) + 1.
-    Falls back to 1 if collection is empty or on error.
-    """
     global NEXT_CHUNK_ID
     try:
         max_id = 0

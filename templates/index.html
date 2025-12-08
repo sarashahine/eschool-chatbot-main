@@ -195,14 +195,87 @@
             font-size: 18px;
         }
 
-        .admin-panel {
+        .admin-wrapper {
+            position: relative;
             background-color: #ffffff;
             border-top: 1px solid #e0e0e0;
+            box-shadow: 0 -1px 3px rgba(0,0,0,0.03);
+        }
+
+        .admin-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background-color: #f7f9fb;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .admin-toggle-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            color: #333;
+            font-size: 12px;
+        }
+
+        .admin-toggle-text strong {
+            font-size: 13px;
+        }
+
+        .admin-panel {
             padding: 12px 20px 16px 20px;
             display: flex;
             flex-wrap: wrap;
             gap: 16px;
-            box-shadow: 0 -1px 3px rgba(0,0,0,0.03);
+            transition: max-height 0.2s ease, opacity 0.2s ease, padding 0.2s ease;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .admin-panel.compact {
+            max-height: 180px;
+        }
+
+        .admin-panel.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding: 0 20px;
+            overflow: hidden;
+            border-top: none;
+        }
+
+        .admin-handle {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 72px;
+            border-radius: 8px 0 0 8px;
+            background-color: #007bff;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: ns-resize;
+            user-select: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+
+        .admin-handle:hover {
+            background-color: #0056b3;
+        }
+
+        .admin-handle:active {
+            background-color: #004494;
+        }
+
+        .admin-handle span {
+            display: inline-block;
+            transform: rotate(90deg);
+            font-size: 14px;
+            line-height: 1;
         }
 
         .admin-section {
@@ -287,7 +360,14 @@
     </div>
 
     <!-- Simple chunk management panel -->
-    <div class="admin-panel">
+    <div class="admin-wrapper">
+        <div class="admin-toggle">
+            <div class="admin-toggle-text">
+                <strong>Qdrant controls</strong>
+                <span id="adminToggleStatus">Expanded</span>
+            </div>
+        </div>
+        <div class="admin-panel" id="adminPanel">
         <div class="admin-section">
             <h3>Insert Chunk</h3>
             <label for="insert-text">Text *</label>
@@ -331,6 +411,10 @@
             <div class="admin-actions">
                 <button class="admin-btn" id="delete-btn" onclick="handleDeleteChunk()">Delete</button>
             </div>
+        </div>
+    </div>
+        <div class="admin-handle" id="adminHandle" title="Drag up/down or click to toggle">
+            <span>❮</span>
         </div>
     </div>
     
@@ -633,6 +717,90 @@
                 alert('Network error while viewing chunk.');
             }
         }
+
+        // -------- Admin panel drag handle --------
+        const ADMIN_MIN_HEIGHT = 0;
+        const ADMIN_MAX_HEIGHT = 420;
+        const ADMIN_COMPACT_HEIGHT = 180;
+        const ADMIN_DEFAULT_HEIGHT = 260;
+        let adminHeight = ADMIN_DEFAULT_HEIGHT;
+        let lastOpenHeight = ADMIN_DEFAULT_HEIGHT;
+        let isDraggingHandle = false;
+        let handleMoved = false;
+        let dragStartY = 0;
+        let dragStartHeight = ADMIN_DEFAULT_HEIGHT;
+
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function applyAdminHeight(px) {
+            const panel = document.getElementById('adminPanel');
+            const status = document.getElementById('adminToggleStatus');
+            if (!panel || !status) return;
+
+            adminHeight = clamp(px, ADMIN_MIN_HEIGHT, ADMIN_MAX_HEIGHT);
+            panel.style.maxHeight = adminHeight + 'px';
+            panel.classList.remove('compact', 'collapsed');
+
+            if (adminHeight <= 8) {
+                panel.classList.add('collapsed');
+                status.textContent = 'Hidden';
+            } else if (adminHeight <= ADMIN_COMPACT_HEIGHT) {
+                panel.classList.add('compact');
+                status.textContent = 'Compact';
+                lastOpenHeight = ADMIN_COMPACT_HEIGHT;
+            } else {
+                status.textContent = 'Expanded';
+                lastOpenHeight = adminHeight;
+            }
+        }
+
+        function handleDragStart(event) {
+            isDraggingHandle = true;
+            dragStartY = event.clientY;
+            dragStartHeight = adminHeight;
+            event.preventDefault();
+            handleMoved = false;
+        }
+
+        function handleDragMove(event) {
+            if (!isDraggingHandle) return;
+            const delta = event.clientY - dragStartY;
+            if (Math.abs(delta) > 2) {
+                handleMoved = true;
+            }
+            const nextHeight = dragStartHeight + delta;
+            applyAdminHeight(nextHeight);
+        }
+
+        function handleDragEnd() {
+            isDraggingHandle = false;
+        }
+
+        function handleAdminToggleClick() {
+            if (adminHeight <= 8) {
+                applyAdminHeight(lastOpenHeight || ADMIN_DEFAULT_HEIGHT);
+            } else {
+                applyAdminHeight(0);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyAdminHeight(ADMIN_DEFAULT_HEIGHT);
+            const handle = document.getElementById('adminHandle');
+            if (handle) {
+                handle.addEventListener('pointerdown', handleDragStart);
+                window.addEventListener('pointermove', handleDragMove);
+                window.addEventListener('pointerup', handleDragEnd);
+                handle.addEventListener('click', (e) => {
+                    // Ignore click that immediately follows a drag
+                    if (isDraggingHandle || handleMoved) return;
+                    handleAdminToggleClick();
+                    e.preventDefault();
+                });
+            }
+        });
     </script>
 </body>
 </html>

@@ -66,7 +66,6 @@ def upsert_batch(client: QdrantClient, collection_name: str, items: List[Dict]):
     metas = [item.get("metadata", {}) for item in items]
 
     vectors = embed_texts(texts)
-    # normalize_embeddings = TRUE ????
 
     points = [
         rest.PointStruct(

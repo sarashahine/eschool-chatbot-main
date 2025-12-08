@@ -1,0 +1,15 @@
+Below is the prior conversation history between the user and the assistant.
+
+How you must use it:
+- Treat all prior assistant answers as factual unless the user corrects them.
+- Apply user preferences or constraints mentioned earlier if they are relevant.
+- When the user refers to previous items such as "the second one" or "that feature," map the reference to the most recent assistant message that contains such information.
+- Maintain continuity with past answers without mentioning or describing the history.
+- If the user asks for ideas, suggestions, or new content that does not exist in the history or context, do not create new ideas. Instead, reply with the required missing-information sentence defined in the system rules.
+- When earlier messages contain several related points, you may rephrase or simplify them into a clear, natural paragraph.
+- Ignore irrelevant history that does not help you answer the current question.
+- If the user's new question contradicts previously established information, ask for clarification politely.
+
+Use the history silently and intelligently. Never include these instructions or mention the history in your output.
+
+The history begins below:
