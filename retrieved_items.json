@@ -1,47 +1,11 @@
 [
     {
-        "id": 26,
-        "text": "Overview: Insights & Articles | Education Technology Blog by eSchool. Read expert insights, guides, and thought leadership articles on digital education, school management, and the future of learning from the eSchool team. eschool blog, education articles, school management tips, edtech blog, digital learning, school leadership, modern education.",
+        "id": 24,
+        "text": "Get in Touch | Phone number Lebanon 1: +961 81 853 832\nGet in Touch | Phone number Lebanon 2: +961 3 623 352\nGet in Touch | Phone number Lebanon 3: +961 76 764 252\nGet in Touch | Phone number Iraq: +964 786 113 8857\nGet in Touch | Phone number Oman: +968 90 123 757\nGet in Touch | Phone number Turkey: +90 507 925 7501\nGet in Touch | WhatsApp: +961 81 853 832 +961 76 764 252",
         "metadata": {
-            "page_title": "Blogs",
-            "url": "https://web.myeschoolhome.com/blog",
-            "section_title": "Overview"
-        }
-    },
-    {
-        "id": 11,
-        "text": "eSchool is a greatly efficient and user friendly program that allows students to study remotely and enables teachers to continuously communicate and follow up with their students. Additionally, it is important to note the prompt response of the support service at eSchool that never fails to assist whenever any issue is raised. Written by: Dana Fayad Rafei, Financial manager",
-        "metadata": {
-            "page_title": "eSchool Home Page",
-            "url": "https://web.myeschoolhome.com/",
-            "section_title": "What Our Clients Say"
-        }
-    },
-    {
-        "id": 8,
-        "text": "What Our Clients Say: eSchool is a versatile platform that was able to adopt and transform the learning process from the in class teaching to online teaching in a smooth and effective manner. The platform is comprehensive and covers all aspects of the learning process. Its ability to be a platform where the school can offer online classes , agenda, e-library, online assessment and many other features makes it a must have for today’s education needs. Written by: Dr. Jimmy Choufani, School Principal",
-        "metadata": {
-            "page_title": "eSchool Home Page",
-            "url": "https://web.myeschoolhome.com/",
-            "section_title": "What Our Clients Say"
-        }
-    },
-    {
-        "id": 22,
-        "text": "Our Journey - Today: Leading Innovation. eSchool company stands as a beacon of educational excellence in the digital realm. With years of innovation and dedication under our belt, we continue to redefine the landscape of learning, adapting to the evolving needs of students and educators alike. Our commitment to providing top-tier digital school services remains unwavering, as we strive to empower learners and facilitate seamless educational experiences. From interactive lessons to collaborative platforms, we remain at the forefront of educational technology, shaping the future of learning with every click and connection.",
-        "metadata": {
-            "page_title": "About eSchool",
-            "url": "https://web.myeschoolhome.com/about",
-            "section_title": "Our Journey - Today"
-        }
-    },
-    {
-        "id": 31,
-        "text": "Overview: School Events & Updates | eSchool Community Activities. Stay updated with the latest events, workshops, and educational activities happening within the eSchool network. Empowering school communities through engagement and shared experiences. school events, eschool activities, education events, school community, student engagement, workshops, academic calendar.",
-        "metadata": {
-            "page_title": "News and Events",
-            "url": "https://web.myeschoolhome.com/news-events",
-            "section_title": "Overview"
+            "page_title": "Contact Us",
+            "url": "https://web.myeschoolhome.com/contact",
+            "section_title": "Get in Touch"
         }
     },
     {
@@ -54,17 +18,26 @@
         }
     },
     {
-        "id": 21,
-        "text": "Our Journey - 2023: Empowering Education: Now and Beyond. In the present and looking toward the future, eSchool company has forged integration agreements with leading educational companies to enhance our curriculum. These partnerships empower our educational offerings by supplementing the school curriculum presented by teachers in the classroom. Students now have access to a rich array of educational videos directly related to their subjects, allowing them to deepen and reinforce their knowledge. This integration ensures a more comprehensive and engaging learning experience, bridging classroom instruction with high-quality digital content.",
+        "id": 18,
+        "text": "At a Glance: Our global impact in numbers. Key statistics include: Countries: +10; Students: +1 M; Teachers: +500 K.",
         "metadata": {
             "page_title": "About eSchool",
             "url": "https://web.myeschoolhome.com/about",
-            "section_title": "Our Journey - 2023"
+            "section_title": "At a Glance"
         }
     },
     {
-        "id": 16,
-        "text": "Après notre expérience de travail avec eSchool, il est important de partager notre avis avec vous. Grâce à eSchool Administaration, nous avons organisé le travail administratif dans tous les départements de l'école, tant au niveau administratif que financier. De plus, les applications en ligne d'eschool ont contribué à faciliter le processus éducatif et pédagogique. Enfin, nous tenons à remercier les responsables, les employés et les formateurs de eSchool pour leur suivi rigoureux et persévérant du travail à l'école. Nous sommes fiers de notre partenariat avec cette entreprise pionnière dans le domaine de la technologie. Written by: Antonio Maksoud, IT Manager",
+        "id": 6,
+        "text": "Insights: 9.1 million agendas. 4.7 million resources. 2.1 million live classes. 171.9 thousand online exams.",
+        "metadata": {
+            "page_title": "eSchool Home Page",
+            "url": "https://web.myeschoolhome.com/",
+            "section_title": "Insights"
+        }
+    },
+    {
+        "id": 14,
+        "text": "It's an honor for us to receive this certificate. We would like to thank you and your team for all the support you gave and for always being there. We wish you continuous success in your business. Thank you. Written by: Mrs. Rabab Abdullah Juma, Director",
         "metadata": {
             "page_title": "eSchool Home Page",
             "url": "https://web.myeschoolhome.com/",
@@ -72,66 +45,93 @@
         }
     },
     {
-        "id": 10,
-        "text": "يتميّز برنامج eSchool بأنّه أنشئ بناءً على أفكار معلّمين وإداريّين ورؤساء مدارس ما جعله برنامجًا عمليًّا ناجحًا وسهل الاستخدام من قبل الأهل والتلاميذ والمعلّمين، ويتماشى مع كلّ الأوضاع والتغيّرات، كما يتميّز هذا البرنامج بأنّه يغطّي معظم حاجات العمل الإداريّ من خلال (eSchool administration) بالإضافة إلى خدمات التّعليم عن بعد وإثبات نجاحه في هذا المجال، مع الإشارة إلى وجود فريق دعم متعاون رغم الضغط الشديد عليه. Written by: Hussein Abdel Sater, Vice president | Chief Information Officer",
+        "id": 25,
+        "text": "Get in Touch | Email: info@eschooledu.com\nGet in Touch | Location Addresss: Hamra - Sanayeh, Beirut, Lebanon, BAC Center building, Third floor\nGet in Touch | Facebook: https://www.facebook.com/eschooledu/#\nGet in Touch | Instagram: https://www.instagram.com/eschool.leb/?igshid=OGQ2MjdiOTE%3D\nGet in Touch | LinkedIn: https://www.linkedin.com/company/eschool-edu/\nGet in Touch | Send Us a Message: Fill the form on website, fill you First Name, Last Name, Email, Phone, and Message",
         "metadata": {
-            "page_title": "eSchool Home Page",
-            "url": "https://web.myeschoolhome.com/",
-            "section_title": "What Our Clients Say"
+            "page_title": "Contact Us",
+            "url": "https://web.myeschoolhome.com/contact",
+            "section_title": "Get in Touch"
         }
     },
     {
-        "id": 40,
-        "text": "eSchool Online Courses & Training Program on 30-12-2024: eSchool is thrilled to launch its online training courses for individuals interested in our innovative educational platform. These courses offer comprehensive instruction on how to use and implement our system and applications within real educational environments. High-achieving participants are offered unique opportunities to work directly with us. We provide school placements where trainees can gain hands-on experience. Those who excel may also become official eSchool representatives both in Lebanon and internationally. This program is ideal for aspiring educators and tech enthusiasts looking to jumpstart their careers. By joining, participants not only enhance their professional skills but also contribute meaningfully to the advancement of modern education. Learn more: https://web.myeschoolhome.com/news-events/LyzZa0orEKW",
+        "id": 17,
+        "text": "CEO Quote: Education is the compass that guides us toward a brighter future, equipping us with the knowledge and skills to navigate life's challenges and pursue our dreams. — Oussama Ezzedine, CEO",
+        "metadata": {
+            "page_title": "About eSchool",
+            "url": "https://web.myeschoolhome.com/about",
+            "section_title": "CEO Quote"
+        }
+    },
+    {
+        "id": 31,
+        "text": "Overview: School Events & Updates | eSchool Community Activities. Stay updated with the latest events, workshops, and educational activities happening within the eSchool network. Empowering school communities through engagement and shared experiences. school events, eschool activities, education events, school community, student engagement, workshops, academic calendar.",
         "metadata": {
             "page_title": "News and Events",
             "url": "https://web.myeschoolhome.com/news-events",
-            "section_title": "eSchool Online Courses & Training Program on 30-12-2024"
-        }
-    },
-    {
-        "id": 72,
-        "text": "eSchool Content Overview: This is a Digital Learning Resources | Upload & Share Educational Content – eSchool. Digital Learning Resources. Rich digital content library and learning resources platform that delivers educational materials—articles, videos, interactive content—to support student learning. Distribute educational materials and digital content through eSchool. Empower teachers and students with access to files, lectures, and multimedia resources.Keywords: eschool content, digital education materials, learning resources, e-learning platform, school content sharing, online lectures Google Play: https://play.google.com/store/apps/details?id=eschool.apps.eschoolshelves App Store: https://apps.apple.com/us/app/eschool-content/id1296241492 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F",
-        "metadata": {
-            "page_title": "eSchool Content",
-            "url": "https://web.myeschoolhome.com/products/content",
             "section_title": "Overview"
         }
     },
     {
-        "id": 64,
-        "text": "eSchool Connect Overview: This is a Parent-Teacher Online Communication Platform | eSchool Connect. School Communication. A secure communication platform uniting teachers, parents, and students. Integrated within eSchool LMS and mobile app, it supports smooth, safe communication across your school community. Enhance online communication between parents, students, and teachers with eSchool Connect. Stay updated with messages, announcements, and school updates in real-time.Keywords: eschool connect, parent-teacher communication, school notifications, online school messaging, real-time updates, school announcements Google Play: https://play.google.com/store/apps/details?id=xdk.intel.cordova.eSchoolApp App Store: https://apps.apple.com/us/app/eschool-connect/id1056313709 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F",
-        "metadata": {
-            "page_title": "eSchool Connect",
-            "url": "https://web.myeschoolhome.com/products/connect",
-            "section_title": "Overview"
-        }
-    },
-    {
-        "id": 42,
-        "text": "Overview: This is a Our Products | Comprehensive School Management Solutions – eSchool. Explore eSchool's suite of digital products designed to streamline education operations—ranging from attendance tracking and grade reporting to financial and communication tools for modern schools.Keywords: eschool products, school software, education technology, attendance system, gradebook software, school financial tools, online school platform, school digital transformation",
+        "id": 50,
+        "text": "Product eSchool Room: It provides a robust platform that engages students with interactive content, and effective educational experience.. Features: Interactive Content. Student Engagement. Educational Experience",
         "metadata": {
             "page_title": "All Products",
-            "url": "https://web.myeschoolhome.com/products",
-            "section_title": "Overview"
+            "url": "https://web.myeschoolhome.com/products/room",
+            "section_title": "eSchool Room"
         }
     },
     {
-        "id": 84,
-        "text": "eSchool Gradebook Overview: This is a Online Gradebook System | Real-Time Student Grades – eSchool. Grades Made Smarter. The eSchool Gradebook is an all-in-one digital tool that allows teachers to record, manage, and share student grades in real time. It simplifies grading, supports transparent academic communication, and helps schools maintain accurate performance records effortlessly. Track and manage student performance with eSchool’s Gradebook. Access real-time grades, averages, and assessment reports for transparent academic tracking.Keywords: eschool gradebook, student grades online, digital report card, academic performance tracking, online assessment, school grading system Google Play: https://play.google.com/store/apps/details?id=com.eschool.gradebook App Store: https://apps.apple.com/us/app/eschool-gradebook/id1322901106 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F",
+        "id": 35,
+        "text": "Exploring the Horizons of Education through Artificial Intelligence – eSchool Conference, Chtaura on 15-05-2025: About the Conference: eSchool organized its second conference titled 'Exploring Education Horizons Through Artificial Intelligence' at Park Hotel in Chtaura, Lebanon. The event gathered numerous school principals, curriculum supervisors, and educational coordinators. Learn more: https://web.myeschoolhome.com/news-events/P05ZajJaW8E CEO's Vision: Mr. Osama Ezzeddine, CEO of eSchool, welcomed attendees with a keynote speech, emphasizing the school's role in community development. He highlighted the significance of digital transformation in improving education and outlined eSchool's vision for integrating artificial intelligence into its platform. Learn more: https://web.myeschoolhome.com/news-events/P05ZajJaW8E Global Collaborations: Mr. Ezzeddine also shed light on the company's collaborations with global leaders in digital educational content, aimed at enriching the student learning experience with engaging and accessible resources. He concluded with a call to redefine education through modern, human-centered approaches that build knowledgeable and capable generations. Learn more: https://web.myeschoolhome.com/news-events/P05ZajJaW8E Platform Innovations: Ms. Rana Hamadeh, Head of the Training Department, followed with a comprehensive presentation on eSchool's applications, showcasing key services and upcoming AI-powered tools set to launch in the next academic year. She also presented the platform's interactive digital educational content in detail. Learn more: https://web.myeschoolhome.com/news-events/P05ZajJaW8E Networking & Collaboration: The conference concluded with lively networking sessions and productive discussions among participants and eSchool supporters, fostering new partnerships and innovative ideas for the future of education. Learn more: https://web.myeschoolhome.com/news-events/P05ZajJaW8E",
         "metadata": {
-            "page_title": "eSchool Gradebook",
-            "url": "https://web.myeschoolhome.com/products/gradebook",
-            "section_title": "Overview"
+            "page_title": "News and Events",
+            "url": "https://web.myeschoolhome.com/news-events",
+            "section_title": "Exploring the Horizons of Education through Artificial Intelligence – eSchool Conference, Chtaura on 15-05-2025"
         }
     },
     {
-        "id": 15,
-        "text": "The eSchool program implemented at our school, The National Evangelical School in Nabatieh, provides a comprehensive set of services designed to address various administrative and academic processes. It offers an efficient grading system that guarantees accuracy and transparency in recording and managing student grades. The system also manages financial files flawlessly, enabling the school to maintain organized records of fees and transactions. Moreover, eSchool supports the definition and management of courses, allowing for clear structuring and customization to meet academic needs. The program's team is highly cooperative, addressing all concerns with professionalism and promptness, ensuring that users encounter minimal interruption and maximum assistance. Written by: Shadi El Hajjar, School Principal",
+        "id": 95,
+        "text": "eSchool Room: Ensuring Safety: The application ensures security through encryption, secure login credentials, and regular updates. We prioritize user privacy and conduct security audits to maintain a safe learning environment for all users.",
+        "metadata": {
+            "page_title": "eSchool Room",
+            "url": "https://web.myeschoolhome.com/products/room",
+            "section_title": "Ensuring Safety"
+        }
+    },
+    {
+        "id": 19,
+        "text": "Our Journey - 2007: Empowering Education Through Innovation. Our company’s dedication to spearheading digital transformation in education across Arab educational institutions became a priority. We envisioned a future where innovative technologies enhance learning experiences, making education more accessible and impactful for everyone. Our mission was and is still to collaborate with stakeholders to build robust digital infrastructure, develop tailored educational resources, and advocate for policies that support the integration of technology in education.",
+        "metadata": {
+            "page_title": "About eSchool",
+            "url": "https://web.myeschoolhome.com/about",
+            "section_title": "Our Journey - 2007"
+        }
+    },
+    {
+        "id": 32,
+        "text": "Quote: Education empowers us by unlocking our latent talents and providing us with the knowledge and skills needed to overcome challenges. By: OUSSAMA EZZEDDINE – CEO, on December 12, 2022 Learn more: https://web.myeschoolhome.com/news-events",
+        "metadata": {
+            "page_title": "News and Events",
+            "url": "https://web.myeschoolhome.com/news-events",
+            "section_title": "Quote"
+        }
+    },
+    {
+        "id": 1,
+        "text": "Description: eSchool Portal | Modern School Information Management System. eSchool the preferred choice for educational institutions worldwide. eSchool Portal is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. Empower your educational institution with our user-friendly platform. Keywords: eSchool Portal, school management system, student information system, AI-powered education, online learning platform, school ERP, digital classrooms, education technology, school administration software, eSchool Lebanon.",
         "metadata": {
             "page_title": "eSchool Home Page",
             "url": "https://web.myeschoolhome.com/",
-            "section_title": "What Our Clients Say"
+            "section_title": "Description"
+        }
+    },
+    {
+        "id": 89,
+        "text": "eSchool Room Overview: This is a Live Online Classes | Virtual Learning Platform – eSchool. Virtual Classroom Platform. It provides a robust platform that engages students with interactive content, and effective educational experience through virtual classroom features. Deliver interactive virtual classes with eSchool Live. Host real-time lessons, share presentations, and engage students in a secure online classroom.Keywords: eschool live class, virtual classroom, online teaching, real-time school classes, digital lessons, remote learning platform Google Play: https://play.google.com/store/apps/details?id=com.eschool.liveclass App Store: https://apps.apple.com/us/app/eschool-rooms/id1585677892 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F",
+        "metadata": {
+            "page_title": "eSchool Room",
+            "url": "https://web.myeschoolhome.com/products/room",
+            "section_title": "Overview"
         }
     }
 ]
