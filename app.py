@@ -1,12 +1,11 @@
 from flask import Flask, request, jsonify, render_template
-from sentence_transformers import SentenceTransformer
-from qdrant_client import QdrantClient
-from qdrant_client.http import models as rest
-import os
-from ollama import Client
-from dotenv import load_dotenv
 import json
-import threading
+import os
+from dotenv import load_dotenv
+from ollama import Client
+from qdrant_client import QdrantClient
+from sentence_transformers import SentenceTransformer
+from qdrant_client.http import models as rest
 
 load_dotenv()
 
@@ -36,7 +35,6 @@ qdrant_client = QdrantClient(url=QDRANT_HTTP)
 # Global auto-increment ID
 # -----------------------------
 NEXT_CHUNK_ID = None
-NEXT_CHUNK_ID_LOCK = threading.Lock()
 
 def init_next_chunk_id():
     global NEXT_CHUNK_ID
@@ -124,39 +122,39 @@ def retrieve(query: str, top_k: int = TOP_K):
 
 
 
-def pre_process_query(user_query, history=None):
+def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"):
     messages = []
     system_prompt = """
-        You are an assistant for eSchool. Your job is to classify how the chatbot should handle the user's query.
+        You are an intelligent assistant for eSchool. Your job is to determine whether the chatbot should retrieve information or answer directly.
 
-        You MUST analyze the user's message **together with prior conversation history** and determine whether retrieval is needed.
-
-        Your response must be ONLY valid JSON with:
+        Instructions:
+        - Analyze the user’s message and prior conversation history.
+        - Output ONLY valid JSON with the following fields:
         - "category": one of ["general", "unrelated", "retrieval"]
-        - "retrieval_query": string or null
-        - "direct_answer": string or null
+        - "retrieval_query": string if category="retrieval"
+        - "direct_answer": string if category!="retrieval"
 
-        Rules:
-        1. If the user is chit-chatting (hello, thanks, okay, etc.) → category="general" and provide a direct response.
-        2. If the question has nothing to do with eSchool → category="unrelated" and provide a direct response: "I don't have an answer for this."
-        3. If the question is about eSchool’s products, features, services, usage, roles, or any functional detail → category="retrieval".
+        Retrieval Permission:
+        - Retrieval is allowed ONLY if category="retrieval".
+        - If category is "general" or "unrelated", your answer MUST be final and MUST NOT require retrieval.
 
-        IMPORTANT — CORRECTIONS:
-        If the user message is a correction, refinement, clarification, or continuation of a previous question 
-        (e.g., “sorry I mean…”, “not student, teacher”, “I meant…”, “what about teachers”, “and for parents?”),
-        you MUST:
-        - treat it as if the user repeated the full question with the corrected part
-        - set category="retrieval"
-        - build a proper “retrieval_query” that includes the corrected meaning
-        Example: 
-        User: "how do I benefit from administrator as a student"
-        Then user: "sorry I mean as a teacher"
-        → retrieval_query must become something like:
-        "How do teachers benefit from Administrator?"
+        Classification Rules:
+        1. Greetings, thanks, apologies, or small-talk → category="general" with a short direct answer.
+        2. Requests for ideas, suggestions, creative content, or new features → category="general" with:
+            "direct_answer": "I don’t have enough information in the provided context to answer that."
+        3. Questions unrelated to eSchool → category="unrelated" with:
+            "direct_answer": "I don't have an answer for this."
+        4. Any query about eSchool products, features, roles, permissions, pages, modules, lessons, exams, or functional entities, OR queries referencing previous assistant answers → category="retrieval".
+        5. Single keywords corresponding to eSchool entities (e.g., "users", "roles", "grades") → category="retrieval".
 
-        NEVER return "general" or "unrelated" when a correction is detected, even if the message alone is short or unclear.
+        Corrections & References:
+        - If the message corrects, clarifies, or refers to a previous answer, treat it as a corrected full question and ALWAYS set category="retrieval".
+        - Examples of references that require retrieval include: "the second one", "that feature", "previous answer" or similar.
+        - Build a clear retrieval_query including the corrected meaning.
+        - If the user refers to a previously mentioed idea, rewrite it into a full explicit query for accurate retrieval.
 
-        Format output as JSON only.
+        Output:
+        - Format strictly as JSON.
         """
 
     
@@ -170,7 +168,16 @@ def pre_process_query(user_query, history=None):
                 messages.append({"role": "assistant", "content": a})
     
     messages.append({"role": "user", "content": user_query})
+    print("messages: ", messages)
     
+    separator = "\n\n\n" + "="*100 + "\n\n\n\n"
+    with open(log_file2, "a", encoding="utf-8") as f:
+        # f.write("Prompt Sent to LLM:\n")
+        # f.write(llm_prompt_text + "\n\n")
+        f.write("LLM Answer:\n")
+        f.write(json.dumps(messages, indent=2, ensure_ascii=False) + "\n")
+        f.write(separator)
+
     try:
         response = ollama_client.chat(model=MODEL_NAME, messages=[{"role": "system", "content": system_prompt}, *messages])
         llm_output = response.message.content
@@ -182,7 +189,14 @@ def pre_process_query(user_query, history=None):
             category = result.get("category")
             direct_answer = result.get("direct_answer")
             retrieval_query = result.get("retrieval_query")
-            # print("category: ", category, "direct_answer: ", direct_answer, "retrieval_query: ", retrieval_query)
+            
+            ##### ------------ ADD THIS FOR DEBUG FILE ------------ #####
+            keywords = ["users", "products", "news", "blogs", "contact", "reviews"]
+            if category == "general" and user_query.lower().strip() in keywords:
+                category = "retrieval"
+                direct_answer = None
+                retrieval_query = user_query
+            print("category: ", category, "direct_answer: ", direct_answer, "retrieval_query: ", retrieval_query)
         except Exception:
             # fallback if parsing fails
             category = "retrieval"
@@ -269,12 +283,12 @@ def log_llm_interaction(llm_prompt_text, llm_answer, history=None, log_file="llm
             print(f"History empty. Cleared '{log_file}'")
 
     with open(log_file, "a", encoding="utf-8") as f:
-        # f.write("Prompt Sent to LLM:\n")
-        # f.write(llm_prompt_text + "\n\n")
+        f.write("Prompt Sent to LLM:\n")
+        f.write(llm_prompt_text + "\n\n")
         f.write("LLM Answer:\n")
         f.write(llm_answer + "\n")
         f.write(separator)
-    print(f"Interaction logged to '{log_file}'")
+    # print(f"Interaction logged to '{log_file}'")
 
 
 def generate_with_deepseek(system_prompt: str, user_prompt: str, history_prompt: str, history_turns: list):
@@ -284,8 +298,6 @@ def generate_with_deepseek(system_prompt: str, user_prompt: str, history_prompt:
     for turn in history_turns:
         messages.append(turn)
     messages.append({"role": "user", "content": user_prompt})
-
-    print("Messages to send to LLM:")
 
     try:
         response = ollama_client.chat(model=MODEL_NAME, messages=messages)
@@ -325,6 +337,7 @@ def query():
             return jsonify({"answer": decision["direct_answer"]})
 
         retrieval_query = decision["retrieval_query"]
+        print("retrieval_query: " + retrieval_query)
         results = retrieve(retrieval_query, top_k=TOP_K)
         # results = retrieve(user_query, top_k=TOP_K)
 
@@ -362,7 +375,6 @@ def query():
         print("Preparing to call generate_with_deepseek...")
         answer = generate_with_deepseek(system_prompt, user_prompt, history_prompt, history_entries)
         print("LLM call succeeded, answer length:", len(answer))
-
         return jsonify({"answer": answer})
 
     except Exception as e:
@@ -384,10 +396,8 @@ def insert_chunk():
         if NEXT_CHUNK_ID is None:
             init_next_chunk_id()
 
-        # Thread-safe ID assignment
-        with NEXT_CHUNK_ID_LOCK:
-            chunk_id = NEXT_CHUNK_ID
-            NEXT_CHUNK_ID += 1
+        chunk_id = NEXT_CHUNK_ID
+        NEXT_CHUNK_ID += 1
 
         # Validate metadata
         allowed_keys = {"page_title", "url", "section_title"}

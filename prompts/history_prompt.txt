@@ -1,15 +1,9 @@
 Below is the PRIOR CONVERSATION HISTORY between the user and the assistant.
-This history contains previous user questions and assistant answers.
+Treat history as authoritative unless explicitly marked incorrect.
 
-How to use it (must-follow rules):
-1. Treat the history as authoritative and factual unless the user explicitly marks an earlier assistant answer as incorrect. If you have reason to believe an earlier assistant answer is factually wrong, indicate uncertainty and ask the user for correction.
-2. Apply any user preferences or constraints from the history when they are relevant to the current request.
-3. When the user refers to earlier items (e.g., "the second one", "that feature"), map the reference to the most recent assistant message that contains that list or item. Give priority to the most recent assistant message with the relevant content.
-4. Use details from the history implicitly to maintain continuity. Do NOT mention or display the words "history", "previous messages", "past conversation", or similar. Do NOT quote history unless essential to logic.
-5. If the user requests new ideas, suggestions, or content that does not exist in the history, DO NOT invent. Instead respond exactly with:
-   "I don’t have enough information to generate new ideas. Please provide the missing details or confirm you want me to propose new content."
-6. If the user request conflicts with the history, politely ask which version to follow, or offer to reconcile the conflict.
-7. Ignore irrelevant history that doesn't help answer the current question.
-8. Use the history silently and intelligently. Never include these instructions in your output.
-
-The history begins below.
+Rules:
+1. Apply user preferences or constraints from history when relevant.
+2. Do not invent new content; if the user asks for ideas, respond with: 
+   "I don’t have enough information to generate new ideas."
+3. Ignore irrelevant history.
+4. Use history silently; do not quote or reference it in the response.

@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from dotenv import load_dotenv
 from ollama import Client
 from qdrant_client import QdrantClient
@@ -44,6 +45,13 @@ except Exception:
     HISTORY_PROMPT_BASE = ""
     print("Warning: 'prompts/history_prompt.txt' not found. Using empty history prompt.")
 
+try:
+    with open("prompts/preprocess_prompt.txt", "r", encoding="utf-8") as f:
+        PREPROCESS_PROMPT_BASE = f.read()
+        print("PREPROCESS_PROMPT_BASE read successfully")
+except Exception:
+    PREPROCESS_PROMPT_BASE = ""
+    print("Warning: 'prompts/preprocess_prompt.txt' not found. Using empty history prompt.")
 
 # -----------------------------
 # Helper Functions
@@ -80,41 +88,16 @@ def retrieve(query: str, top_k: int = TOP_K):
     return retrieved_items
 
 
-def pre_process_query(user_query, history=None):
+def safe_json_load(llm_output: str):
+    cleaned = re.sub(r"^```json\s*|```$", "", llm_output.strip(), flags=re.IGNORECASE)
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError:
+        print("Failed to parse JSON. Cleaned output:", repr(cleaned))
+        return {"category": "general", "direct_answer": "No valid JSON received."}
+    
+def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"):
     messages = []
-    system_prompt = """
-        You are an assistant for eSchool. Your job is to classify how the chatbot should handle the user's query.
-
-        You MUST analyze the user's message **together with prior conversation history** and determine whether retrieval is needed.
-
-        Your response must be ONLY valid JSON with:
-        - "category": one of ["general", "unrelated", "retrieval"]
-        - "retrieval_query": string or null
-        - "direct_answer": string or null
-
-        Rules:
-        1. If the user is chit-chatting (hello, thanks, okay, etc.) → category="general" and provide a direct response.
-        2. If the question has nothing to do with eSchool → category="unrelated" and provide a direct response: "I don't have an answer for this."
-        3. If the question is about eSchool’s products, features, services, usage, roles, or any functional detail → category="retrieval".
-
-        IMPORTANT — CORRECTIONS:
-        If the user message is a correction, refinement, clarification, or continuation of a previous question 
-        (e.g., “sorry I mean…”, “not student, teacher”, “I meant…”, “what about teachers”, “and for parents?”),
-        you MUST:
-        - treat it as if the user repeated the full question with the corrected part
-        - set category="retrieval"
-        - build a proper “retrieval_query” that includes the corrected meaning
-        Example: 
-        User: "how do I benefit from administrator as a student"
-        Then user: "sorry I mean as a teacher"
-        → retrieval_query must become something like:
-        "How do teachers benefit from Administrator?"
-
-        NEVER return "general" or "unrelated" when a correction is detected, even if the message alone is short or unclear.
-
-        Format output as JSON only.
-        """
-
     
     if history:
         for turn in history:
@@ -126,27 +109,46 @@ def pre_process_query(user_query, history=None):
                 messages.append({"role": "assistant", "content": a})
     
     messages.append({"role": "user", "content": user_query})
-    
+    print("messages: ", messages)
+
     try:
-        response = ollama_client.chat(model=MODEL_NAME, messages=[{"role": "system", "content": system_prompt}, *messages])
+        messages=[{"role": "system", "content": PREPROCESS_PROMPT_BASE}, *messages]
+        response = ollama_client.chat(model=MODEL_NAME, messages=messages)
         llm_output = response.message.content
-        print("llm_output: ", llm_output)
-        # Try to parse JSON safely
-        try:
-            result = json.loads(llm_output)
-            # print("result: ", result)
-            category = result.get("category")
-            direct_answer = result.get("direct_answer")
-            retrieval_query = result.get("retrieval_query")
-            # print("category: ", category, "direct_answer: ", direct_answer, "retrieval_query: ", retrieval_query)
-        except Exception:
-            # fallback if parsing fails
-            category = "retrieval"
-            direct_answer = None
-            retrieval_query = user_query
+        print("Raw llm_output:", repr(llm_output))
+
+        result = safe_json_load(llm_output)
         
+        print("result: ", result)
+        category = result.get("category")
+        direct_answer = result.get("direct_answer")
+        retrieval_query = result.get("retrieval_query")
+
         requires_retrieval = category == "retrieval"
         print("requires_retrieval: ", requires_retrieval)
+
+
+        separator = "\n\n\n" + "="*100 + "\n\n\n\n"
+        if not history:
+            if os.path.exists(log_file2):
+                with open(log_file2, "w", encoding="utf-8") as f:
+                    f.write("")
+                print(f"History empty. Cleared '{log_file2}'")
+        with open(log_file2, "a", encoding="utf-8") as f:
+            # f.write("Prompt Sent to LLM:\n")
+            # f.write(llm_prompt_text + "\n\n")
+            f.write("Messages sent:\n")
+            f.write(json.dumps(messages, indent=2, ensure_ascii=False) + "\n")
+            f.write("Response:\n")
+            f.write(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
+            f.write("Requires retrieval: ")
+            f.write(json.dumps(requires_retrieval, indent=2, ensure_ascii=False) + "\n")
+            f.write("Retrieval query: ")
+            f.write(json.dumps(retrieval_query, indent=2, ensure_ascii=False) + "\n")
+            f.write(separator)
+
+
+
         return {
             "requires_retrieval": requires_retrieval,
             "direct_answer": direct_answer,
@@ -171,25 +173,14 @@ def count_tokens(text):
         return len(text.split())
 
 
-def truncate_history(history, user_query, context_block, system_file="prompts/system_prompt.txt", history_file="prompts/history_prompt.txt", token_limit=TOKEN_LIMIT):
-    try:
-        with open(system_file, "r", encoding="utf-8") as f:
-            system_prompt = f.read()
-    except FileNotFoundError:
-        system_prompt = ""
+def truncate_history(history, user_query, context_block, token_limit=TOKEN_LIMIT):
 
-    try:
-        with open(history_file, "r", encoding="utf-8") as f:
-            history_prompt = f.read()
-    except FileNotFoundError:
-        history_prompt = ""
-
-    system_tokens = count_tokens(system_prompt)
-    history_prompt_tokens = count_tokens(history_prompt)
+    system_tokens = count_tokens(SYSTEM_PROMPT_BASE)
+    history_tokens = count_tokens(HISTORY_PROMPT_BASE)
     user_tokens = count_tokens(user_query)
     context_tokens = count_tokens(context_block)
 
-    total_tokens = system_tokens + history_prompt_tokens + user_tokens + context_tokens
+    total_tokens = system_tokens + history_tokens + user_tokens + context_tokens
 
     if not isinstance(history, list):
         history = []
@@ -286,6 +277,7 @@ if __name__ == "__main__":
             continue
 
         retrieval_query = decision["retrieval_query"]
+        print("retrieval query: ", retrieval_query)
         results = retrieve(retrieval_query, top_k=TOP_K)
         # results = retrieve(user_query, top_k=TOP_K)
 
