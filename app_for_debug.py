@@ -109,7 +109,6 @@ def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"
                 messages.append({"role": "assistant", "content": a})
     
     messages.append({"role": "user", "content": user_query})
-    print("messages: ", messages)
 
     try:
         messages=[{"role": "system", "content": PREPROCESS_PROMPT_BASE}, *messages]
@@ -139,7 +138,9 @@ def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"
             # f.write(llm_prompt_text + "\n\n")
             f.write("Messages sent:\n")
             f.write(json.dumps(messages, indent=2, ensure_ascii=False) + "\n")
-            f.write("Response:\n")
+            f.write("LLM Output:\n")
+            f.write(json.dumps(llm_output, indent=2, ensure_ascii=False) + "\n")
+            f.write("Cleaned LLM Output:\n")
             f.write(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
             f.write("Requires retrieval: ")
             f.write(json.dumps(requires_retrieval, indent=2, ensure_ascii=False) + "\n")
@@ -213,8 +214,8 @@ def log_llm_interaction(llm_prompt_text, llm_answer, history=None, log_file="llm
             print(f"History empty. Cleared '{log_file}'")
 
     with open(log_file, "a", encoding="utf-8") as f:
-        # f.write("Prompt Sent to LLM:\n")
-        # f.write(llm_prompt_text + "\n\n")
+        f.write("Prompt Sent to LLM:\n")
+        f.write(llm_prompt_text + "\n\n")
         f.write("LLM Answer:\n")
         f.write(llm_answer + "\n")
         f.write(separator)

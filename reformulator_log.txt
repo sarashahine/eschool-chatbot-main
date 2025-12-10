@@ -2,20 +2,24 @@ Messages sent:
 [
   {
     "role": "system",
-    "content": "You are an intelligent assistant for eSchool. Your job is to determine whether the chatbot should retrieve information or answer directly.\n\nInstructions:\n    - Analyze the user’s message and prior conversation history.\n    - Output ONLY valid JSON with the following fields:\n    - \"category\": one of [\"general\", \"unrelated\", \"retrieval\"]\n    - \"retrieval_query\": string if category=\"retrieval\"\n    - \"direct_answer\": string if category!=\"retrieval\"\n\nRetrieval Permission:\n    - Retrieval is allowed ONLY if category=\"retrieval\".\n    - If category is \"general\" or \"unrelated\", your answer MUST be final and MUST NOT require retrieval.\n\nClassification Rules:\n    1. Greetings, thanks, apologies, or small-talk → category=\"general\" with a short direct answer.\n    2. Requests for ideas, suggestions, creative content, or new features → category=\"general\" with:\n        \"direct_answer\": \"I don’t have enough information in the provided context to answer that.\"\n    3. Questions unrelated to eSchool → category=\"unrelated\" with:\n        \"direct_answer\": \"I don't have an answer for this.\"\n    4. Any query about eSchool products, features, roles, permissions, pages, news, articles, blogs, or functional entities, OR queries referencing previous assistant answers → category=\"retrieval\".\n    5. Single keywords corresponding to eSchool entities (e.g., \"users\", \"roles\", \"grades\") → category=\"retrieval\".\n\nCorrections & References:\n    - If the message corrects, clarifies, or refers to a previous answer, treat it as a corrected full question and ALWAYS set category=\"retrieval\".\n    - Examples of references that require retrieval include: \"the second one\", \"that feature\", \"previous answer\" or similar.\n    - Build a clear retrieval_query including the corrected meaning.\n    - If the user refers to a previously mentioed idea, rewrite it into a full explicit query for accurate retrieval.\n\nOutput:\n    - Format strictly as JSON."
+    "content": "You are an intelligent assistant specialized for eSchool.  \nYour role is to analyze and reformulate user queries for a RAG-based chatbot.\n\nYour task is to:\n- Classify the user’s message into one of two categories: “general” or “retrieval”.\n- Reformulate the query **only** when:\n  1. The query is unclear and would lead to bad retrieval.\n  2. The query refers to a previous message (e.g., “yes”, “no”, “why”, “this”, “that”) **AND** the reference is truly meaningful.  \n     If it is an illogical reference, treat it as a general message.\n- Prevent answering any request that asks for **new ideas**. These should not trigger retrieval and should not be answered.\n- Return `null` as an empty string (“”).\n- Retrieval must only happen when `category` is “retrieval”.\n\n**Behavior rules:**\n1. General questions are answered normally (e.g., “hi”, “bye”).\n2. For queries unrelated to eSchool, the assistant must respond:  \n   → **“I don’t have an answer for this.”**\n3. If a query is unclear or is a vague follow-up (“yes”, “no”, “why”) and does **not** logically follow the previous message, treat it as general.\n4. Retrieval is allowed **only when** `category = \"retrieval\"`.  \n   The second LLM call will later decide correctness after seeing the database context.\n5. Never create or suggest new ideas. If the user asks for ideas, classify as “general” and answer:  \n   → **“I don’t have an answer for this.”**\n\n**Output JSON format:**\n{\n  \"category\": \"<general | retrieval>\",\n  \"retrieval_query\": \"<string or null>\",\n  \"direct_answer\": \"<string or null>\",\n  \"requires_retrieval\": <true | false>\n}\n\nRules for the output:\n- If category = \"retrieval\":  \n  → `retrieval_query` must contain the reformulated query (or original if clear).  \n  → `direct_answer` must be null.  \n  → `requires_retrieval` = true.\n- If category = \"general\":  \n  → `direct_answer` must contain the assistant’s reply.  \n  → `retrieval_query` must be null.  \n  → `requires_retrieval` = false.\n"
   },
   {
     "role": "user",
-    "content": "users"
+    "content": "products"
   }
 ]
-Response:
+LLM Output:
+"{\n  \"category\": \"retrieval\",\n  \"retrieval_query\": \"products offered by eSchool\",\n  \"direct_answer\": null,\n  \"requires_retrieval\": true\n}"
+Cleaned LLM Output:
 {
   "category": "retrieval",
-  "retrieval_query": "users"
+  "retrieval_query": "products offered by eSchool",
+  "direct_answer": null,
+  "requires_retrieval": true
 }
 Requires retrieval: true
-Retrieval query: "users"
+Retrieval query: "products offered by eSchool"
 
 
 
@@ -27,28 +31,69 @@ Messages sent:
 [
   {
     "role": "system",
-    "content": "You are an intelligent assistant for eSchool. Your job is to determine whether the chatbot should retrieve information or answer directly.\n\nInstructions:\n    - Analyze the user’s message and prior conversation history.\n    - Output ONLY valid JSON with the following fields:\n    - \"category\": one of [\"general\", \"unrelated\", \"retrieval\"]\n    - \"retrieval_query\": string if category=\"retrieval\"\n    - \"direct_answer\": string if category!=\"retrieval\"\n\nRetrieval Permission:\n    - Retrieval is allowed ONLY if category=\"retrieval\".\n    - If category is \"general\" or \"unrelated\", your answer MUST be final and MUST NOT require retrieval.\n\nClassification Rules:\n    1. Greetings, thanks, apologies, or small-talk → category=\"general\" with a short direct answer.\n    2. Requests for ideas, suggestions, creative content, or new features → category=\"general\" with:\n        \"direct_answer\": \"I don’t have enough information in the provided context to answer that.\"\n    3. Questions unrelated to eSchool → category=\"unrelated\" with:\n        \"direct_answer\": \"I don't have an answer for this.\"\n    4. Any query about eSchool products, features, roles, permissions, pages, news, articles, blogs, or functional entities, OR queries referencing previous assistant answers → category=\"retrieval\".\n    5. Single keywords corresponding to eSchool entities (e.g., \"users\", \"roles\", \"grades\") → category=\"retrieval\".\n\nCorrections & References:\n    - If the message corrects, clarifies, or refers to a previous answer, treat it as a corrected full question and ALWAYS set category=\"retrieval\".\n    - Examples of references that require retrieval include: \"the second one\", \"that feature\", \"previous answer\" or similar.\n    - Build a clear retrieval_query including the corrected meaning.\n    - If the user refers to a previously mentioed idea, rewrite it into a full explicit query for accurate retrieval.\n\nOutput:\n    - Format strictly as JSON."
+    "content": "You are an intelligent assistant specialized for eSchool.  \nYour role is to analyze and reformulate user queries for a RAG-based chatbot.\n\nYour task is to:\n- Classify the user’s message into one of two categories: “general” or “retrieval”.\n- Reformulate the query **only** when:\n  1. The query is unclear and would lead to bad retrieval.\n  2. The query refers to a previous message (e.g., “yes”, “no”, “why”, “this”, “that”) **AND** the reference is truly meaningful.  \n     If it is an illogical reference, treat it as a general message.\n- Prevent answering any request that asks for **new ideas**. These should not trigger retrieval and should not be answered.\n- Return `null` as an empty string (“”).\n- Retrieval must only happen when `category` is “retrieval”.\n\n**Behavior rules:**\n1. General questions are answered normally (e.g., “hi”, “bye”).\n2. For queries unrelated to eSchool, the assistant must respond:  \n   → **“I don’t have an answer for this.”**\n3. If a query is unclear or is a vague follow-up (“yes”, “no”, “why”) and does **not** logically follow the previous message, treat it as general.\n4. Retrieval is allowed **only when** `category = \"retrieval\"`.  \n   The second LLM call will later decide correctness after seeing the database context.\n5. Never create or suggest new ideas. If the user asks for ideas, classify as “general” and answer:  \n   → **“I don’t have an answer for this.”**\n\n**Output JSON format:**\n{\n  \"category\": \"<general | retrieval>\",\n  \"retrieval_query\": \"<string or null>\",\n  \"direct_answer\": \"<string or null>\",\n  \"requires_retrieval\": <true | false>\n}\n\nRules for the output:\n- If category = \"retrieval\":  \n  → `retrieval_query` must contain the reformulated query (or original if clear).  \n  → `direct_answer` must be null.  \n  → `requires_retrieval` = true.\n- If category = \"general\":  \n  → `direct_answer` must contain the assistant’s reply.  \n  → `retrieval_query` must be null.  \n  → `requires_retrieval` = false.\n"
+  },
+  {
+    "role": "user",
+    "content": "products"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool provides a suite of digital products designed to streamline school operations. These include eSchool Content for digital learning resources, eSchool Exams for digital examination and grading, eSchool Agenda for scheduling and calendar management, and eSchool Gradebook for grade management and progress tracking. Other products are eSchool Room for interactive student engagement, eSchool Safety for security and compliance, eSchool Connect for communication between parents, teachers, and students, and eSchool Administrator for centralizing administrative tasks and financial tracking."
   },
   {
     "role": "user",
     "content": "users"
-  },
+  }
+]
+LLM Output:
+"{\n  \"category\": \"general\",\n  \"retrieval_query\": null,\n  \"direct_answer\": \"I don't have an answer for this.\",\n  \"requires_retrieval\": false\n}"
+Cleaned LLM Output:
+{
+  "category": "general",
+  "retrieval_query": null,
+  "direct_answer": "I don't have an answer for this.",
+  "requires_retrieval": false
+}
+Requires retrieval: false
+Retrieval query: null
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
   {
-    "role": "assistant",
-    "content": "The platform is built for every role in the school community. The different user types are:\n\n1. Students, Smart Learners\n2. Parents, Informed Guardians\n3. Teachers, Academic Leaders\n4. Administrators, Operational Experts"
+    "role": "system",
+    "content": "You are an intelligent assistant specialized for eSchool.  \nYour role is to analyze and reformulate user queries for a RAG-based chatbot.\n\nYour task is to:\n- Classify the user’s message into one of two categories: “general” or “retrieval”.\n- Reformulate the query **only** when:\n  1. The query is unclear and would lead to bad retrieval.\n  2. The query refers to a previous message (e.g., “yes”, “no”, “why”, “this”, “that”) **AND** the reference is truly meaningful.  \n     If it is an illogical reference, treat it as a general message.\n- Prevent answering any request that asks for **new ideas**. These should not trigger retrieval and should not be answered.\n- Return `null` as an empty string (“”).\n- Retrieval must only happen when `category` is “retrieval”.\n\n**Behavior rules:**\n1. General questions are answered normally (e.g., “hi”, “bye”).\n2. For queries unrelated to eSchool, the assistant must respond:  \n   → **“I don’t have an answer for this.”**\n3. If a query is unclear or is a vague follow-up (“yes”, “no”, “why”) and does **not** logically follow the previous message, treat it as general.\n4. Retrieval is allowed **only when** `category = \"retrieval\"`.  \n   The second LLM call will later decide correctness after seeing the database context.\n5. Never create or suggest new ideas. If the user asks for ideas, classify as “general” and answer:  \n   → **“I don’t have an answer for this.”**\n\n**Output JSON format:**\n{\n  \"category\": \"<general | retrieval>\",\n  \"retrieval_query\": \"<string or null>\",\n  \"direct_answer\": \"<string or null>\",\n  \"requires_retrieval\": <true | false>\n}\n\nRules for the output:\n- If category = \"retrieval\":  \n  → `retrieval_query` must contain the reformulated query (or original if clear).  \n  → `direct_answer` must be null.  \n  → `requires_retrieval` = true.\n- If category = \"general\":  \n  → `direct_answer` must contain the assistant’s reply.  \n  → `retrieval_query` must be null.  \n  → `requires_retrieval` = false.\n"
   },
   {
     "role": "user",
-    "content": "second one"
+    "content": "products"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool provides a suite of digital products designed to streamline school operations. These include eSchool Content for digital learning resources, eSchool Exams for digital examination and grading, eSchool Agenda for scheduling and calendar management, and eSchool Gradebook for grade management and progress tracking. Other products are eSchool Room for interactive student engagement, eSchool Safety for security and compliance, eSchool Connect for communication between parents, teachers, and students, and eSchool Administrator for centralizing administrative tasks and financial tracking."
+  },
+  {
+    "role": "user",
+    "content": "abc"
   }
 ]
-Response:
+LLM Output:
+"{\n  \"category\": \"general\",\n  \"retrieval_query\": \"\",\n  \"direct_answer\": \"I don't have an answer for this.\",\n  \"requires_retrieval\": false\n}"
+Cleaned LLM Output:
 {
-  "category": "retrieval",
-  "retrieval_query": "parents as informed guardians in eSchool"
+  "category": "general",
+  "retrieval_query": "",
+  "direct_answer": "I don't have an answer for this.",
+  "requires_retrieval": false
 }
-Requires retrieval: true
-Retrieval query: "parents as informed guardians in eSchool"
+Requires retrieval: false
+Retrieval query: ""
 
 
 

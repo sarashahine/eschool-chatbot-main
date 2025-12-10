@@ -1,37 +1,106 @@
+Prompt Sent to LLM:
+system: You are a reliable, truthful, and concise company assistant.
+Your task is to answer user questions using ONLY the provided CONTEXT, the meaning of the user question, and the prior conversation history.
+Never invent facts or create new ideas.
+
+Strict Rules:
+- If the user asks for ideas or creative content not in the context, respond exactly: "I don’t have enough information in the provided context to answer that." Then offer a short clarification request.
+- Never use bold text, asterisks, markdown, or stylistic markup.
+- Combine multiple related ideas into one coherent paragraph.
+- Use numbered lists and place each number on a new line only for:
+  product types, user types, service categories, roles/permissions, or if the question explicitly requests a list.
+- Do not add new concepts, features, examples, assumptions, or interpretations.
+- Never mention the context, history, or internal reasoning.
+
+Answer Formatting:
+- General questions: single paragraph unless a numbered list is required.
+- Specific/detail questions: short paragraphs including all factual fields exactly as found (email, phone, address, instructions, URLs).
+- URLs: include only when directly supporting a fact, in parentheses immediately after the fact.
+
+Conflict Handling:
+- If the user's question contradicts previous info, ask politely for clarification.
+- If information is missing in the context, provide the exact missing-information sentence.
+
+system: Below is the PRIOR CONVERSATION HISTORY between the user and the assistant.
+Treat history as authoritative unless explicitly marked incorrect.
+
+Rules:
+1. Apply user preferences or constraints from history when relevant.
+2. Do not invent new content; if the user asks for ideas, respond with: 
+   "I don’t have enough information to generate new ideas."
+3. Ignore irrelevant history.
+4. Use history silently; do not quote or reference it in the response.
+
+user: 
+    Context:
+    Text: Overview: This is a Our Products | Comprehensive School Management Solutions – eSchool. Explore eSchool's suite of digital products designed to streamline education operations—ranging from attendance tracking and grade reporting to financial and communication tools for modern schools.Keywords: eschool products, school software, education technology, attendance system, gradebook software, school financial tools, online school platform, school digital transformation
+Section: Overview
+URL: https://web.myeschoolhome.com/products
+
+Text: Product eSchool Content: Rich digital content library and learning resources. Features: Digital Library. Interactive Content. Resource Sharing
+Section: eSchool Content
+URL: https://web.myeschoolhome.com/products/content
+
+Text: Product eSchool Exams: Digital examination system with automated grading. Features: Online Testing. Auto Grading. Result Analytics
+Section: eSchool Exams
+URL: https://web.myeschoolhome.com/products/exams
+
+Text: Product eSchool Agenda: Smart scheduling and calendar management for all school activities. Features: Event Management. Class Scheduling. Deadline Tracking
+Section: eSchool Agenda
+URL: https://web.myeschoolhome.com/products/agenda
+
+Text: Product eSchool Gradebook: Comprehensive grade management and progress tracking. Features: Grade Analytics. Progress Reports. Assessment Tools
+Section: eSchool Gradebook
+URL: https://web.myeschoolhome.com/products/gradebook
+
+Text: Product eSchool Room: It provides a robust platform that engages students with interactive content, and effective educational experience.. Features: Interactive Content. Student Engagement. Educational Experience
+Section: eSchool Room
+URL: https://web.myeschoolhome.com/products/room
+
+Text: Product eSchool Safety: Comprehensive security and compliance management. Features: Access Control. Emergency Protocols. Compliance Tracking
+Section: eSchool Safety
+URL: https://web.myeschoolhome.com/products/safety
+
+Text: eSchool Content Overview: This is a Digital Learning Resources | Upload & Share Educational Content – eSchool. Digital Learning Resources. Rich digital content library and learning resources platform that delivers educational materials—articles, videos, interactive content—to support student learning. Distribute educational materials and digital content through eSchool. Empower teachers and students with access to files, lectures, and multimedia resources.Keywords: eschool content, digital education materials, learning resources, e-learning platform, school content sharing, online lectures Google Play: https://play.google.com/store/apps/details?id=eschool.apps.eschoolshelves App Store: https://apps.apple.com/us/app/eschool-content/id1296241492 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+Section: Overview
+URL: https://web.myeschoolhome.com/products/content
+
+Text: Product eSchool Connect: Seamless communication between parents, teachers, and students. Features: Parent Portal. Teacher Chat. Student Community
+Section: eSchool Connect
+URL: https://web.myeschoolhome.com/products/connect
+
+Text: Product eSchool Administrator: It centralizes administrative tasks, financial tracking, and educational content, fostering a cohesive and organized environment for effective school management.. Features: Administrative Tasks. Financial Tracking. Content Management
+Section: eSchool Administrator
+URL: https://web.myeschoolhome.com/products/administrator
+
+Text: Overview: Contact Us | Get in Touch with eSchool Team. Have questions or need support? Reach out to the eSchool team for product inquiries, partnerships, or customer service assistance. We're here to help. eschool contact, get in touch, school software support, edtech contact, education solutions inquiry, eschool Lebanon.
+Section: Overview
+URL: https://web.myeschoolhome.com/contact
+
+Text: eSchool Exams Overview: This is a Exam Management System | Schedule & Track School Exams – eSchool. Digital Examination System. Digital examination system with automated grading and comprehensive exam management features. Organize exams efficiently with eSchool. Plan exam schedules, publish results, and provide students with seamless access to performance feedback.Keywords: eschool exams, exam scheduling, school assessments, student results, online exam platform, exam results management Google Play:  App Store:  Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F#/!/home
+Section: Overview
+URL: https://web.myeschoolhome.com/products/exams
+
+Text: eSchool Content Features: Upload voice recordings, hyperlink collections, HTML lessons, videos, text-based notes, YouTube playlists, and high-resolution images so every content format lives in one structured library ready for distribution.
+Section: Features
+URL: https://web.myeschoolhome.com/products/content
+
+Text: Our Journey - 2023: Empowering Education: Now and Beyond. In the present and looking toward the future, eSchool company has forged integration agreements with leading educational companies to enhance our curriculum. These partnerships empower our educational offerings by supplementing the school curriculum presented by teachers in the classroom. Students now have access to a rich array of educational videos directly related to their subjects, allowing them to deepen and reinforce their knowledge. This integration ensures a more comprehensive and engaging learning experience, bridging classroom instruction with high-quality digital content.
+Section: Our Journey - 2023
+URL: https://web.myeschoolhome.com/about
+
+Text: Description: eSchool Portal | Modern School Information Management System. eSchool the preferred choice for educational institutions worldwide. eSchool Portal is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. Empower your educational institution with our user-friendly platform. Keywords: eSchool Portal, school management system, student information system, AI-powered education, online learning platform, school ERP, digital classrooms, education technology, school administration software, eSchool Lebanon.
+Section: Description
+URL: https://web.myeschoolhome.com/
+
+    Question:
+    products
+
+    Answer:
+    
+
 LLM Answer:
-The platform is built for every role in the school community. The different user types are:
-
-1. Students, Smart Learners
-2. Parents, Informed Guardians
-3. Teachers, Academic Leaders
-4. Administrators, Operational Experts
-
-
-
-====================================================================================================
-
-
-
-LLM Answer:
-Parents are Informed Guardians. The eSchool platform provides tools for parents to stay informed and engaged in their child's education. They can track their child's school bus in real-time with live GPS and receive arrival alerts for safety. The platform offers features for seamless communication with teachers through posts, chat, comments, and likes. Parents can also access comprehensive data on their child's academic performance, attendance, and behavior, and participate in polls and evaluations. They can switch between multiple children from a single dashboard.
-
-
-
-====================================================================================================
-
-
-
-LLM Answer:
-The eSchool product suite includes several modules to streamline education operations.
-
-1. eSchool Room
-2. eSchool Exams
-3. eSchool Content
-4. eSchool Gradebook
-5. eSchool Safety
-6. eSchool Administrator
-7. eSchool Agenda
-8. eSchool Connect
+eSchool provides a suite of digital products designed to streamline school operations. These include eSchool Content for digital learning resources, eSchool Exams for digital examination and grading, eSchool Agenda for scheduling and calendar management, and eSchool Gradebook for grade management and progress tracking. Other products are eSchool Room for interactive student engagement, eSchool Safety for security and compliance, eSchool Connect for communication between parents, teachers, and students, and eSchool Administrator for centralizing administrative tasks and financial tracking.
 
 
 
