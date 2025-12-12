@@ -88,13 +88,17 @@ def retrieve(query: str, top_k: int = TOP_K):
     return retrieved_items
 
 
-def safe_json_load(llm_output: str):
+def safe_json_load(llm_output: str, user_query):
     cleaned = re.sub(r"^```json\s*|```$", "", llm_output.strip(), flags=re.IGNORECASE)
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
         print("Failed to parse JSON. Cleaned output:", repr(cleaned))
-        return {"category": "general", "direct_answer": "No valid JSON received."}
+        return {
+            "category": "retrieval",
+            "retrieval_query": user_query,
+            "direct_answer": None
+        }
     
 def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"):
     messages = []
@@ -116,7 +120,7 @@ def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"
         llm_output = response.message.content
         print("Raw llm_output:", repr(llm_output))
 
-        result = safe_json_load(llm_output)
+        result = safe_json_load(llm_output, user_query)
         
         print("result: ", result)
         category = result.get("category")
@@ -261,22 +265,12 @@ if __name__ == "__main__":
         if not user_query:
             print("Please enter a query.")
             continue
-
-        # Build history entries before routing
-        history_entries = []
-        for turn in history:
-            q = turn.get("question", "")
-            a = turn.get("answer", "")
-            if q:
-                history_entries.append({"role": "user", "content": q})
-            if a:
-                history_entries.append({"role": "assistant", "content": a})
-
+        
         decision = pre_process_query(user_query, history)
         if not decision["requires_retrieval"]:
             print("answer: " + decision["direct_answer"])
             continue
-
+        
         retrieval_query = decision["retrieval_query"]
         print("retrieval query: ", retrieval_query)
         results = retrieve(retrieval_query, top_k=TOP_K)
@@ -289,7 +283,6 @@ if __name__ == "__main__":
 
         history = truncate_history(history, user_query, context_block)
 
-        # Rebuild history entries from truncated history for generation
         history_entries = []
         for turn in history:
             q = turn.get("question", "")

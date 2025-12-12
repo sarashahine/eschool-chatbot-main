@@ -2,946 +2,210 @@ Messages sent:
 [
   {
     "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
+    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\nYour task: Given a user message and the prior conversation history, decide the correct category and generate the appropriate output.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nOUTPUT FORMAT:\n{'category':'','answer':''}\n\nCATEGORIES:\n\n1. History-Based Questions\n- Includes follow-up questions and corrections.\n- If the follow-up matches the meaning of an older message better than the latest one, use the older one.\n- If NOT logically connected to conversation:\n    - \"category\" = \"unrelated\".\n    - \"answer\" = \"I don't answer hasve an answer\"\n- If logically connected to conversation:\n  - Reformulate the user message into a clear reformulated_query.\n  - Remove pronouns like \"them\", \"it\", \"that\" by replacing them with the specific referenced concept.\n  - Add missing context recovered from history.\n  - \"category\" = \"retrieval\".\n  - \"answer\" = reformulated_query.\n\n2. Direct eSchool Queries\n- Any message about eSchool features, tasks, users, products or school operations.\n- Includes incomplete and single-word messages.\n- \"category\" = \"retrieval\".\n- \"answer\" = EXACT user message (no reformulation).\n\n3. General Polite Messages\n- Greetings, thanks, or polite expressions NOT asking about eSchool.\n- \"category\" = \"general\".\n- \"answer\" = a suitable polite reply.\n\n4. Unrelated Queries\n- Anything not about eSchool AND not connected to previous history.\n- category = \"unrelated\".\n- answer = \"I don't have an answer\".\n\nUNCLEAR CASES:\n- If unclear or confused: treat as retrieval.\n- \"category\" = \"retrieval\"\n- \"answer\" = EXACT user message (no reformulation).\n\nSTRICT RULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer\n- Values must be strings.\n- NO extra spaces, newlines, markdown, or explanations.\n- Never invent details not present in the user message or conversation history.\n\nThe conversation history begins AFTER this system prompt. Use history only when determining whether the message is a follow-up."
   },
   {
     "role": "user",
-    "content": "users"
+    "content": "hi"
   }
 ]
 LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"users\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "users",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "users"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  }
-]
-LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"location\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "location",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "location"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "who are you"
-  }
-]
-LLM Output:
-"{\"category\":\"general\",\"retrieval_query\":\"\",\"direct_answer\":\"I'm your assistant for eSchool, the school-management system.\"}"
+"{\"category\":\"general\",\"answer\":\"Hello! How can I help you today?\"}"
 Cleaned LLM Output:
 {
   "category": "general",
-  "retrieval_query": "",
-  "direct_answer": "I'm your assistant for eSchool, the school-management system."
-}
-Requires retrieval: false
-Retrieval query: ""
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "who am i"
-  }
-]
-LLM Output:
-"{\"category\":\"general\",\"retrieval_query\":\"\",\"direct_answer\":\"Hi there! I don't have access to your user profile information to tell you who you are.\"}"
-Cleaned LLM Output:
-{
-  "category": "general",
-  "retrieval_query": "",
-  "direct_answer": "Hi there! I don't have access to your user profile information to tell you who you are."
-}
-Requires retrieval: false
-Retrieval query: ""
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  }
-]
-LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"what is eschool\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "what is eschool",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "what is eschool"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools. Specific products include eSchool Portal for school information management, eSchool Content for digital learning resources, eSchool Exams for digital examinations, eSchool Gradebook for real-time grade tracking, eSchool Connect for parent-teacher communication, eSchool Safety for student safety and attendance monitoring, and eSchool Room for live virtual classes."
-  },
-  {
-    "role": "user",
-    "content": "give me the directions to reach your location from Jnah"
-  }
-]
-LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"give me the directions to reach your location from Jnah\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "give me the directions to reach your location from Jnah",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "give me the directions to reach your location from Jnah"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools. Specific products include eSchool Portal for school information management, eSchool Content for digital learning resources, eSchool Exams for digital examinations, eSchool Gradebook for real-time grade tracking, eSchool Connect for parent-teacher communication, eSchool Safety for student safety and attendance monitoring, and eSchool Room for live virtual classes."
-  },
-  {
-    "role": "user",
-    "content": "give me the directions to reach your location from Jnah"
-  },
-  {
-    "role": "assistant",
-    "content": "I don’t have enough information in the provided context to answer that. Could you specify what kind of directions you would like, such as driving, public transport, or walking?"
-  },
-  {
-    "role": "user",
-    "content": "how to reach your location"
-  }
-]
-LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"how to reach your location\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "how to reach your location",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "how to reach your location"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools. Specific products include eSchool Portal for school information management, eSchool Content for digital learning resources, eSchool Exams for digital examinations, eSchool Gradebook for real-time grade tracking, eSchool Connect for parent-teacher communication, eSchool Safety for student safety and attendance monitoring, and eSchool Room for live virtual classes."
-  },
-  {
-    "role": "user",
-    "content": "give me the directions to reach your location from Jnah"
-  },
-  {
-    "role": "assistant",
-    "content": "I don’t have enough information in the provided context to answer that. Could you specify what kind of directions you would like, such as driving, public transport, or walking?"
-  },
-  {
-    "role": "user",
-    "content": "how to reach your location"
-  },
-  {
-    "role": "assistant",
-    "content": "You can reach the eSchool location at Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor. You can contact them via phone at +961 81 853 832, +961 3 623 352, or +961 76 764 252, by email at info@eschooledu.com, or through the contact form on their website (https://web.myeschoolhome.com/contact)."
-  },
-  {
-    "role": "user",
-    "content": "what products do you offer"
-  }
-]
-LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"what products do you offer\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "what products do you offer",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "what products do you offer"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools. Specific products include eSchool Portal for school information management, eSchool Content for digital learning resources, eSchool Exams for digital examinations, eSchool Gradebook for real-time grade tracking, eSchool Connect for parent-teacher communication, eSchool Safety for student safety and attendance monitoring, and eSchool Room for live virtual classes."
-  },
-  {
-    "role": "user",
-    "content": "give me the directions to reach your location from Jnah"
-  },
-  {
-    "role": "assistant",
-    "content": "I don’t have enough information in the provided context to answer that. Could you specify what kind of directions you would like, such as driving, public transport, or walking?"
-  },
-  {
-    "role": "user",
-    "content": "how to reach your location"
-  },
-  {
-    "role": "assistant",
-    "content": "You can reach the eSchool location at Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor. You can contact them via phone at +961 81 853 832, +961 3 623 352, or +961 76 764 252, by email at info@eschooledu.com, or through the contact form on their website (https://web.myeschoolhome.com/contact)."
-  },
-  {
-    "role": "user",
-    "content": "what products do you offer"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool offers a suite of digital school management products. The offerings include eSchool Portal for overall school information management, eSchool Content for a digital library and learning resources, eSchool Exams for digital testing with auto grading, eSchool Gradebook for grade management and progress tracking, and eSchool Connect for communication between parents, teachers, and students. Additional products are eSchool Room for live virtual classes, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "number them"
-  }
-]
-LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"number the eSchool products you offer\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "number the eSchool products you offer",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "number the eSchool products you offer"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools. Specific products include eSchool Portal for school information management, eSchool Content for digital learning resources, eSchool Exams for digital examinations, eSchool Gradebook for real-time grade tracking, eSchool Connect for parent-teacher communication, eSchool Safety for student safety and attendance monitoring, and eSchool Room for live virtual classes."
-  },
-  {
-    "role": "user",
-    "content": "give me the directions to reach your location from Jnah"
-  },
-  {
-    "role": "assistant",
-    "content": "I don’t have enough information in the provided context to answer that. Could you specify what kind of directions you would like, such as driving, public transport, or walking?"
-  },
-  {
-    "role": "user",
-    "content": "how to reach your location"
-  },
-  {
-    "role": "assistant",
-    "content": "You can reach the eSchool location at Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor. You can contact them via phone at +961 81 853 832, +961 3 623 352, or +961 76 764 252, by email at info@eschooledu.com, or through the contact form on their website (https://web.myeschoolhome.com/contact)."
-  },
-  {
-    "role": "user",
-    "content": "what products do you offer"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool offers a suite of digital school management products. The offerings include eSchool Portal for overall school information management, eSchool Content for a digital library and learning resources, eSchool Exams for digital testing with auto grading, eSchool Gradebook for grade management and progress tracking, and eSchool Connect for communication between parents, teachers, and students. Additional products are eSchool Room for live virtual classes, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "number them"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool's digital products include eSchool Portal for AI-powered school management, eSchool Content for a digital library and learning resources, eSchool Exams for online testing with auto grading, and eSchool Gradebook for grade management. The suite also includes eSchool Connect for communication, eSchool Room for live virtual classes with interactive content, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "write them with numbers habibi"
-  }
-]
-LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"number them\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "number them",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "number them"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools. Specific products include eSchool Portal for school information management, eSchool Content for digital learning resources, eSchool Exams for digital examinations, eSchool Gradebook for real-time grade tracking, eSchool Connect for parent-teacher communication, eSchool Safety for student safety and attendance monitoring, and eSchool Room for live virtual classes."
-  },
-  {
-    "role": "user",
-    "content": "give me the directions to reach your location from Jnah"
-  },
-  {
-    "role": "assistant",
-    "content": "I don’t have enough information in the provided context to answer that. Could you specify what kind of directions you would like, such as driving, public transport, or walking?"
-  },
-  {
-    "role": "user",
-    "content": "how to reach your location"
-  },
-  {
-    "role": "assistant",
-    "content": "You can reach the eSchool location at Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor. You can contact them via phone at +961 81 853 832, +961 3 623 352, or +961 76 764 252, by email at info@eschooledu.com, or through the contact form on their website (https://web.myeschoolhome.com/contact)."
-  },
-  {
-    "role": "user",
-    "content": "what products do you offer"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool offers a suite of digital school management products. The offerings include eSchool Portal for overall school information management, eSchool Content for a digital library and learning resources, eSchool Exams for digital testing with auto grading, eSchool Gradebook for grade management and progress tracking, and eSchool Connect for communication between parents, teachers, and students. Additional products are eSchool Room for live virtual classes, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "number them"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool's digital products include eSchool Portal for AI-powered school management, eSchool Content for a digital library and learning resources, eSchool Exams for online testing with auto grading, and eSchool Gradebook for grade management. The suite also includes eSchool Connect for communication, eSchool Room for live virtual classes with interactive content, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "write them with numbers habibi"
-  },
-  {
-    "role": "assistant",
-    "content": "1. eSchool Portal: AI-powered school management system.\n2. eSchool Content: Rich digital content library and learning resources.\n3. eSchool Exams: Digital examination system with automated grading.\n4. eSchool Gradebook: Real-time grade management and progress tracking.\n5. eSchool Connect: Communication platform for parents, teachers, and students.\n6. eSchool Room: Platform for live virtual classes with interactive content.\n7. eSchool Agenda: Smart scheduling and calendar management.\n8. eSchool Safety: System for security, compliance, and attendance monitoring.\n9. eSchool Administrator: Centralized administrative and financial task management."
-  },
-  {
-    "role": "user",
-    "content": "portal is not a product"
-  }
-]
-LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"what are the eSchool products excluding portal\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "what are the eSchool products excluding portal",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "what are the eSchool products excluding portal"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools. Specific products include eSchool Portal for school information management, eSchool Content for digital learning resources, eSchool Exams for digital examinations, eSchool Gradebook for real-time grade tracking, eSchool Connect for parent-teacher communication, eSchool Safety for student safety and attendance monitoring, and eSchool Room for live virtual classes."
-  },
-  {
-    "role": "user",
-    "content": "give me the directions to reach your location from Jnah"
-  },
-  {
-    "role": "assistant",
-    "content": "I don’t have enough information in the provided context to answer that. Could you specify what kind of directions you would like, such as driving, public transport, or walking?"
-  },
-  {
-    "role": "user",
-    "content": "how to reach your location"
-  },
-  {
-    "role": "assistant",
-    "content": "You can reach the eSchool location at Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor. You can contact them via phone at +961 81 853 832, +961 3 623 352, or +961 76 764 252, by email at info@eschooledu.com, or through the contact form on their website (https://web.myeschoolhome.com/contact)."
-  },
-  {
-    "role": "user",
-    "content": "what products do you offer"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool offers a suite of digital school management products. The offerings include eSchool Portal for overall school information management, eSchool Content for a digital library and learning resources, eSchool Exams for digital testing with auto grading, eSchool Gradebook for grade management and progress tracking, and eSchool Connect for communication between parents, teachers, and students. Additional products are eSchool Room for live virtual classes, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "number them"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool's digital products include eSchool Portal for AI-powered school management, eSchool Content for a digital library and learning resources, eSchool Exams for online testing with auto grading, and eSchool Gradebook for grade management. The suite also includes eSchool Connect for communication, eSchool Room for live virtual classes with interactive content, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "write them with numbers habibi"
-  },
-  {
-    "role": "assistant",
-    "content": "1. eSchool Portal: AI-powered school management system.\n2. eSchool Content: Rich digital content library and learning resources.\n3. eSchool Exams: Digital examination system with automated grading.\n4. eSchool Gradebook: Real-time grade management and progress tracking.\n5. eSchool Connect: Communication platform for parents, teachers, and students.\n6. eSchool Room: Platform for live virtual classes with interactive content.\n7. eSchool Agenda: Smart scheduling and calendar management.\n8. eSchool Safety: System for security, compliance, and attendance monitoring.\n9. eSchool Administrator: Centralized administrative and financial task management."
-  },
-  {
-    "role": "user",
-    "content": "portal is not a product"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool Portal is described as a comprehensive, AI-powered school management system. It is presented as a core product offering integrated solutions for student enrollment, attendance, grades, communication, and online learning."
-  },
-  {
-    "role": "user",
-    "content": "write the products again"
-  }
-]
-LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"write the products again\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "write the products again",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "write the products again"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools. Specific products include eSchool Portal for school information management, eSchool Content for digital learning resources, eSchool Exams for digital examinations, eSchool Gradebook for real-time grade tracking, eSchool Connect for parent-teacher communication, eSchool Safety for student safety and attendance monitoring, and eSchool Room for live virtual classes."
-  },
-  {
-    "role": "user",
-    "content": "give me the directions to reach your location from Jnah"
-  },
-  {
-    "role": "assistant",
-    "content": "I don’t have enough information in the provided context to answer that. Could you specify what kind of directions you would like, such as driving, public transport, or walking?"
-  },
-  {
-    "role": "user",
-    "content": "how to reach your location"
-  },
-  {
-    "role": "assistant",
-    "content": "You can reach the eSchool location at Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor. You can contact them via phone at +961 81 853 832, +961 3 623 352, or +961 76 764 252, by email at info@eschooledu.com, or through the contact form on their website (https://web.myeschoolhome.com/contact)."
-  },
-  {
-    "role": "user",
-    "content": "what products do you offer"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool offers a suite of digital school management products. The offerings include eSchool Portal for overall school information management, eSchool Content for a digital library and learning resources, eSchool Exams for digital testing with auto grading, eSchool Gradebook for grade management and progress tracking, and eSchool Connect for communication between parents, teachers, and students. Additional products are eSchool Room for live virtual classes, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "number them"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool's digital products include eSchool Portal for AI-powered school management, eSchool Content for a digital library and learning resources, eSchool Exams for online testing with auto grading, and eSchool Gradebook for grade management. The suite also includes eSchool Connect for communication, eSchool Room for live virtual classes with interactive content, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "write them with numbers habibi"
-  },
-  {
-    "role": "assistant",
-    "content": "1. eSchool Portal: AI-powered school management system.\n2. eSchool Content: Rich digital content library and learning resources.\n3. eSchool Exams: Digital examination system with automated grading.\n4. eSchool Gradebook: Real-time grade management and progress tracking.\n5. eSchool Connect: Communication platform for parents, teachers, and students.\n6. eSchool Room: Platform for live virtual classes with interactive content.\n7. eSchool Agenda: Smart scheduling and calendar management.\n8. eSchool Safety: System for security, compliance, and attendance monitoring.\n9. eSchool Administrator: Centralized administrative and financial task management."
-  },
-  {
-    "role": "user",
-    "content": "portal is not a product"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool Portal is described as a comprehensive, AI-powered school management system. It is presented as a core product offering integrated solutions for student enrollment, attendance, grades, communication, and online learning."
-  },
-  {
-    "role": "user",
-    "content": "write the products again"
-  },
-  {
-    "role": "assistant",
-    "content": "1. eSchool Exams: Digital examination system with automated grading.\n2. eSchool Content: Rich digital content library and learning resources.\n3. eSchool Administrator: Centralizes administrative tasks, financial tracking, and educational content management.\n4. eSchool Room: Platform for live virtual classes with interactive content.\n5. eSchool Gradebook: Comprehensive grade management and progress tracking.\n6. eSchool Connect: Seamless communication between parents, teachers, and students.\n7. eSchool Agenda: Smart scheduling and calendar management for all school activities.\n8. eSchool Safety: Comprehensive security and compliance management."
-  },
-  {
-    "role": "user",
-    "content": "why"
-  }
-]
-LLM Output:
-"{\"category\":\"retrieval\",\"retrieval_query\":\"products offered by eSchool\",\"direct_answer\":\"\"}"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "retrieval_query": "products offered by eSchool",
-  "direct_answer": ""
-}
-Requires retrieval: true
-Retrieval query: "products offered by eSchool"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system. Your role is to classify user messages and prepare them for a RAG-based chatbot.\n\neSchool provides multiple applications to different users at schools, with various features for enrollment, attendance, grades, communication, and online learning.\n\nYour task: Given a plain-text user message, determine its category and produce the required JSON output.\n\nOutput Format (strict):\nYou must return exactly this JSON object, with no extra text or new lines:\n{\"category\":\"\",\"retrieval_query\":\"\",\"direct_answer\":\"\"}\n\nCategories:\nThere are four possible categories. Set the field \"category\" to one of them:\n\n1. Direct eSchool-related queries → \"retrieval\"\nA message is \"retrieval\" if it relates to eSchool in any possible way, including:\n- normal questions: “how to add students”, “eschool rooms”, “fees system”\n- incomplete questions\n- vague queries\n- single-word eSchool terms (such as: users, products, features, communication, etc.)\nRule:\nIf the message can reasonably refer to any part of school management, classify it as retrieval, not general, not unrelated.\nOutput:\n- \"retrieval_query\" = exact original user query\n- \"direct_answer\" = empty string\n\n2. History-related follow-ups → \"retrieval\" or \"unrelated\"\nUse conversation history ONLY in this case.\nHistory-related queries include:\n- follow-ups: yes, no, why, how, tell me more…\n- corrections / clarifications: sorry, i mean…\nRules:\n- If the message is not logically connected to history → \"category\": \"unrelated\"\n- If it is logically connected →\n    \"category\": \"retrieval\"\n    \"retrieval_query\" = reformulated query based on chat flow\n    (example: if last topic was eSchool Room and user says “yes”, reformulate to a proper retrieval query like: “Provide more information about eSchool Room.”)\n\n3. General questions → \"general\"\nIncludes: greetings, thanks, apologies, small talk, simple non-retrieval questions.\nOutput:\n- \"direct_answer\" = brief polite reply\n- \"retrieval_query\" = empty string\n\n4. Unrelated queries → \"unrelated\"\nUse this when:\n- the message has no connection to eSchool\n- the message is not a valid history continuation\nOutput:\n- \"direct_answer\" = \"I don't have an answer for this.\"\n- \"retrieval_query\" = empty string\n\nRules (strict):\n- Never generate new information about eSchool or anything else.\n- Never invent assumptions.\n- Return only valid JSON. No explanations, no commentary, no prefixes.\n- No extra characters, newlines, or spaces outside the JSON object.\n- All keys must be strings.\n\nConversation history starts here. ONLY use it for category 2."
-  },
-  {
-    "role": "user",
-    "content": "users"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool platform is designed for students, parents, teachers, and administrators.\n\n1. Students: They can access course materials, view timetables, take online exams, and message teachers.\n2. Parents: They can monitor real-time grades and attendance, receive bus and school notifications, message teachers and administrators, and view a calendar of events.\n3. Teachers: They can create digital lesson plans, perform grading, analyze student performance, and record attendance.\n4. Administrators: They can manage staff and students, track finances and fees, monitor compliance, and view key metrics on a dashboard."
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "The location of eSchool is Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor."
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools. Specific products include eSchool Portal for school information management, eSchool Content for digital learning resources, eSchool Exams for digital examinations, eSchool Gradebook for real-time grade tracking, eSchool Connect for parent-teacher communication, eSchool Safety for student safety and attendance monitoring, and eSchool Room for live virtual classes."
-  },
-  {
-    "role": "user",
-    "content": "give me the directions to reach your location from Jnah"
-  },
-  {
-    "role": "assistant",
-    "content": "I don’t have enough information in the provided context to answer that. Could you specify what kind of directions you would like, such as driving, public transport, or walking?"
-  },
-  {
-    "role": "user",
-    "content": "how to reach your location"
-  },
-  {
-    "role": "assistant",
-    "content": "You can reach the eSchool location at Hamra - Sanayeh, Beirut, Lebanon, in the BAC Center building on the Third floor. You can contact them via phone at +961 81 853 832, +961 3 623 352, or +961 76 764 252, by email at info@eschooledu.com, or through the contact form on their website (https://web.myeschoolhome.com/contact)."
-  },
-  {
-    "role": "user",
-    "content": "what products do you offer"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool offers a suite of digital school management products. The offerings include eSchool Portal for overall school information management, eSchool Content for a digital library and learning resources, eSchool Exams for digital testing with auto grading, eSchool Gradebook for grade management and progress tracking, and eSchool Connect for communication between parents, teachers, and students. Additional products are eSchool Room for live virtual classes, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "number them"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool's digital products include eSchool Portal for AI-powered school management, eSchool Content for a digital library and learning resources, eSchool Exams for online testing with auto grading, and eSchool Gradebook for grade management. The suite also includes eSchool Connect for communication, eSchool Room for live virtual classes with interactive content, eSchool Agenda for scheduling and calendar management, eSchool Safety for security and compliance, and eSchool Administrator for centralizing administrative tasks and financial tracking."
-  },
-  {
-    "role": "user",
-    "content": "write them with numbers habibi"
-  },
-  {
-    "role": "assistant",
-    "content": "1. eSchool Portal: AI-powered school management system.\n2. eSchool Content: Rich digital content library and learning resources.\n3. eSchool Exams: Digital examination system with automated grading.\n4. eSchool Gradebook: Real-time grade management and progress tracking.\n5. eSchool Connect: Communication platform for parents, teachers, and students.\n6. eSchool Room: Platform for live virtual classes with interactive content.\n7. eSchool Agenda: Smart scheduling and calendar management.\n8. eSchool Safety: System for security, compliance, and attendance monitoring.\n9. eSchool Administrator: Centralized administrative and financial task management."
-  },
-  {
-    "role": "user",
-    "content": "portal is not a product"
-  },
-  {
-    "role": "assistant",
-    "content": "The eSchool Portal is described as a comprehensive, AI-powered school management system. It is presented as a core product offering integrated solutions for student enrollment, attendance, grades, communication, and online learning."
-  },
-  {
-    "role": "user",
-    "content": "write the products again"
-  },
-  {
-    "role": "assistant",
-    "content": "1. eSchool Exams: Digital examination system with automated grading.\n2. eSchool Content: Rich digital content library and learning resources.\n3. eSchool Administrator: Centralizes administrative tasks, financial tracking, and educational content management.\n4. eSchool Room: Platform for live virtual classes with interactive content.\n5. eSchool Gradebook: Comprehensive grade management and progress tracking.\n6. eSchool Connect: Seamless communication between parents, teachers, and students.\n7. eSchool Agenda: Smart scheduling and calendar management for all school activities.\n8. eSchool Safety: Comprehensive security and compliance management."
-  },
-  {
-    "role": "user",
-    "content": "why"
-  },
-  {
-    "role": "assistant",
-    "content": "I am unable to answer the question \"why\" as it is too general. Please provide more details about what specific information you are looking for."
-  },
-  {
-    "role": "user",
-    "content": "what are you"
-  }
-]
-LLM Output:
-"I am an AI assistant designed to help answer questions about the eSchool management system. I can provide information about its features like enrollment, attendance, grades, communication, and online learning."
-Cleaned LLM Output:
-{
-  "category": "general",
-  "direct_answer": "No valid JSON received."
+  "answer": "Hello! How can I help you today?"
 }
 Requires retrieval: false
 Retrieval query: null
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\nYour task: Given a user message and the prior conversation history, decide the correct category and generate the appropriate output.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nOUTPUT FORMAT:\n{'category':'','answer':''}\n\nCATEGORIES:\n\n1. History-Based Questions\n- Includes follow-up questions and corrections.\n- If the follow-up matches the meaning of an older message better than the latest one, use the older one.\n- If NOT logically connected to conversation:\n    - \"category\" = \"unrelated\".\n    - \"answer\" = \"I don't answer hasve an answer\"\n- If logically connected to conversation:\n  - Reformulate the user message into a clear reformulated_query.\n  - Remove pronouns like \"them\", \"it\", \"that\" by replacing them with the specific referenced concept.\n  - Add missing context recovered from history.\n  - \"category\" = \"retrieval\".\n  - \"answer\" = reformulated_query.\n\n2. Direct eSchool Queries\n- Any message about eSchool features, tasks, users, products or school operations.\n- Includes incomplete and single-word messages.\n- \"category\" = \"retrieval\".\n- \"answer\" = EXACT user message (no reformulation).\n\n3. General Polite Messages\n- Greetings, thanks, or polite expressions NOT asking about eSchool.\n- \"category\" = \"general\".\n- \"answer\" = a suitable polite reply.\n\n4. Unrelated Queries\n- Anything not about eSchool AND not connected to previous history.\n- category = \"unrelated\".\n- answer = \"I don't have an answer\".\n\nUNCLEAR CASES:\n- If unclear or confused: treat as retrieval.\n- \"category\" = \"retrieval\"\n- \"answer\" = EXACT user message (no reformulation).\n\nSTRICT RULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer\n- Values must be strings.\n- NO extra spaces, newlines, markdown, or explanations.\n- Never invent details not present in the user message or conversation history.\n\nThe conversation history begins AFTER this system prompt. Use history only when determining whether the message is a follow-up."
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! How can I help you today?"
+  },
+  {
+    "role": "user",
+    "content": "who uses eschool"
+  }
+]
+LLM Output:
+"{\"category\":\"retrieval\",\"answer\":\"who uses eschool\"}"
+Cleaned LLM Output:
+{
+  "category": "retrieval",
+  "answer": "who uses eschool"
+}
+Requires retrieval: true
+Retrieval query: "who uses eschool"
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\nYour task: Given a user message and the prior conversation history, decide the correct category and generate the appropriate output.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nOUTPUT FORMAT:\n{'category':'','answer':''}\n\nCATEGORIES:\n\n1. History-Based Questions\n- Includes follow-up questions and corrections.\n- If the follow-up matches the meaning of an older message better than the latest one, use the older one.\n- If NOT logically connected to conversation:\n    - \"category\" = \"unrelated\".\n    - \"answer\" = \"I don't answer hasve an answer\"\n- If logically connected to conversation:\n  - Reformulate the user message into a clear reformulated_query.\n  - Remove pronouns like \"them\", \"it\", \"that\" by replacing them with the specific referenced concept.\n  - Add missing context recovered from history.\n  - \"category\" = \"retrieval\".\n  - \"answer\" = reformulated_query.\n\n2. Direct eSchool Queries\n- Any message about eSchool features, tasks, users, products or school operations.\n- Includes incomplete and single-word messages.\n- \"category\" = \"retrieval\".\n- \"answer\" = EXACT user message (no reformulation).\n\n3. General Polite Messages\n- Greetings, thanks, or polite expressions NOT asking about eSchool.\n- \"category\" = \"general\".\n- \"answer\" = a suitable polite reply.\n\n4. Unrelated Queries\n- Anything not about eSchool AND not connected to previous history.\n- category = \"unrelated\".\n- answer = \"I don't have an answer\".\n\nUNCLEAR CASES:\n- If unclear or confused: treat as retrieval.\n- \"category\" = \"retrieval\"\n- \"answer\" = EXACT user message (no reformulation).\n\nSTRICT RULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer\n- Values must be strings.\n- NO extra spaces, newlines, markdown, or explanations.\n- Never invent details not present in the user message or conversation history.\n\nThe conversation history begins AFTER this system prompt. Use history only when determining whether the message is a follow-up."
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! How can I help you today?"
+  },
+  {
+    "role": "user",
+    "content": "who uses eschool"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool is used by educational institutions, including schools, to manage operations. Its platform is designed for teachers, parents, and students. Teachers use it for tasks like grading and communication. Parents use it for tracking their children's attendance and bus safety. Students use it for accessing learning materials and viewing grades."
+  },
+  {
+    "role": "user",
+    "content": "reformulate the previous response in a numbered list"
+  }
+]
+LLM Output:
+"{\"category\":\"retrieval\",\"answer\":\"reformulate the previous response in a numbered list\"}"
+Cleaned LLM Output:
+{
+  "category": "retrieval",
+  "answer": "reformulate the previous response in a numbered list"
+}
+Requires retrieval: true
+Retrieval query: "reformulate the previous response in a numbered list"
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\nYour task: Given a user message and the prior conversation history, decide the correct category and generate the appropriate output.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nOUTPUT FORMAT:\n{'category':'','answer':''}\n\nCATEGORIES:\n\n1. History-Based Questions\n- Includes follow-up questions and corrections.\n- If the follow-up matches the meaning of an older message better than the latest one, use the older one.\n- If NOT logically connected to conversation:\n    - \"category\" = \"unrelated\".\n    - \"answer\" = \"I don't answer hasve an answer\"\n- If logically connected to conversation:\n  - Reformulate the user message into a clear reformulated_query.\n  - Remove pronouns like \"them\", \"it\", \"that\" by replacing them with the specific referenced concept.\n  - Add missing context recovered from history.\n  - \"category\" = \"retrieval\".\n  - \"answer\" = reformulated_query.\n\n2. Direct eSchool Queries\n- Any message about eSchool features, tasks, users, products or school operations.\n- Includes incomplete and single-word messages.\n- \"category\" = \"retrieval\".\n- \"answer\" = EXACT user message (no reformulation).\n\n3. General Polite Messages\n- Greetings, thanks, or polite expressions NOT asking about eSchool.\n- \"category\" = \"general\".\n- \"answer\" = a suitable polite reply.\n\n4. Unrelated Queries\n- Anything not about eSchool AND not connected to previous history.\n- category = \"unrelated\".\n- answer = \"I don't have an answer\".\n\nUNCLEAR CASES:\n- If unclear or confused: treat as retrieval.\n- \"category\" = \"retrieval\"\n- \"answer\" = EXACT user message (no reformulation).\n\nSTRICT RULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer\n- Values must be strings.\n- NO extra spaces, newlines, markdown, or explanations.\n- Never invent details not present in the user message or conversation history.\n\nThe conversation history begins AFTER this system prompt. Use history only when determining whether the message is a follow-up."
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! How can I help you today?"
+  },
+  {
+    "role": "user",
+    "content": "who uses eschool"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool is used by educational institutions, including schools, to manage operations. Its platform is designed for teachers, parents, and students. Teachers use it for tasks like grading and communication. Parents use it for tracking their children's attendance and bus safety. Students use it for accessing learning materials and viewing grades."
+  },
+  {
+    "role": "user",
+    "content": "reformulate the previous response in a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "1. Educational institutions, including schools, use eSchool to manage operations.\n2. Teachers use it for grading, communication, lesson planning (using the Daily Planner), and exam management.\n3. Parents use it for tracking their children's attendance, bus safety, and communicating via posts.\n4. Students use it for accessing learning materials, viewing grades, and engaging with interactive content."
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second point"
+  }
+]
+LLM Output:
+"I don't have an answer"
+Cleaned LLM Output:
+{
+  "category": "retrieval",
+  "answer": ""
+}
+Requires retrieval: true
+Retrieval query: "tell me more about the second point"
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\nYour task: Given a user message and the prior conversation history, decide the correct category and generate the appropriate output.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nOUTPUT FORMAT:\n{'category':'','answer':''}\n\nCATEGORIES:\n\n1. History-Based Questions\n- Includes follow-up questions and corrections.\n- If the follow-up matches the meaning of an older message better than the latest one, use the older one.\n- If NOT logically connected to conversation:\n    - \"category\" = \"unrelated\".\n    - \"answer\" = \"I don't answer hasve an answer\"\n- If logically connected to conversation:\n  - Reformulate the user message into a clear reformulated_query.\n  - Remove pronouns like \"them\", \"it\", \"that\" by replacing them with the specific referenced concept.\n  - Add missing context recovered from history.\n  - \"category\" = \"retrieval\".\n  - \"answer\" = reformulated_query.\n\n2. Direct eSchool Queries\n- Any message about eSchool features, tasks, users, products or school operations.\n- Includes incomplete and single-word messages.\n- \"category\" = \"retrieval\".\n- \"answer\" = EXACT user message (no reformulation).\n\n3. General Polite Messages\n- Greetings, thanks, or polite expressions NOT asking about eSchool.\n- \"category\" = \"general\".\n- \"answer\" = a suitable polite reply.\n\n4. Unrelated Queries\n- Anything not about eSchool AND not connected to previous history.\n- category = \"unrelated\".\n- answer = \"I don't have an answer\".\n\nUNCLEAR CASES:\n- If unclear or confused: treat as retrieval.\n- \"category\" = \"retrieval\"\n- \"answer\" = EXACT user message (no reformulation).\n\nSTRICT RULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer\n- Values must be strings.\n- NO extra spaces, newlines, markdown, or explanations.\n- Never invent details not present in the user message or conversation history.\n\nThe conversation history begins AFTER this system prompt. Use history only when determining whether the message is a follow-up."
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! How can I help you today?"
+  },
+  {
+    "role": "user",
+    "content": "who uses eschool"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool is used by educational institutions, including schools, to manage operations. Its platform is designed for teachers, parents, and students. Teachers use it for tasks like grading and communication. Parents use it for tracking their children's attendance and bus safety. Students use it for accessing learning materials and viewing grades."
+  },
+  {
+    "role": "user",
+    "content": "reformulate the previous response in a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "1. Educational institutions, including schools, use eSchool to manage operations.\n2. Teachers use it for grading, communication, lesson planning (using the Daily Planner), and exam management.\n3. Parents use it for tracking their children's attendance, bus safety, and communicating via posts.\n4. Students use it for accessing learning materials, viewing grades, and engaging with interactive content."
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second point"
+  },
+  {
+    "role": "assistant",
+    "content": "The second point is about empowering your school with AI. This is part of building the future of your school, engaging your school community, and providing an all-in-one integrated ERP system."
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second point in the previous response"
+  }
+]
+LLM Output:
+"{\"category\":\"retrieval\",\"answer\":\"tell me more about how teachers use eSchool for grading, communication, lesson planning, and exam management\"}"
+Cleaned LLM Output:
+{
+  "category": "retrieval",
+  "answer": "tell me more about how teachers use eSchool for grading, communication, lesson planning, and exam management"
+}
+Requires retrieval: true
+Retrieval query: "tell me more about the second point in the previous response"
 
 
 

@@ -1,21 +1,16 @@
 from flask import Flask, request, jsonify, render_template
 import json
 import os
+import re
 from dotenv import load_dotenv
 from ollama import Client
 from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
 from qdrant_client.http import models as rest
 
-load_dotenv()
-
-# -----------------------------
-# Configuration
-# -----------------------------
 from config import COLLECTION_NAME, QDRANT_HTTP, EMBEDDING_MODEL, TOP_K, MODEL_NAME, TOKEN_LIMIT
-OLLAMA_KEY = os.getenv("OLLAMA_API_KEY")
-if not OLLAMA_KEY:
-    raise ValueError("OLLAMA_API_KEY is missing in .env")
+
+load_dotenv()
 
 
 # -----------------------------
@@ -23,12 +18,14 @@ if not OLLAMA_KEY:
 # -----------------------------
 app = Flask(__name__)
 model = SentenceTransformer(EMBEDDING_MODEL)
+OLLAMA_KEY = os.getenv("OLLAMA_API_KEY")
+if not OLLAMA_KEY:
+    raise ValueError("OLLAMA_API_KEY is missing in .env")
 ollama_client = Client(
                     host="https://ollama.com",
                     headers={'Authorization': 'Bearer ' + OLLAMA_KEY}
                 )
 qdrant_client = QdrantClient(url=QDRANT_HTTP)
-
 
 
 # -----------------------------
@@ -77,12 +74,12 @@ except Exception:
     SYSTEM_PROMPT_BASE = ""
     print("Warning: 'prompts/system_prompt.txt' not found. Using empty system prompt.")
 try:
-    with open("prompts/history_prompt.txt", "r", encoding="utf-8") as f:
-        HISTORY_PROMPT_BASE = f.read()
-        print("HISTORY_PROMPT_BASE read successfully")
+    with open("prompts/preprocess_prompt.txt", "r", encoding="utf-8") as f:
+        PREPROCESS_PROMPT_BASE = f.read()
+        print("PREPROCESS_PROMPT_BASE read successfully")
 except Exception:
-    HISTORY_PROMPT_BASE = ""
-    print("Warning: 'prompts/history_prompt.txt' not found. Using empty history prompt.")
+    PREPROCESS_PROMPT_BASE = ""
+    print("Warning: 'prompts/preprocess_prompt.txt' not found. Using empty history prompt.")
 
 
 # -----------------------------
@@ -122,41 +119,22 @@ def retrieve(query: str, top_k: int = TOP_K):
 
 
 
+def safe_json_load(llm_output: str, user_query):
+    cleaned = re.sub(r"^```json\s*|```$", "", llm_output.strip(), flags=re.IGNORECASE)
+    try:
+        data = json.loads(cleaned)
+        if "category" not in data or "answer" not in data:
+            raise ValueError("Missing expected keys")
+        return data
+    except Exception:
+        print("Failed to parse JSON. Cleaned output:", repr(cleaned))
+        return {
+            "category": "retrieval",
+            "answer": ""
+        }
+    
 def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"):
     messages = []
-    system_prompt = """
-        You are an intelligent assistant for eSchool. Your job is to determine whether the chatbot should retrieve information or answer directly.
-
-        Instructions:
-        - Analyze the user’s message and prior conversation history.
-        - Output ONLY valid JSON with the following fields:
-        - "category": one of ["general", "unrelated", "retrieval"]
-        - "retrieval_query": string if category="retrieval"
-        - "direct_answer": string if category!="retrieval"
-
-        Retrieval Permission:
-        - Retrieval is allowed ONLY if category="retrieval".
-        - If category is "general" or "unrelated", your answer MUST be final and MUST NOT require retrieval.
-
-        Classification Rules:
-        1. Greetings, thanks, apologies, or small-talk → category="general" with a short direct answer.
-        2. Requests for ideas, suggestions, creative content, or new features → category="general" with:
-            "direct_answer": "I don’t have enough information in the provided context to answer that."
-        3. Questions unrelated to eSchool → category="unrelated" with:
-            "direct_answer": "I don't have an answer for this."
-        4. Any query about eSchool products, features, roles, permissions, pages, modules, lessons, exams, or functional entities, OR queries referencing previous assistant answers → category="retrieval".
-        5. Single keywords corresponding to eSchool entities (e.g., "users", "roles", "grades") → category="retrieval".
-
-        Corrections & References:
-        - If the message corrects, clarifies, or refers to a previous answer, treat it as a corrected full question and ALWAYS set category="retrieval".
-        - Examples of references that require retrieval include: "the second one", "that feature", "previous answer" or similar.
-        - Build a clear retrieval_query including the corrected meaning.
-        - If the user refers to a previously mentioed idea, rewrite it into a full explicit query for accurate retrieval.
-
-        Output:
-        - Format strictly as JSON.
-        """
-
     
     if history:
         for turn in history:
@@ -168,47 +146,49 @@ def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"
                 messages.append({"role": "assistant", "content": a})
     
     messages.append({"role": "user", "content": user_query})
-    print("messages: ", messages)
-    
-    separator = "\n\n\n" + "="*100 + "\n\n\n\n"
-    with open(log_file2, "a", encoding="utf-8") as f:
-        # f.write("Prompt Sent to LLM:\n")
-        # f.write(llm_prompt_text + "\n\n")
-        f.write("LLM Answer:\n")
-        f.write(json.dumps(messages, indent=2, ensure_ascii=False) + "\n")
-        f.write(separator)
 
     try:
-        response = ollama_client.chat(model=MODEL_NAME, messages=[{"role": "system", "content": system_prompt}, *messages])
+        messages=[{"role": "system", "content": PREPROCESS_PROMPT_BASE}, *messages]
+        response = ollama_client.chat(model=MODEL_NAME, messages=messages)
         llm_output = response.message.content
-        print("llm_output: ", llm_output)
-        # Try to parse JSON safely
-        try:
-            result = json.loads(llm_output)
-            # print("result: ", result)
-            category = result.get("category")
-            direct_answer = result.get("direct_answer")
-            retrieval_query = result.get("retrieval_query")
-            
-            ##### ------------ ADD THIS FOR DEBUG FILE ------------ #####
-            keywords = ["users", "products", "news", "blogs", "contact", "reviews"]
-            if category == "general" and user_query.lower().strip() in keywords:
-                category = "retrieval"
-                direct_answer = None
-                retrieval_query = user_query
-            print("category: ", category, "direct_answer: ", direct_answer, "retrieval_query: ", retrieval_query)
-        except Exception:
-            # fallback if parsing fails
-            category = "retrieval"
-            direct_answer = None
-            retrieval_query = user_query
+        print("Raw llm_output:", repr(llm_output))
+
+        result = safe_json_load(llm_output, user_query)
         
-        requires_retrieval = category == "retrieval"
+        print("result: ", result)
+        category = result.get("category")
+        answer = result.get("answer", "")
+
+        requires_retrieval = (category == "retrieval")
         print("requires_retrieval: ", requires_retrieval)
+
+        retrieval_query = user_query if requires_retrieval else None
+
+        separator = "\n\n\n" + "="*100 + "\n\n\n\n"
+        if not history:
+            if os.path.exists(log_file2):
+                with open(log_file2, "w", encoding="utf-8") as f:
+                    f.write("")
+                print(f"History empty. Cleared '{log_file2}'")
+        with open(log_file2, "a", encoding="utf-8") as f:
+            # f.write("Prompt Sent to LLM:\n")
+            # f.write(llm_prompt_text + "\n\n")
+            f.write("Messages sent:\n")
+            f.write(json.dumps(messages, indent=2, ensure_ascii=False) + "\n")
+            f.write("LLM Output:\n")
+            f.write(json.dumps(llm_output, indent=2, ensure_ascii=False) + "\n")
+            f.write("Cleaned LLM Output:\n")
+            f.write(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
+            f.write("Requires retrieval: ")
+            f.write(json.dumps(requires_retrieval, indent=2, ensure_ascii=False) + "\n")
+            f.write("Retrieval query: ")
+            f.write(json.dumps(retrieval_query, indent=2, ensure_ascii=False) + "\n")
+            f.write(separator)
+
         return {
             "requires_retrieval": requires_retrieval,
-            "direct_answer": direct_answer,
-            "retrieval_query": retrieval_query if requires_retrieval else None
+            "direct_answer": answer if not requires_retrieval else None,
+            "retrieval_query": retrieval_query
         }
     except Exception as e:
         print("Error in pre_process_query:", e)
@@ -230,31 +210,17 @@ def count_tokens(text):
         return len(text.split())
 
 
-def truncate_history(history, user_query, context_block, system_file="prompts/system_prompt.txt", history_file="prompts/history_prompt.txt", token_limit=TOKEN_LIMIT):
-    try:
-        with open(system_file, "r", encoding="utf-8") as f:
-            system_prompt = f.read()
-    except FileNotFoundError:
-        system_prompt = ""
-        
-    try:
-        with open(history_file, "r", encoding="utf-8") as f:
-            history_prompt = f.read()
-    except FileNotFoundError:
-        history_prompt = ""
+def truncate_history(history, user_query, context_block, token_limit=TOKEN_LIMIT):
 
-    # Count tokens for system, history prompt, user query, and context
-    system_tokens = count_tokens(system_prompt)
-    history_prompt_tokens = count_tokens(history_prompt)
+    system_tokens = count_tokens(SYSTEM_PROMPT_BASE)
     user_tokens = count_tokens(user_query)
     context_tokens = count_tokens(context_block)
 
-    total_tokens = system_tokens + history_prompt_tokens + user_tokens + context_tokens
+    total_tokens = system_tokens + user_tokens + context_tokens
 
     if not isinstance(history, list):
         history = []
 
-    # Reverse history to start removing older entries first
     hist = history[::-1]
     truncated_history = []
 
@@ -270,7 +236,6 @@ def truncate_history(history, user_query, context_block, system_file="prompts/sy
             break
 
     return truncated_history[::-1]
-
 
 
 
@@ -291,10 +256,9 @@ def log_llm_interaction(llm_prompt_text, llm_answer, history=None, log_file="llm
     # print(f"Interaction logged to '{log_file}'")
 
 
-def generate_with_deepseek(system_prompt: str, user_prompt: str, history_prompt: str, history_turns: list):
+def generate_with_deepseek(system_prompt: str, user_prompt: str, history_turns: list):
     messages = []
     messages.append({"role": "system", "content": system_prompt})
-    messages.append({"role": "system", "content": history_prompt})
     for turn in history_turns:
         messages.append(turn)
     messages.append({"role": "user", "content": user_prompt})
@@ -333,13 +297,26 @@ def query():
 
 
         decision = pre_process_query(user_query, history)
-        if not decision["requires_retrieval"]:
-            return jsonify({"answer": decision["direct_answer"]})
-
+        requires_retrieval = decision["requires_retrieval"]
+        direct_answer = decision["direct_answer"]
         retrieval_query = decision["retrieval_query"]
-        print("retrieval_query: " + retrieval_query)
+
+        if not requires_retrieval:
+            answer = direct_answer
+
+            history.append({
+                "question": user_query,
+                "answer": answer
+            })
+
+            return jsonify({
+                "answer": answer,
+                "history": history ### delete this later
+            })
+
+
+        print("retrieval_query:", retrieval_query)
         results = retrieve(retrieval_query, top_k=TOP_K)
-        # results = retrieve(user_query, top_k=TOP_K)
 
         context_block = "\n\n".join(
             f"Text: {r['text']}\nSection: {r['metadata'].get('section_title','')}\nURL: {r['metadata'].get('url','')}"
@@ -350,32 +327,37 @@ def query():
 
         history_entries = []
         for turn in history:
-            q = turn.get("question", "")
-            a = turn.get("answer", "")
-            if q:
-                history_entries.append({"role": "user", "content": q})
-            if a:
-                history_entries.append({"role": "assistant", "content": a})
-
-        # history_text = "\n".join(f"{item['role']}: {item['content']}" for item in history_entries) if history_entries else ""
-
+            if turn.get("question"):
+                history_entries.append({"role": "user", "content": turn["question"]})
+            if turn.get("answer"):
+                history_entries.append({"role": "assistant", "content": turn["answer"]})
 
         system_prompt = SYSTEM_PROMPT_BASE
-        # history_prompt = HISTORY_PROMPT_BASE.format(history_text=history_text)
-        history_prompt = HISTORY_PROMPT_BASE
+        
         user_prompt = f"""
     Context:
     {context_block}
 
     Question:
     {user_query}
+    Question Reformulated:
+    {retrieval_query}
 
     Answer:
     """
+        
         print("Preparing to call generate_with_deepseek...")
-        answer = generate_with_deepseek(system_prompt, user_prompt, history_prompt, history_entries)
+        answer = generate_with_deepseek(system_prompt, user_prompt, history_entries)
         print("LLM call succeeded, answer length:", len(answer))
-        return jsonify({"answer": answer})
+        history.append({
+            "question": user_query,
+            "answer": answer
+        })
+
+        return jsonify({
+            "answer": answer,
+            "history": history
+        })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
