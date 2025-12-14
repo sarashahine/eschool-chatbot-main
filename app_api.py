@@ -1,52 +1,45 @@
 from flask import Flask, request, jsonify, render_template
+import json
+import os
+import re
+from dotenv import load_dotenv
+from ollama import Client
 from qdrant_client import QdrantClient
+from sentence_transformers import SentenceTransformer
+from qdrant_client.http import models as rest
+
 from qdrant_client.http.models import Distance, VectorParams, PointIdsList
 from google import genai
 from google.genai import types
-from dotenv import load_dotenv
-import os
-import tiktoken
-from ollama import Client
 
 # -----------------------------
 # Configuration
 # -----------------------------
-from config import COLLECTION_NAME, QDRANT_HTTP, TOP_K, VECTOR_SIZE, MODEL_NAME
+from config import QDRANT_HTTP, TOP_K, VECTOR_SIZE, MODEL_NAME, TOKEN_LIMIT
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 OLLAMA_KEY = os.getenv("OLLAMA_API_KEY")
+COLLECTION_NAME = "docs_api"
 
 
 # -----------------------------
 # Initialize
 # -----------------------------
 app = Flask(__name__)
-qdrant_client = QdrantClient(url=QDRANT_HTTP)
+genai_client = genai.Client(api_key=GOOGLE_API_KEY)
+
 ollama_client = Client(
                     host="https://ollama.com",
                     headers={'Authorization': 'Bearer ' + OLLAMA_KEY}
                 )
+qdrant_client = QdrantClient(url=QDRANT_HTTP)
 
-genai_client = genai.Client(api_key=GOOGLE_API_KEY)
 
 # -----------------------------
 # Global auto-increment ID
 # -----------------------------
 NEXT_CHUNK_ID = None
-
-# -----------------------------
-# Helper functions
-# -----------------------------
-def embed_texts(texts):
-    result = genai_client.models.embed_content(
-        model="gemini-embedding-001",
-        contents=texts,
-        config=types.EmbedContentConfig(output_dimensionality=VECTOR_SIZE)
-    )
-    embeddings = [emb.values for emb in result.embeddings]
-    return embeddings
-
 
 def init_next_chunk_id():
     global NEXT_CHUNK_ID
@@ -56,7 +49,6 @@ def init_next_chunk_id():
         while True:
             points, offset = qdrant_client.scroll(
                 collection_name=COLLECTION_NAME,
-                limit=1000,
                 with_payload=False,
                 with_vectors=False,
                 offset=offset,
@@ -76,8 +68,42 @@ def init_next_chunk_id():
         # safest fallback
         NEXT_CHUNK_ID = 1
 
-
 init_next_chunk_id()
+
+
+
+# -----------------------------
+# Load prompts from external files
+# -----------------------------
+try:
+    with open("prompts/system_prompt.txt", "r", encoding="utf-8") as f:
+        SYSTEM_PROMPT_BASE = f.read()
+        print("SYSTEM_PROMPT_BASE read successfully")
+except Exception:
+    SYSTEM_PROMPT_BASE = ""
+    print("Warning: 'prompts/system_prompt.txt' not found. Using empty system prompt.")
+try:
+    with open("prompts/preprocess_prompt.txt", "r", encoding="utf-8") as f:
+        PREPROCESS_PROMPT_BASE = f.read()
+        print("PREPROCESS_PROMPT_BASE read successfully")
+except Exception:
+    PREPROCESS_PROMPT_BASE = ""
+    print("Warning: 'prompts/preprocess_prompt.txt' not found. Using empty history prompt.")
+
+
+# -----------------------------
+# Helper functions
+# -----------------------------
+def embed_texts(texts):
+    result = genai_client.models.embed_content(
+        model="gemini-embedding-001",
+        contents=texts,
+        config=types.EmbedContentConfig(output_dimensionality=VECTOR_SIZE)
+    )
+    embeddings = [emb.values for emb in result.embeddings]
+    return embeddings
+
+
 
 def retrieve(query: str, top_k: int = TOP_K):
     query_vector = embed_texts([query])[0]
@@ -105,32 +131,168 @@ def retrieve(query: str, top_k: int = TOP_K):
             }
         })
 
-    
+    with open('retrieved_items.json', 'w', encoding='utf-8') as f:
+        json.dump(retrieved_items, f, indent=4, ensure_ascii=False)
+    print("JSON saved to 'retrieved_items.json' in a readable format.")
+
+
     return retrieved_items
 
 
-def truncate_history(history, max_exchanges=6, max_chars=30000):
+
+
+def safe_json_load(llm_output: str, user_query):
+    cleaned = re.sub(r"^```json\s*|```$", "", llm_output.strip(), flags=re.IGNORECASE)
+    try:
+        data = json.loads(cleaned)
+        if "category" not in data or "answer" not in data:
+            raise ValueError("Missing expected keys")
+        return data
+    except Exception:
+        print("Failed to parse JSON. Cleaned output:", repr(cleaned))
+        return {
+            "category": "retrieval",
+            "answer": ""
+        }
+    
+def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"):
+    messages = []
+    
+    if history:
+        for turn in history:
+            q = turn.get("question", "").strip()
+            a = turn.get("answer", "").strip()
+            if q:
+                messages.append({"role": "user", "content": q})
+            if a:
+                messages.append({"role": "assistant", "content": a})
+    
+    messages.append({"role": "user", "content": user_query})
+
+    try:
+        messages=[{"role": "system", "content": PREPROCESS_PROMPT_BASE}, *messages]
+        response = ollama_client.chat(model=MODEL_NAME, messages=messages)
+        llm_output = response.message.content
+        print("Raw llm_output:", repr(llm_output))
+
+        result = safe_json_load(llm_output, user_query)
+        
+        print("result: ", result)
+        category = result.get("category")
+        answer = result.get("answer", "")
+
+        requires_retrieval = category
+        print("requires_retrieval: ", requires_retrieval)
+
+        retrieval_query = user_query if requires_retrieval else None
+
+        separator = "\n\n\n" + "="*100 + "\n\n\n\n"
+        if not history:
+            if os.path.exists(log_file2):
+                with open(log_file2, "w", encoding="utf-8") as f:
+                    f.write("")
+                print(f"History empty. Cleared '{log_file2}'")
+        with open(log_file2, "a", encoding="utf-8") as f:
+            # f.write("Prompt Sent to LLM:\n")
+            # f.write(llm_prompt_text + "\n\n")
+            f.write("Messages sent:\n")
+            f.write(json.dumps(messages, indent=2, ensure_ascii=False) + "\n")
+            f.write("LLM Output:\n")
+            f.write(json.dumps(llm_output, indent=2, ensure_ascii=False) + "\n")
+            f.write("Cleaned LLM Output:\n")
+            f.write(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
+            f.write("Requires retrieval: ")
+            f.write(json.dumps(requires_retrieval, indent=2, ensure_ascii=False) + "\n")
+            f.write("Retrieval query: ")
+            f.write(json.dumps(retrieval_query, indent=2, ensure_ascii=False) + "\n")
+            f.write(separator)
+
+        return {
+            "requires_retrieval": requires_retrieval,
+            "direct_answer": answer if not requires_retrieval else None,
+            "retrieval_query": retrieval_query
+        }
+    except Exception as e:
+        print("Error in pre_process_query:", e)
+        # fallback: assume retrieval required
+        return {
+            "requires_retrieval": True,
+            "direct_answer": None,
+            "retrieval_query": user_query
+        }
+        
+        
+   
+def count_tokens(text):
+    try:
+        result = ollama_client.tokens(model=MODEL_NAME, prompt=text)
+        return result.get("total_tokens", len(text.split()))  # fallback if missing
+    except Exception:
+        # fallback in case API fails
+        return len(text.split())
+         
+def truncate_history(history, user_query, context_block, token_limit=TOKEN_LIMIT):
+
+    system_tokens = count_tokens(SYSTEM_PROMPT_BASE)
+    user_tokens = count_tokens(user_query)
+    context_tokens = count_tokens(context_block)
+
+    total_tokens = system_tokens + user_tokens + context_tokens
 
     if not isinstance(history, list):
-        return []
+        history = []
 
-    hist = history[-max_exchanges:]
+    hist = history[::-1]
+    truncated_history = []
 
-    total = sum(len(str(h.get("question","")))+len(str(h.get("answer",""))) for h in hist)
-    while total > max_chars and len(hist) > 1:
-        hist.pop(0)
-        total = sum(len(str(h.get("question","")))+len(str(h.get("answer",""))) for h in hist)
-    return hist
+    for h in hist:
+        q = h.get("question", "")
+        a = h.get("answer", "")
+        h_tokens = count_tokens(q) + count_tokens(a)
+
+        if total_tokens + h_tokens <= token_limit:
+            truncated_history.append(h)
+            total_tokens += h_tokens
+        else:
+            break
+
+    return truncated_history[::-1]
 
 
-def generate_with_deepseek(system_prompt: str, user_prompt: str, history_prompt=None):
+def log_llm_interaction(llm_prompt_text, llm_answer, history=None, log_file="llm_interaction_log.txt"):
+    separator = "\n\n\n" + "="*100 + "\n\n\n\n"
+    if not history:
+        if os.path.exists(log_file):
+            with open(log_file, "w", encoding="utf-8") as f:
+                f.write("")
+            print(f"History empty. Cleared '{log_file}'")
+
+    with open(log_file, "a", encoding="utf-8") as f:
+        f.write("Prompt Sent to LLM:\n")
+        f.write(llm_prompt_text + "\n\n")
+        f.write("LLM Answer:\n")
+        f.write(llm_answer + "\n")
+        f.write(separator)
+        
+
+def generate_with_deepseek(system_prompt: str, user_prompt: str, history_turns: list):
     messages = []
     messages.append({"role": "system", "content": system_prompt})
-    messages.append({"role": "system", "content": history_prompt})
+    for turn in history_turns:
+        messages.append(turn)
     messages.append({"role": "user", "content": user_prompt})
 
-    response = ollama_client.chat(model=MODEL_NAME, messages=messages)
-    answer = response.message.content
+    try:
+        response = ollama_client.chat(model=MODEL_NAME, messages=messages)
+        answer = response.message.content
+    except Exception as e:
+        print("Error during LLM call:", e)
+        raise e
+    
+    print("answer generated")
+
+    full_prompt_text = "\n".join([f"{msg['role']}: {msg['content']}" for msg in messages])
+    log_llm_interaction(llm_prompt_text=full_prompt_text, llm_answer=answer, history=history_turns)
     
     return answer
 
@@ -152,122 +314,76 @@ def query():
         if not user_query:
             return jsonify({"error": "No query provided"}), 400
 
-        history = truncate_history(history, max_exchanges=6, max_chars=30000)
+        decision = pre_process_query(user_query, history)
+        requires_retrieval = decision["requires_retrieval"]
+        direct_answer = decision["direct_answer"]
+        retrieval_query = decision["retrieval_query"]
 
-        results = retrieve(user_query, top_k=TOP_K)
+        if not requires_retrieval:
+            answer = direct_answer
 
+            history.append({
+                "question": user_query,
+                "answer": answer
+            })
+
+            return jsonify({
+                "answer": answer,
+                "history": history ### delete this later
+            })
+
+
+        print("retrieval_query:", retrieval_query)
+        results = retrieve(retrieval_query, top_k=TOP_K)
 
         context_block = "\n\n".join(
             f"Text: {r['text']}\nSection: {r['metadata'].get('section_title','')}\nURL: {r['metadata'].get('url','')}"
             for r in results
         )
+        
+        
+        history = truncate_history(history, user_query, context_block)
 
-
-        # Build history prompt
         history_entries = []
-        if history:
-            for turn in history:
-                q = turn.get("question", "")
-                a = turn.get("answer", "")
-                if q:
-                    history_entries.append({"role": "user", "content": q})
-                if a:
-                    history_entries.append({"role": "assistant", "content": a})
-        history_text = "\n".join(f"{item['role']}: {item['content']}" for item in history_entries) if history_entries else ""
+        for turn in history:
+            if turn.get("question"):
+                history_entries.append({"role": "user", "content": turn["question"]})
+            if turn.get("answer"):
+                history_entries.append({"role": "assistant", "content": turn["answer"]})
 
-
-
-        system_prompt = """
-    You are a helpful, truthful, and concise company assistant. 
-    Your role is to answer user questions about the company and its website 
-    using ONLY the information provided in the Context. Never make up facts.
-
-    Instructions:
-    1. For general questions:
-        - Respond with a numbered list (1, 2, 3...).  
-        - Each item must be a single clear idea; combine with related ideas.  
-        - Use short, simple, and self-contained sentences.
-
-    2. For specific questions:
-        - Respond in short, precise paragraphs.  
-        - Include all factual fields exactly as given (email, phone number, address, contact instructions).  
-        - Do not omit information, even if it appears in only one chunk.
-
-    3. Rewrite all content in clear, simple, natural language.  
-    4. Never reference or mention the Context in your answer.  
-    5. URLs:
-        - Include urls only if they directly support a fact you mention.
-        - Place the URL in parentheses immediately after the fact; do not list irrelevant URLs at the end.
-    6. Missing Information: 
-        - If the necessary information is absent, reply exactly:
-            "I don't have enough information in the provided context to answer that."
-        - Then suggest one brief next step.
-    """
-
-        history_prompt = f"""
-    Below is the PRIOR CONVERSATION HISTORY between the user and the assistant.
-    This history contains the previous user questions and the previous assistant answers.
-
-    How you MUST use this history:
-    1. Treat the history as authoritative and factual.
-       - If the history contains previous answers, you must stay consistent with them.
-       - If the history contains user preferences or constraints, apply them in the current answer.
-    
-    2. You may reference details from the history implicitly to maintain continuity,
-       BUT:
-       - Do NOT explicitly mention the words "history", "previous messages",
-         "past conversation", or anything similar.
-       - Do NOT quote history directly unless it is essential to the logic of the answer.
-
-    3. If the user is asking a follow-up question:
-       - Use the history to understand context, intent, and previously mentioned topics.
-       - Reuse previously established facts.
-       - Never contradict earlier answers unless the user corrects them.
-
-    4. If the user asks something that conflicts with the history:
-       - Politely clarify the inconsistency.
-       - Ask the user which version they want to proceed with.
-
-    5. If the history contains irrelevant information:
-       - Ignore it safely and do not let it influence the final answer.
-
-    6. NEVER include this history block or any of these instructions in your output.
-       NEVER describe how you used the history.
-       ONLY use it internally to provide coherent, context-aware answers.
-
-    The history begins below. Use it silently and intelligently:
-    {history_text}
-"""
-
+        system_prompt = SYSTEM_PROMPT_BASE
         user_prompt = f"""
     Context:
     {context_block}
 
     Question:
     {user_query}
+    Question Reformulated:
+    {retrieval_query}
 
     Answer:
     """
-        
-        answer = generate_with_deepseek(system_prompt, user_prompt, history_prompt)
-
-        # Step 4: Return JSON response
-        return jsonify({
+    
+        print("Preparing to call generate_with_deepseek...")
+        answer = generate_with_deepseek(system_prompt, user_prompt, history_entries)
+        print("LLM call succeeded, answer length:", len(answer))
+        history.append({
+            "question": user_query,
             "answer": answer
         })
 
+        return jsonify({
+            "answer": answer,
+            "history": history
+        })
+
     except Exception as e:
-        import traceback
-        traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
 
 @app.route("/chunks", methods=["POST"])
 def insert_chunk():
-    """
-    Insert a new chunk into the API collection with an auto-incremented numeric ID.
-    Client sends 'text' (required) and optional 'metadata' dict.
-    """
+
     try:
         data = request.json or {}
         text = (data.get("text") or "").strip()
@@ -282,7 +398,7 @@ def insert_chunk():
 
         chunk_id = NEXT_CHUNK_ID
         NEXT_CHUNK_ID += 1
-
+        
         vector = embed_texts([text])[0]
 
         payload = {"text": text, **metadata}
@@ -320,17 +436,12 @@ def get_chunk(chunk_id: int):
             },
         })
     except Exception as exc:
-        import traceback
-        traceback.print_exc()
         return jsonify({"error": str(exc)}), 500
 
 
 @app.route("/chunks/<int:chunk_id>", methods=["PUT"])
 def update_chunk(chunk_id: int):
-    """
-    Update an existing chunk's text and/or metadata in the API collection.
-    If 'text' is provided, its embedding is recomputed using Gemini.
-    """
+
     try:
         data = request.json or {}
         new_text = data.get("text")
@@ -351,31 +462,26 @@ def update_chunk(chunk_id: int):
 
         if new_text is not None:
             new_text = new_text.strip()
-            if not new_text:
-                return jsonify({"error": "Provided text is empty."}), 400
             vector = embed_texts([new_text])[0]
             current_payload["text"] = new_text
-        elif vector is None:
-            return jsonify({"error": "Vector missing; provide new text to recompute embedding."}), 400
 
         if metadata_updates:
-            if not isinstance(metadata_updates, dict):
-                return jsonify({"error": "'metadata' must be an object."}), 400
             current_payload.update(metadata_updates)
 
-        point = {"id": chunk_id, "vector": vector, "payload": current_payload}
-        qdrant_client.upsert(collection_name=COLLECTION_NAME, points=[point], wait=True)
+        updated_point = rest.PointStruct(
+            id=chunk_id,
+            vector=vector,
+            payload=current_payload
+        )
+        qdrant_client.upsert(collection_name=COLLECTION_NAME, points=[updated_point], wait=True)
 
         return jsonify({"message": f"Updated chunk {chunk_id}."})
     except Exception as exc:
-        import traceback
-        traceback.print_exc()
         return jsonify({"error": str(exc)}), 500
 
 
 @app.route("/chunks/<int:chunk_id>", methods=["DELETE"])
 def delete_chunk(chunk_id: int):
-    """Delete a chunk by numeric ID from the API collection."""
     try:
         qdrant_client.delete(
             collection_name=COLLECTION_NAME,
@@ -384,8 +490,6 @@ def delete_chunk(chunk_id: int):
         )
         return jsonify({"message": f"Deleted chunk {chunk_id}."})
     except Exception as exc:
-        import traceback
-        traceback.print_exc()
         return jsonify({"error": str(exc)}), 500
 
 # -----------------------------

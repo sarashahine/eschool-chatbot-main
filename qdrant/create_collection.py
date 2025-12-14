@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
-JSON_PATH = r"C:\Users\ADMIN\Documents\GitHub\eschool-chatbot-main\text_to_embed.json"               # path to your JSON file
+JSON_PATH = r"C:\Users\Lenovo\Downloads\project\eschool-chatbot-main\text_to_embed.json"               # path to your JSON file
 COLLECTION_NAME = "docs_api"               # Qdrant collection name
 BATCH_SIZE = 1                            # batch size for upsert
 QDRANT_HTTP = "http://localhost:6333"       # HTTP control URL
