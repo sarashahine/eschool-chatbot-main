@@ -433,6 +433,15 @@
         // ];
         // ---------------------------------------
         let chatHistory = [];
+        let unrelatedStreak = 0;
+        let isBlocked = false;
+
+        function setInputDisabled(disabled) {
+            const queryInput = document.getElementById('query');
+            const sendBtn = document.getElementById('sendBtn');
+            queryInput.disabled = disabled;
+            sendBtn.disabled = disabled;
+        }
 
         function handleKeyPress(event) {
             if (event.key === 'Enter' && !event.shiftKey) {
@@ -470,9 +479,12 @@
         function clearHistory() {
             if (confirm('Are you sure you want to clear the conversation history?')) {
                 chatHistory = [];
+                unrelatedStreak = 0;
+                isBlocked = false;
                 const chatContainer = document.getElementById('chatContainer');
                 chatContainer.innerHTML = '<div class="empty-state">Start a conversation by asking a question below...</div>';
                 updateClearButton();
+                setInputDisabled(false);
                 console.log("History cleared");
             }
         }
@@ -487,11 +499,10 @@
             const sendBtn = document.getElementById('sendBtn');
             const query = queryInput.value.trim();
 
-            if (!query) return;
+            if (!query || isBlocked) return;
 
             // Disable input and button while processing
-            queryInput.disabled = true;
-            sendBtn.disabled = true;
+            setInputDisabled(true);
 
             // Clear input field
             queryInput.value = '';
@@ -523,7 +534,8 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         query: query,
-                        history: historyForBackend  // Send history to backend
+                        history: historyForBackend,  // Send history to backend
+                        unrelated_streak: unrelatedStreak
                     })
                 });
 
@@ -541,6 +553,8 @@
 
                 const data = await response.json();
                 const answer = data.answer || "No answer returned.";
+                unrelatedStreak = typeof data.unrelated_streak === 'number' ? data.unrelated_streak : unrelatedStreak;
+                isBlocked = Boolean(data.blocked);
 
                 // Add assistant response to UI
                 addMessageToUI('assistant', answer);
@@ -571,10 +585,10 @@
                 
                 addMessageToUI('assistant', "⚠️ Network or server error. Please try again.");
             } finally {
-                // Re-enable input and button
-                queryInput.disabled = false;
-                sendBtn.disabled = false;
-                queryInput.focus();
+                setInputDisabled(isBlocked);
+                if (!isBlocked) {
+                    queryInput.focus();
+                }
             }
         }
 

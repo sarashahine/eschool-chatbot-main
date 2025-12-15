@@ -171,7 +171,7 @@ def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"
 
     try:
         messages=[{"role": "system", "content": PREPROCESS_PROMPT_BASE}, *messages]
-        response = ollama_client.chat(model=MODEL_NAME, messages=messages)
+        response = ollama_client.chat(model=MODEL_NAME, messages=messages, format='json')
         llm_output = response.message.content
         print("Raw llm_output:", repr(llm_output))
 
@@ -181,7 +181,7 @@ def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"
         category = result.get("category")
         answer = result.get("answer", "")
 
-        requires_retrieval = category
+        requires_retrieval = (category == "related")
         print("requires_retrieval: ", requires_retrieval)
 
         retrieval_query = user_query if requires_retrieval else None

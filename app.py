@@ -88,7 +88,6 @@ except Exception:
 def retrieve(query: str, top_k: int = TOP_K):
     print("Retrieving for query:", query)
     query_vector = model.encode([query], convert_to_tensor=False)[0].tolist()
-    print("Query vector shape/first 5 elements:", query_vector[:5])
 
     results = qdrant_client.query_points(
         collection_name=COLLECTION_NAME,
@@ -113,25 +112,18 @@ def retrieve(query: str, top_k: int = TOP_K):
     
     with open('retrieved_items.json', 'w', encoding='utf-8') as f:
         json.dump(retrieved_items, f, indent=4, ensure_ascii=False)
-    print("JSON saved to 'retrieved_items.json' in a readable format.")
 
     return retrieved_items
 
 
 
-def safe_json_load(llm_output: str, user_query):
-    cleaned = re.sub(r"^```json\s*|```$", "", llm_output.strip(), flags=re.IGNORECASE)
+def safe_json_load(response: str):
+    cleaned = re.sub(r"```json|```", "", response).strip()
     try:
-        data = json.loads(cleaned)
-        if "category" not in data or "answer" not in data:
-            raise ValueError("Missing expected keys")
-        return data
-    except Exception:
-        print("Failed to parse JSON. Cleaned output:", repr(cleaned))
-        return {
-            "category": "retrieval",
-            "answer": ""
-        }
+        return json.loads(cleaned)
+    except json.JSONDecodeError:
+        print("No answer")
+        return None
     
 def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"):
     messages = []
@@ -149,17 +141,28 @@ def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"
 
     try:
         messages=[{"role": "system", "content": PREPROCESS_PROMPT_BASE}, *messages]
-        response = ollama_client.chat(model=MODEL_NAME, messages=messages)
+        response = ollama_client.chat(model=MODEL_NAME, messages=messages, format={"type": "object",
+                                                                                   "properties": {"category": {
+                                                                                                    "type": "string",
+                                                                                                    "enum": ["related", "unrelated"]},
+                                                                                                "answer": { "type": "string"},
+                                                                                                "confidence": {
+                                                                                                    "type": "number",
+                                                                                                    "minimum": 0.0,
+                                                                                                    "maximum": 1.0}},
+                                                                                    "required": ["category", "answer", "confidence"]})
+        
         llm_output = response.message.content
         print("Raw llm_output:", repr(llm_output))
 
-        result = safe_json_load(llm_output, user_query)
+        result = safe_json_load(llm_output)
         
         print("result: ", result)
-        category = result.get("category")
+        category = result.get("category", "related")
         answer = result.get("answer", "")
+        confidence = result.get("confidence")
 
-        requires_retrieval = (category == "retrieval")
+        requires_retrieval = category == "related"
         print("requires_retrieval: ", requires_retrieval)
 
         retrieval_query = user_query if requires_retrieval else None
@@ -188,7 +191,9 @@ def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"
         return {
             "requires_retrieval": requires_retrieval,
             "direct_answer": answer if not requires_retrieval else None,
-            "retrieval_query": retrieval_query
+            "retrieval_query": retrieval_query,
+            "category": category,
+            "confidence": confidence
         }
     except Exception as e:
         print("Error in pre_process_query:", e)
@@ -196,7 +201,9 @@ def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"
         return {
             "requires_retrieval": True,
             "direct_answer": None,
-            "retrieval_query": user_query
+            "retrieval_query": user_query,
+            "category": "related",
+            "confidence": None
         }
 
 
@@ -253,7 +260,6 @@ def log_llm_interaction(llm_prompt_text, llm_answer, history=None, log_file="llm
         f.write("LLM Answer:\n")
         f.write(llm_answer + "\n")
         f.write(separator)
-    # print(f"Interaction logged to '{log_file}'")
 
 
 def generate_with_deepseek(system_prompt: str, user_prompt: str, history_turns: list):
@@ -265,7 +271,8 @@ def generate_with_deepseek(system_prompt: str, user_prompt: str, history_turns: 
 
     try:
         response = ollama_client.chat(model=MODEL_NAME, messages=messages)
-        answer = response.message.content
+        content_json = json.loads(response.message.content)
+        answer_text = content_json.get("answer", "No 'answer' key found in response.")
     except Exception as e:
         print("Error during LLM call:", e)
         raise e
@@ -273,9 +280,9 @@ def generate_with_deepseek(system_prompt: str, user_prompt: str, history_turns: 
     print("answer generated")
 
     full_prompt_text = "\n".join([f"{msg['role']}: {msg['content']}" for msg in messages])
-    log_llm_interaction(llm_prompt_text=full_prompt_text, llm_answer=answer, history=history_turns)
+    log_llm_interaction(llm_prompt_text=full_prompt_text, llm_answer=answer_text, history=history_turns)
     
-    return answer
+    return answer_text
 
     
 # -----------------------------
@@ -291,6 +298,7 @@ def query():
         data = request.json
         user_query = data.get("query", "")
         history = data.get("history", [])
+        unrelated_streak = int(data.get("unrelated_streak", 0) or 0)
 
         if not user_query:
             return jsonify({"error": "No query provided"}), 400
@@ -300,18 +308,44 @@ def query():
         requires_retrieval = decision["requires_retrieval"]
         direct_answer = decision["direct_answer"]
         retrieval_query = decision["retrieval_query"]
+        category = decision.get("category", "related")
+
+        # track consecutive unrelated queries
+        is_unrelated = category == "unrelated"
+        unrelated_streak = unrelated_streak + 1 if is_unrelated else 0
+        BLOCK_THRESHOLD = 2000
+        BLOCK_MESSAGE = "For more info visit our website https://web.myeschoolhome.com/"
+
+        # If user crosses the threshold, block further input and return message without costly retrieval
+        if unrelated_streak >= BLOCK_THRESHOLD:
+            history.append({
+                "question": user_query,
+                "answer": BLOCK_MESSAGE,
+                "category": category
+            })
+            return jsonify({
+                "answer": BLOCK_MESSAGE,
+                "history": history,
+                "blocked": True,
+                "unrelated_streak": unrelated_streak,
+                "category": category
+            })
 
         if not requires_retrieval:
             answer = direct_answer
 
             history.append({
                 "question": user_query,
-                "answer": answer
+                "answer": answer,
+                "category": category
             })
 
             return jsonify({
                 "answer": answer,
-                "history": history ### delete this later
+                "history": history,
+                "blocked": False,
+                "unrelated_streak": unrelated_streak,
+                "category": category
             })
 
 
@@ -346,17 +380,20 @@ def query():
     Answer:
     """
         
-        print("Preparing to call generate_with_deepseek...")
         answer = generate_with_deepseek(system_prompt, user_prompt, history_entries)
         print("LLM call succeeded, answer length:", len(answer))
         history.append({
             "question": user_query,
-            "answer": answer
+            "answer": answer,
+            "category": category
         })
 
         return jsonify({
             "answer": answer,
-            "history": history
+            "history": history,
+            "blocked": False,
+            "unrelated_streak": unrelated_streak,
+            "category": category
         })
 
     except Exception as e:

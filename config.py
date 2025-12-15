@@ -1,6 +1,4 @@
 import os
-from ollama import Client
-from qdrant_client import QdrantClient
 
 COLLECTION_NAME = "docs"
 QDRANT_HTTP = "http://localhost:6333"
@@ -10,3 +8,5 @@ OLLAMA_KEY = os.getenv("OLLAMA_API_KEY")
 MODEL_NAME = "deepseek-v3.1:671b"
 VECTOR_SIZE = 768
 TOKEN_LIMIT = 128000
+BLOCK_THRESHOLD = 2000
+BLOCK_MESSAGE = "For more info visit our website https://web.myeschoolhome.com/"

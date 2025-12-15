@@ -2,7 +2,7 @@ Messages sent:
 [
   {
     "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
   },
   {
     "role": "user",
@@ -10,14 +10,15 @@ Messages sent:
   }
 ]
 LLM Output:
-"{\"category\":\"unrelated\",\"answer\":\"Hello! How can I help you with eSchool today?\"}"
+"{\n  \"category\": \"unrelated\",\n  \"answer\": \"Hello! I'm here to help with questions about the school management system website.\",\n  \"confidence\": 1.0\n}"
 Cleaned LLM Output:
 {
   "category": "unrelated",
-  "answer": "Hello! How can I help you with eSchool today?"
+  "answer": "Hello! I'm here to help with questions about the school management system website.",
+  "confidence": 1.0
 }
-Requires retrieval: "unrelated"
-Retrieval query: "hi"
+Requires retrieval: false
+Retrieval query: null
 
 
 
@@ -29,7 +30,7 @@ Messages sent:
 [
   {
     "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
   },
   {
     "role": "user",
@@ -37,65 +38,23 @@ Messages sent:
   },
   {
     "role": "assistant",
-    "content": "Hello! How can I help you today?"
+    "content": "Hello! I'm here to help with questions about the school management system website."
   },
   {
     "role": "user",
-    "content": "what is eschool"
+    "content": "what products do you offer"
   }
 ]
 LLM Output:
-"Hello! I am an AI assistant for eSchool, a complete school-management system that handles everything from enrollment and attendance to grades, lessons, exams, and communications for students, parents, teachers, and administrators."
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "answer": ""
-}
-Requires retrieval: "retrieval"
-Retrieval query: "what is eschool"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
-  },
-  {
-    "role": "user",
-    "content": "hi"
-  },
-  {
-    "role": "assistant",
-    "content": "Hello! How can I help you today?"
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
-  },
-  {
-    "role": "user",
-    "content": "who uses it"
-  }
-]
-LLM Output:
-"{\"category\":\"related\",\"answer\":\"who uses eSchool\"}"
+"{\n  \"category\": \"related\",\n  \"answer\": \"\",\n  \"confidence\": 0.9\n}"
 Cleaned LLM Output:
 {
   "category": "related",
-  "answer": "who uses eSchool"
+  "answer": "",
+  "confidence": 0.9
 }
-Requires retrieval: "related"
-Retrieval query: "who uses it"
+Requires retrieval: true
+Retrieval query: "what products do you offer"
 
 
 
@@ -107,7 +66,7 @@ Messages sent:
 [
   {
     "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
   },
   {
     "role": "user",
@@ -115,23 +74,67 @@ Messages sent:
   },
   {
     "role": "assistant",
-    "content": "Hello! How can I help you today?"
+    "content": "Hello! I'm here to help with questions about the school management system website."
   },
   {
     "role": "user",
-    "content": "what is eschool"
+    "content": "what products do you offer"
   },
   {
     "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
   },
   {
     "role": "user",
-    "content": "who uses it"
+    "content": "who benefits from your service"
+  }
+]
+LLM Output:
+"{\n  \"category\": \"related\",\n  \"answer\": \"\",\n  \"confidence\": 0.9\n}"
+Cleaned LLM Output:
+{
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+Requires retrieval: true
+Retrieval query: "who benefits from your service"
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
+  },
+  {
+    "role": "user",
+    "content": "hi"
   },
   {
     "role": "assistant",
-    "content": "eSchool is used by students, parents, teachers, and administrators. Students use it to access lessons, exams, and school updates. Parents use it to monitor their child's grades, attendance, and school notifications in real time. Teachers use it for lesson planning, grading, and tracking student performance. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
+    "content": "Hello! I'm here to help with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "what products do you offer"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
+  },
+  {
+    "role": "user",
+    "content": "who benefits from your service"
+  },
+  {
+    "role": "assistant",
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
   },
   {
     "role": "user",
@@ -139,13 +142,14 @@ Messages sent:
   }
 ]
 LLM Output:
-"{\"category\":\"related\",\"answer\":\"What are the uses of eSchool by students, parents, teachers, and administrators?\"}"
+"{\n  \"category\": \"related\",\n  \"answer\": \"\",\n  \"confidence\": 1.0\n}"
 Cleaned LLM Output:
 {
   "category": "related",
-  "answer": "What are the uses of eSchool by students, parents, teachers, and administrators?"
+  "answer": "",
+  "confidence": 1.0
 }
-Requires retrieval: "related"
+Requires retrieval: true
 Retrieval query: "write the previous answer as a numbered list"
 
 
@@ -158,7 +162,7 @@ Messages sent:
 [
   {
     "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
   },
   {
     "role": "user",
@@ -166,23 +170,23 @@ Messages sent:
   },
   {
     "role": "assistant",
-    "content": "Hello! How can I help you today?"
+    "content": "Hello! I'm here to help with questions about the school management system website."
   },
   {
     "role": "user",
-    "content": "what is eschool"
+    "content": "what products do you offer"
   },
   {
     "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
   },
   {
     "role": "user",
-    "content": "who uses it"
+    "content": "who benefits from your service"
   },
   {
     "role": "assistant",
-    "content": "eSchool is used by students, parents, teachers, and administrators. Students use it to access lessons, exams, and school updates. Parents use it to monitor their child's grades, attendance, and school notifications in real time. Teachers use it for lesson planning, grading, and tracking student performance. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
   },
   {
     "role": "user",
@@ -190,81 +194,31 @@ Messages sent:
   },
   {
     "role": "assistant",
-    "content": "1. Students use it to access lessons, exams, and school updates.\n2. Parents use it to monitor their child's grades, attendance, and school notifications in real time.\n3. Teachers use it for lesson planning, grading, and tracking student performance.\n4. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
+    "content": "I don't have enough information to answer this based on the available data."
   },
   {
     "role": "user",
-    "content": "why"
+    "content": "list the products again"
+  },
+  {
+    "role": "assistant",
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second one"
   }
 ]
 LLM Output:
-"{\"category\":\"unrelated\",\"answer\":\"Could you please clarify your question? For example, are you asking why the system is used by those groups, or are you asking about something else?\"}"
-Cleaned LLM Output:
-{
-  "category": "unrelated",
-  "answer": "Could you please clarify your question? For example, are you asking why the system is used by those groups, or are you asking about something else?"
-}
-Requires retrieval: "unrelated"
-Retrieval query: "why"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
-  },
-  {
-    "role": "user",
-    "content": "hi"
-  },
-  {
-    "role": "assistant",
-    "content": "Hello! How can I help you today?"
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
-  },
-  {
-    "role": "user",
-    "content": "who uses it"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is used by students, parents, teachers, and administrators. Students use it to access lessons, exams, and school updates. Parents use it to monitor their child's grades, attendance, and school notifications in real time. Teachers use it for lesson planning, grading, and tracking student performance. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "write the previous answer as a numbered list"
-  },
-  {
-    "role": "assistant",
-    "content": "1. Students use it to access lessons, exams, and school updates.\n2. Parents use it to monitor their child's grades, attendance, and school notifications in real time.\n3. Teachers use it for lesson planning, grading, and tracking student performance.\n4. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "who"
-  }
-]
-LLM Output:
-"{\"category\":\"related\",\"answer\":\"Who uses eSchool?\"}"
+"{\n  \"category\": \"related\",\n  \"answer\": \"\",\n  \"confidence\": 1.0\n}"
 Cleaned LLM Output:
 {
   "category": "related",
-  "answer": "Who uses eSchool?"
+  "answer": "",
+  "confidence": 1.0
 }
-Requires retrieval: "related"
-Retrieval query: "who"
+Requires retrieval: true
+Retrieval query: "tell me more about the second one"
 
 
 
@@ -276,7 +230,7 @@ Messages sent:
 [
   {
     "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
   },
   {
     "role": "user",
@@ -284,23 +238,23 @@ Messages sent:
   },
   {
     "role": "assistant",
-    "content": "Hello! How can I help you today?"
+    "content": "Hello! I'm here to help with questions about the school management system website."
   },
   {
     "role": "user",
-    "content": "what is eschool"
+    "content": "what products do you offer"
   },
   {
     "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
   },
   {
     "role": "user",
-    "content": "who uses it"
+    "content": "who benefits from your service"
   },
   {
     "role": "assistant",
-    "content": "eSchool is used by students, parents, teachers, and administrators. Students use it to access lessons, exams, and school updates. Parents use it to monitor their child's grades, attendance, and school notifications in real time. Teachers use it for lesson planning, grading, and tracking student performance. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
   },
   {
     "role": "user",
@@ -308,30 +262,47 @@ Messages sent:
   },
   {
     "role": "assistant",
-    "content": "1. Students use it to access lessons, exams, and school updates.\n2. Parents use it to monitor their child's grades, attendance, and school notifications in real time.\n3. Teachers use it for lesson planning, grading, and tracking student performance.\n4. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
+    "content": "I don't have enough information to answer this based on the available data."
   },
   {
     "role": "user",
-    "content": "who"
+    "content": "list the products again"
   },
   {
     "role": "assistant",
-    "content": "Students, parents, teachers, and administrators use eSchool."
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
   },
   {
     "role": "user",
-    "content": "why"
+    "content": "tell me more about the second one"
+  },
+  {
+    "role": "assistant",
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
+  },
+  {
+    "role": "user",
+    "content": "seventh one"
+  },
+  {
+    "role": "assistant",
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
+  },
+  {
+    "role": "user",
+    "content": "what other products you still didnt tell me about"
   }
 ]
 LLM Output:
-"{\"category\":\"related\",\"answer\":\"Why do students, parents, teachers, and administrators use eSchool?\"}"
+"{\n  \"category\": \"related\",\n  \"answer\": \"\",\n  \"confidence\": 1.0\n}"
 Cleaned LLM Output:
 {
   "category": "related",
-  "answer": "Why do students, parents, teachers, and administrators use eSchool?"
+  "answer": "",
+  "confidence": 1.0
 }
-Requires retrieval: "related"
-Retrieval query: "why"
+Requires retrieval: true
+Retrieval query: "what other products you still didnt tell me about"
 
 
 
@@ -343,7 +314,7 @@ Messages sent:
 [
   {
     "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
   },
   {
     "role": "user",
@@ -351,23 +322,23 @@ Messages sent:
   },
   {
     "role": "assistant",
-    "content": "Hello! How can I help you today?"
+    "content": "Hello! I'm here to help with questions about the school management system website."
   },
   {
     "role": "user",
-    "content": "what is eschool"
+    "content": "what products do you offer"
   },
   {
     "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
   },
   {
     "role": "user",
-    "content": "who uses it"
+    "content": "who benefits from your service"
   },
   {
     "role": "assistant",
-    "content": "eSchool is used by students, parents, teachers, and administrators. Students use it to access lessons, exams, and school updates. Parents use it to monitor their child's grades, attendance, and school notifications in real time. Teachers use it for lesson planning, grading, and tracking student performance. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
   },
   {
     "role": "user",
@@ -375,518 +346,39 @@ Messages sent:
   },
   {
     "role": "assistant",
-    "content": "1. Students use it to access lessons, exams, and school updates.\n2. Parents use it to monitor their child's grades, attendance, and school notifications in real time.\n3. Teachers use it for lesson planning, grading, and tracking student performance.\n4. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
+    "content": "I don't have enough information to answer this based on the available data."
   },
   {
     "role": "user",
-    "content": "who"
+    "content": "list the products again"
   },
   {
     "role": "assistant",
-    "content": "Students, parents, teachers, and administrators use eSchool."
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
   },
   {
     "role": "user",
-    "content": "why"
+    "content": "tell me more about the second one"
   },
   {
     "role": "assistant",
-    "content": "eSchool streamlines school reporting, offers 24/7 expert support, provides a seamless user experience, ensures robust data protection, enables quality monitoring, delivers comprehensive digital services, is eco-friendly and cost-effective, and empowers educators with powerful tools for teaching and student management."
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
   },
   {
     "role": "user",
-    "content": "1+1"
-  }
-]
-LLM Output:
-"{\"category\":\"unrelated\",\"answer\":\"That’s a math question, not related to managing school information in eSchool.\"}"
-Cleaned LLM Output:
-{
-  "category": "unrelated",
-  "answer": "That’s a math question, not related to managing school information in eSchool."
-}
-Requires retrieval: "unrelated"
-Retrieval query: "1+1"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
-  },
-  {
-    "role": "user",
-    "content": "hi"
+    "content": "seventh one"
   },
   {
     "role": "assistant",
-    "content": "Hello! How can I help you today?"
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
   },
   {
     "role": "user",
-    "content": "what is eschool"
+    "content": "what other products you still didnt tell me about"
   },
   {
     "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
-  },
-  {
-    "role": "user",
-    "content": "who uses it"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is used by students, parents, teachers, and administrators. Students use it to access lessons, exams, and school updates. Parents use it to monitor their child's grades, attendance, and school notifications in real time. Teachers use it for lesson planning, grading, and tracking student performance. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "write the previous answer as a numbered list"
-  },
-  {
-    "role": "assistant",
-    "content": "1. Students use it to access lessons, exams, and school updates.\n2. Parents use it to monitor their child's grades, attendance, and school notifications in real time.\n3. Teachers use it for lesson planning, grading, and tracking student performance.\n4. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "who"
-  },
-  {
-    "role": "assistant",
-    "content": "Students, parents, teachers, and administrators use eSchool."
-  },
-  {
-    "role": "user",
-    "content": "why"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool streamlines school reporting, offers 24/7 expert support, provides a seamless user experience, ensures robust data protection, enables quality monitoring, delivers comprehensive digital services, is eco-friendly and cost-effective, and empowers educators with powerful tools for teaching and student management."
-  },
-  {
-    "role": "user",
-    "content": "1+1"
-  },
-  {
-    "role": "assistant",
-    "content": "I don't have enough information to answer."
-  },
-  {
-    "role": "user",
-    "content": "who is elon musk"
-  }
-]
-LLM Output:
-"{\"category\":\"unrelated\",\"answer\":\"I can only answer questions related to eSchool, the AI-powered school management system.\"}"
-Cleaned LLM Output:
-{
-  "category": "unrelated",
-  "answer": "I can only answer questions related to eSchool, the AI-powered school management system."
-}
-Requires retrieval: "unrelated"
-Retrieval query: "who is elon musk"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
-  },
-  {
-    "role": "user",
-    "content": "hi"
-  },
-  {
-    "role": "assistant",
-    "content": "Hello! How can I help you today?"
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
-  },
-  {
-    "role": "user",
-    "content": "who uses it"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is used by students, parents, teachers, and administrators. Students use it to access lessons, exams, and school updates. Parents use it to monitor their child's grades, attendance, and school notifications in real time. Teachers use it for lesson planning, grading, and tracking student performance. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "write the previous answer as a numbered list"
-  },
-  {
-    "role": "assistant",
-    "content": "1. Students use it to access lessons, exams, and school updates.\n2. Parents use it to monitor their child's grades, attendance, and school notifications in real time.\n3. Teachers use it for lesson planning, grading, and tracking student performance.\n4. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "who"
-  },
-  {
-    "role": "assistant",
-    "content": "Students, parents, teachers, and administrators use eSchool."
-  },
-  {
-    "role": "user",
-    "content": "why"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool streamlines school reporting, offers 24/7 expert support, provides a seamless user experience, ensures robust data protection, enables quality monitoring, delivers comprehensive digital services, is eco-friendly and cost-effective, and empowers educators with powerful tools for teaching and student management."
-  },
-  {
-    "role": "user",
-    "content": "1+1"
-  },
-  {
-    "role": "assistant",
-    "content": "I don't have enough information to answer."
-  },
-  {
-    "role": "user",
-    "content": "who is elon musk"
-  },
-  {
-    "role": "assistant",
-    "content": "The information about Elon Musk is not available."
-  },
-  {
-    "role": "user",
-    "content": "okay"
-  }
-]
-LLM Output:
-"{\"category\":\"unrelated\",\"answer\":\"You're welcome! Let me know if you have any questions about eSchool.\"}"
-Cleaned LLM Output:
-{
-  "category": "unrelated",
-  "answer": "You're welcome! Let me know if you have any questions about eSchool."
-}
-Requires retrieval: "unrelated"
-Retrieval query: "okay"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
-  },
-  {
-    "role": "user",
-    "content": "hi"
-  },
-  {
-    "role": "assistant",
-    "content": "Hello! How can I help you today?"
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
-  },
-  {
-    "role": "user",
-    "content": "who uses it"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is used by students, parents, teachers, and administrators. Students use it to access lessons, exams, and school updates. Parents use it to monitor their child's grades, attendance, and school notifications in real time. Teachers use it for lesson planning, grading, and tracking student performance. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "write the previous answer as a numbered list"
-  },
-  {
-    "role": "assistant",
-    "content": "1. Students use it to access lessons, exams, and school updates.\n2. Parents use it to monitor their child's grades, attendance, and school notifications in real time.\n3. Teachers use it for lesson planning, grading, and tracking student performance.\n4. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "who"
-  },
-  {
-    "role": "assistant",
-    "content": "Students, parents, teachers, and administrators use eSchool."
-  },
-  {
-    "role": "user",
-    "content": "why"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool streamlines school reporting, offers 24/7 expert support, provides a seamless user experience, ensures robust data protection, enables quality monitoring, delivers comprehensive digital services, is eco-friendly and cost-effective, and empowers educators with powerful tools for teaching and student management."
-  },
-  {
-    "role": "user",
-    "content": "1+1"
-  },
-  {
-    "role": "assistant",
-    "content": "I don't have enough information to answer."
-  },
-  {
-    "role": "user",
-    "content": "who is elon musk"
-  },
-  {
-    "role": "assistant",
-    "content": "The information about Elon Musk is not available."
-  },
-  {
-    "role": "user",
-    "content": "okay"
-  },
-  {
-    "role": "assistant",
-    "content": "Okay."
-  },
-  {
-    "role": "user",
-    "content": "no"
-  }
-]
-LLM Output:
-"{\"category\":\"unrelated\",\"answer\":\"I'm not sure I understand. Could you please clarify?\"}"
-Cleaned LLM Output:
-{
-  "category": "unrelated",
-  "answer": "I'm not sure I understand. Could you please clarify?"
-}
-Requires retrieval: "unrelated"
-Retrieval query: "no"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
-  },
-  {
-    "role": "user",
-    "content": "hi"
-  },
-  {
-    "role": "assistant",
-    "content": "Hello! How can I help you today?"
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
-  },
-  {
-    "role": "user",
-    "content": "who uses it"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is used by students, parents, teachers, and administrators. Students use it to access lessons, exams, and school updates. Parents use it to monitor their child's grades, attendance, and school notifications in real time. Teachers use it for lesson planning, grading, and tracking student performance. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "write the previous answer as a numbered list"
-  },
-  {
-    "role": "assistant",
-    "content": "1. Students use it to access lessons, exams, and school updates.\n2. Parents use it to monitor their child's grades, attendance, and school notifications in real time.\n3. Teachers use it for lesson planning, grading, and tracking student performance.\n4. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "who"
-  },
-  {
-    "role": "assistant",
-    "content": "Students, parents, teachers, and administrators use eSchool."
-  },
-  {
-    "role": "user",
-    "content": "why"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool streamlines school reporting, offers 24/7 expert support, provides a seamless user experience, ensures robust data protection, enables quality monitoring, delivers comprehensive digital services, is eco-friendly and cost-effective, and empowers educators with powerful tools for teaching and student management."
-  },
-  {
-    "role": "user",
-    "content": "1+1"
-  },
-  {
-    "role": "assistant",
-    "content": "I don't have enough information to answer."
-  },
-  {
-    "role": "user",
-    "content": "who is elon musk"
-  },
-  {
-    "role": "assistant",
-    "content": "The information about Elon Musk is not available."
-  },
-  {
-    "role": "user",
-    "content": "okay"
-  },
-  {
-    "role": "assistant",
-    "content": "Okay."
-  },
-  {
-    "role": "user",
-    "content": "no"
-  },
-  {
-    "role": "assistant",
-    "content": "I'm not sure what you're asking. Could you please clarify your question?"
-  },
-  {
-    "role": "user",
-    "content": "location"
-  }
-]
-LLM Output:
-"It appears you are asking about a location. Could you provide more context or details so I may assist you better?"
-Cleaned LLM Output:
-{
-  "category": "retrieval",
-  "answer": ""
-}
-Requires retrieval: "retrieval"
-Retrieval query: "location"
-
-
-
-====================================================================================================
-
-
-
-Messages sent:
-[
-  {
-    "role": "system",
-    "content": "You are an assistant for eSchool, an AI-powered school-management system.\n\neSchool covers all school-related applications and features for students, parents, teachers, and administrators, including enrollment, attendance, grades, communication, lessons, exams, and school updates.\n\nYou are the DECISION-MAKING STEP in a Retrieval-Augmented Generation (RAG) chatbot.\nYour ONLY job is to decide whether the user's message requires retrieval from eSchool’s knowledge base or can be answered directly without retrieval.\n\nTASK:\n- Decide whether user query is related to eSchool and requires retrieval.\n- Produce exactly one category and one answer value.\n\nINPUTS:\n- user_query (string)\n- conversation_history (string)\n\nThe conversation history starts AFTER this system prompt.\n\nOUTPUT FORMAT (ONE LINE ONLY):\n{\"category\":\"\",\"answer\":\"\"}\n\nCATEGORIES (choose only one):\n\n1. \"unrelated\":\nUse this category if:\n- The message is a greeting, thanks, or polite small talk.\n- The message is NOT related to eSchool or school management.\nFor this category:\n- \"answer\" MUST be a short, direct reply to the user.\n\n2. \"related\":\nUse this category if:\n- The message is about eSchool.\nFor this category:\n- If the user_query is already clear and self-contained:\n  - \"answer\" = user_query EXACTLY as written.\n- If the user_query depends on conversation_history (pronouns, references, follow-ups like “that”, “it”, “the previous one”):\n  - Use conversation_history ONLY to resolve meaning.\n  - Reformulate the query into a clear, standalone sentence suitable for retrieval.\n  - \"answer\" = reformulated query ONLY.\n\nIMPORTANT:\n- Do NOT answer the question.\n- Do NOT add explanations.\n- Do NOT invent missing details.\n- Reformulation must preserve the user’s original intent exactly.\n\nRULES:\n- Output EXACTLY one line of pure JSON.\n- Keys must be EXACTLY: category, answer and Values must be strings.\n- NEVER assume facts not present in user_query or conversation_history."
-  },
-  {
-    "role": "user",
-    "content": "hi"
-  },
-  {
-    "role": "assistant",
-    "content": "Hello! How can I help you today?"
-  },
-  {
-    "role": "user",
-    "content": "what is eschool"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools, including tools for attendance tracking, grade reporting, financial management, and communication. The platform serves as a preferred choice for educational institutions worldwide, empowering them with a user-friendly system for administration and digital classrooms."
-  },
-  {
-    "role": "user",
-    "content": "who uses it"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool is used by students, parents, teachers, and administrators. Students use it to access lessons, exams, and school updates. Parents use it to monitor their child's grades, attendance, and school notifications in real time. Teachers use it for lesson planning, grading, and tracking student performance. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "write the previous answer as a numbered list"
-  },
-  {
-    "role": "assistant",
-    "content": "1. Students use it to access lessons, exams, and school updates.\n2. Parents use it to monitor their child's grades, attendance, and school notifications in real time.\n3. Teachers use it for lesson planning, grading, and tracking student performance.\n4. Administrators use it to manage academic, financial, and operational tasks across the entire school from a centralized dashboard."
-  },
-  {
-    "role": "user",
-    "content": "who"
-  },
-  {
-    "role": "assistant",
-    "content": "Students, parents, teachers, and administrators use eSchool."
-  },
-  {
-    "role": "user",
-    "content": "why"
-  },
-  {
-    "role": "assistant",
-    "content": "eSchool streamlines school reporting, offers 24/7 expert support, provides a seamless user experience, ensures robust data protection, enables quality monitoring, delivers comprehensive digital services, is eco-friendly and cost-effective, and empowers educators with powerful tools for teaching and student management."
-  },
-  {
-    "role": "user",
-    "content": "1+1"
-  },
-  {
-    "role": "assistant",
-    "content": "I don't have enough information to answer."
-  },
-  {
-    "role": "user",
-    "content": "who is elon musk"
-  },
-  {
-    "role": "assistant",
-    "content": "The information about Elon Musk is not available."
-  },
-  {
-    "role": "user",
-    "content": "okay"
-  },
-  {
-    "role": "assistant",
-    "content": "Okay."
-  },
-  {
-    "role": "user",
-    "content": "no"
-  },
-  {
-    "role": "assistant",
-    "content": "I'm not sure what you're asking. Could you please clarify your question?"
-  },
-  {
-    "role": "user",
-    "content": "location"
-  },
-  {
-    "role": "assistant",
-    "content": "Hamra - Sanayeh, Beirut, Lebanon, BAC Center building, Third floor."
+    "content": "Based on the available information, all the eSchool products have been mentioned. The complete list includes: eSchool Content, eSchool Room, eSchool Exams, eSchool Administrator, eSchool Gradebook, eSchool Agenda, eSchool Safety, and eSchool Connect."
   },
   {
     "role": "user",
@@ -894,14 +386,1203 @@ Messages sent:
   }
 ]
 LLM Output:
-"Glad to help!"
+"{\n  \"category\": \"unrelated\",\n  \"answer\": \"Thank you! Is there anything else I can help you with regarding the school management system?\",\n  \"confidence\": 0.9\n}"
 Cleaned LLM Output:
 {
-  "category": "retrieval",
-  "answer": ""
+  "category": "unrelated",
+  "answer": "Thank you! Is there anything else I can help you with regarding the school management system?",
+  "confidence": 0.9
 }
-Requires retrieval: "retrieval"
-Retrieval query: "good"
+Requires retrieval: false
+Retrieval query: null
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! I'm here to help with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "what products do you offer"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
+  },
+  {
+    "role": "user",
+    "content": "who benefits from your service"
+  },
+  {
+    "role": "assistant",
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
+  },
+  {
+    "role": "user",
+    "content": "write the previous answer as a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "I don't have enough information to answer this based on the available data."
+  },
+  {
+    "role": "user",
+    "content": "list the products again"
+  },
+  {
+    "role": "assistant",
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second one"
+  },
+  {
+    "role": "assistant",
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
+  },
+  {
+    "role": "user",
+    "content": "seventh one"
+  },
+  {
+    "role": "assistant",
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
+  },
+  {
+    "role": "user",
+    "content": "what other products you still didnt tell me about"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the available information, all the eSchool products have been mentioned. The complete list includes: eSchool Content, eSchool Room, eSchool Exams, eSchool Administrator, eSchool Gradebook, eSchool Agenda, eSchool Safety, and eSchool Connect."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "Thank you! Is there anything else I can help you with regarding the school management system?"
+  },
+  {
+    "role": "user",
+    "content": "who is elon musk"
+  }
+]
+LLM Output:
+"{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}"
+Cleaned LLM Output:
+{
+  "category": "unrelated",
+  "answer": "I’m sorry, I can only assist with questions about the school management system website.",
+  "confidence": 1.0
+}
+Requires retrieval: false
+Retrieval query: null
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! I'm here to help with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "what products do you offer"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
+  },
+  {
+    "role": "user",
+    "content": "who benefits from your service"
+  },
+  {
+    "role": "assistant",
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
+  },
+  {
+    "role": "user",
+    "content": "write the previous answer as a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "I don't have enough information to answer this based on the available data."
+  },
+  {
+    "role": "user",
+    "content": "list the products again"
+  },
+  {
+    "role": "assistant",
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second one"
+  },
+  {
+    "role": "assistant",
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
+  },
+  {
+    "role": "user",
+    "content": "seventh one"
+  },
+  {
+    "role": "assistant",
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
+  },
+  {
+    "role": "user",
+    "content": "what other products you still didnt tell me about"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the available information, all the eSchool products have been mentioned. The complete list includes: eSchool Content, eSchool Room, eSchool Exams, eSchool Administrator, eSchool Gradebook, eSchool Agenda, eSchool Safety, and eSchool Connect."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "Thank you! Is there anything else I can help you with regarding the school management system?"
+  },
+  {
+    "role": "user",
+    "content": "who is elon musk"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "okay"
+  }
+]
+LLM Output:
+"{\n  \"category\": \"unrelated\",\n  \"answer\": \"I'm here to help with any questions about the school management system.\",\n  \"confidence\": 0.9\n}"
+Cleaned LLM Output:
+{
+  "category": "unrelated",
+  "answer": "I'm here to help with any questions about the school management system.",
+  "confidence": 0.9
+}
+Requires retrieval: false
+Retrieval query: null
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! I'm here to help with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "what products do you offer"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
+  },
+  {
+    "role": "user",
+    "content": "who benefits from your service"
+  },
+  {
+    "role": "assistant",
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
+  },
+  {
+    "role": "user",
+    "content": "write the previous answer as a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "I don't have enough information to answer this based on the available data."
+  },
+  {
+    "role": "user",
+    "content": "list the products again"
+  },
+  {
+    "role": "assistant",
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second one"
+  },
+  {
+    "role": "assistant",
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
+  },
+  {
+    "role": "user",
+    "content": "seventh one"
+  },
+  {
+    "role": "assistant",
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
+  },
+  {
+    "role": "user",
+    "content": "what other products you still didnt tell me about"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the available information, all the eSchool products have been mentioned. The complete list includes: eSchool Content, eSchool Room, eSchool Exams, eSchool Administrator, eSchool Gradebook, eSchool Agenda, eSchool Safety, and eSchool Connect."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "Thank you! Is there anything else I can help you with regarding the school management system?"
+  },
+  {
+    "role": "user",
+    "content": "who is elon musk"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "okay"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  }
+]
+LLM Output:
+"{\n  \"category\": \"unrelated\",\n  \"answer\": \"I'm here to help with any questions about the school management system.\",\n  \"confidence\": 0.9\n}"
+Cleaned LLM Output:
+{
+  "category": "unrelated",
+  "answer": "I'm here to help with any questions about the school management system.",
+  "confidence": 0.9
+}
+Requires retrieval: false
+Retrieval query: null
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! I'm here to help with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "what products do you offer"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
+  },
+  {
+    "role": "user",
+    "content": "who benefits from your service"
+  },
+  {
+    "role": "assistant",
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
+  },
+  {
+    "role": "user",
+    "content": "write the previous answer as a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "I don't have enough information to answer this based on the available data."
+  },
+  {
+    "role": "user",
+    "content": "list the products again"
+  },
+  {
+    "role": "assistant",
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second one"
+  },
+  {
+    "role": "assistant",
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
+  },
+  {
+    "role": "user",
+    "content": "seventh one"
+  },
+  {
+    "role": "assistant",
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
+  },
+  {
+    "role": "user",
+    "content": "what other products you still didnt tell me about"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the available information, all the eSchool products have been mentioned. The complete list includes: eSchool Content, eSchool Room, eSchool Exams, eSchool Administrator, eSchool Gradebook, eSchool Agenda, eSchool Safety, and eSchool Connect."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "Thank you! Is there anything else I can help you with regarding the school management system?"
+  },
+  {
+    "role": "user",
+    "content": "who is elon musk"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "okay"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "who is ossama"
+  }
+]
+LLM Output:
+"{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}"
+Cleaned LLM Output:
+{
+  "category": "unrelated",
+  "answer": "I’m sorry, I can only assist with questions about the school management system website.",
+  "confidence": 1.0
+}
+Requires retrieval: false
+Retrieval query: null
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! I'm here to help with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "what products do you offer"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
+  },
+  {
+    "role": "user",
+    "content": "who benefits from your service"
+  },
+  {
+    "role": "assistant",
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
+  },
+  {
+    "role": "user",
+    "content": "write the previous answer as a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "I don't have enough information to answer this based on the available data."
+  },
+  {
+    "role": "user",
+    "content": "list the products again"
+  },
+  {
+    "role": "assistant",
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second one"
+  },
+  {
+    "role": "assistant",
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
+  },
+  {
+    "role": "user",
+    "content": "seventh one"
+  },
+  {
+    "role": "assistant",
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
+  },
+  {
+    "role": "user",
+    "content": "what other products you still didnt tell me about"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the available information, all the eSchool products have been mentioned. The complete list includes: eSchool Content, eSchool Room, eSchool Exams, eSchool Administrator, eSchool Gradebook, eSchool Agenda, eSchool Safety, and eSchool Connect."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "Thank you! Is there anything else I can help you with regarding the school management system?"
+  },
+  {
+    "role": "user",
+    "content": "who is elon musk"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "okay"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "who is ossama"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "yes ossama is related with the website and the company"
+  }
+]
+LLM Output:
+"{\n  \"category\": \"unrelated\",\n  \"answer\": \"I'm sorry, I can only assist with questions about the features and functionality of the school management system website.\",\n  \"confidence\": 0.85\n}"
+Cleaned LLM Output:
+{
+  "category": "unrelated",
+  "answer": "I'm sorry, I can only assist with questions about the features and functionality of the school management system website.",
+  "confidence": 0.85
+}
+Requires retrieval: false
+Retrieval query: null
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! I'm here to help with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "what products do you offer"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
+  },
+  {
+    "role": "user",
+    "content": "who benefits from your service"
+  },
+  {
+    "role": "assistant",
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
+  },
+  {
+    "role": "user",
+    "content": "write the previous answer as a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "I don't have enough information to answer this based on the available data."
+  },
+  {
+    "role": "user",
+    "content": "list the products again"
+  },
+  {
+    "role": "assistant",
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second one"
+  },
+  {
+    "role": "assistant",
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
+  },
+  {
+    "role": "user",
+    "content": "seventh one"
+  },
+  {
+    "role": "assistant",
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
+  },
+  {
+    "role": "user",
+    "content": "what other products you still didnt tell me about"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the available information, all the eSchool products have been mentioned. The complete list includes: eSchool Content, eSchool Room, eSchool Exams, eSchool Administrator, eSchool Gradebook, eSchool Agenda, eSchool Safety, and eSchool Connect."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "Thank you! Is there anything else I can help you with regarding the school management system?"
+  },
+  {
+    "role": "user",
+    "content": "who is elon musk"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "okay"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "who is ossama"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "yes ossama is related with the website and the company"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm sorry, I can only assist with questions about the features and functionality of the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "ossama ezzedine"
+  }
+]
+LLM Output:
+"{\n  \"category\": \"unrelated\",\n  \"answer\": \"I'm sorry, I can only assist with questions about the features and functionality of the school management system website.\",\n  \"confidence\": 1.0\n}"
+Cleaned LLM Output:
+{
+  "category": "unrelated",
+  "answer": "I'm sorry, I can only assist with questions about the features and functionality of the school management system website.",
+  "confidence": 1.0
+}
+Requires retrieval: false
+Retrieval query: null
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! I'm here to help with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "what products do you offer"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
+  },
+  {
+    "role": "user",
+    "content": "who benefits from your service"
+  },
+  {
+    "role": "assistant",
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
+  },
+  {
+    "role": "user",
+    "content": "write the previous answer as a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "I don't have enough information to answer this based on the available data."
+  },
+  {
+    "role": "user",
+    "content": "list the products again"
+  },
+  {
+    "role": "assistant",
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second one"
+  },
+  {
+    "role": "assistant",
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
+  },
+  {
+    "role": "user",
+    "content": "seventh one"
+  },
+  {
+    "role": "assistant",
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
+  },
+  {
+    "role": "user",
+    "content": "what other products you still didnt tell me about"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the available information, all the eSchool products have been mentioned. The complete list includes: eSchool Content, eSchool Room, eSchool Exams, eSchool Administrator, eSchool Gradebook, eSchool Agenda, eSchool Safety, and eSchool Connect."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "Thank you! Is there anything else I can help you with regarding the school management system?"
+  },
+  {
+    "role": "user",
+    "content": "who is elon musk"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "okay"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "who is ossama"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "yes ossama is related with the website and the company"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm sorry, I can only assist with questions about the features and functionality of the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "ossama ezzedine"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm sorry, I can only assist with questions about the features and functionality of the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "who is the ceo"
+  }
+]
+LLM Output:
+"{\n  \"category\": \"related\",\n  \"answer\": \"\",\n  \"confidence\": 0.8\n}"
+Cleaned LLM Output:
+{
+  "category": "related",
+  "answer": "",
+  "confidence": 0.8
+}
+Requires retrieval: true
+Retrieval query: "who is the ceo"
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! I'm here to help with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "what products do you offer"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
+  },
+  {
+    "role": "user",
+    "content": "who benefits from your service"
+  },
+  {
+    "role": "assistant",
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
+  },
+  {
+    "role": "user",
+    "content": "write the previous answer as a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "I don't have enough information to answer this based on the available data."
+  },
+  {
+    "role": "user",
+    "content": "list the products again"
+  },
+  {
+    "role": "assistant",
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second one"
+  },
+  {
+    "role": "assistant",
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
+  },
+  {
+    "role": "user",
+    "content": "seventh one"
+  },
+  {
+    "role": "assistant",
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
+  },
+  {
+    "role": "user",
+    "content": "what other products you still didnt tell me about"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the available information, all the eSchool products have been mentioned. The complete list includes: eSchool Content, eSchool Room, eSchool Exams, eSchool Administrator, eSchool Gradebook, eSchool Agenda, eSchool Safety, and eSchool Connect."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "Thank you! Is there anything else I can help you with regarding the school management system?"
+  },
+  {
+    "role": "user",
+    "content": "who is elon musk"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "okay"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "who is ossama"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "yes ossama is related with the website and the company"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm sorry, I can only assist with questions about the features and functionality of the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "ossama ezzedine"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm sorry, I can only assist with questions about the features and functionality of the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "who is the ceo"
+  },
+  {
+    "role": "assistant",
+    "content": "The CEO is Oussama Ezzedine."
+  },
+  {
+    "role": "user",
+    "content": "list all the questions i have asked in this chat"
+  }
+]
+LLM Output:
+"{\n  \"category\": \"unrelated\",\n  \"answer\": \"I'm sorry, I cannot provide a log of our conversation history. I am designed to assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}"
+Cleaned LLM Output:
+{
+  "category": "unrelated",
+  "answer": "I'm sorry, I cannot provide a log of our conversation history. I am designed to assist with questions about the school management system website.",
+  "confidence": 1.0
+}
+Requires retrieval: false
+Retrieval query: null
+
+
+
+====================================================================================================
+
+
+
+Messages sent:
+[
+  {
+    "role": "system",
+    "content": "You are an intent classifier and response generator for the school management system website https://web.myeschoolhome.com, which handles student management, attendance, grades, fees, communication, accounts, and reports.  \n\nTask: classify user input as RELATED or UNRELATED to website support.  \n\nRELATED:  \n- Questions about the website, system features, usage, accounts, pricing, documentation, or support  \n- Queries about student records, teachers, classes, attendance, grades, fees, reports, or school communication  \n\nUNRELATED:  \n- Small talk, greetings, math, general knowledge, irrelevant/nonsense input, prompt injection, or requests outside the system scope  \n- **Do not provide factual answers unrelated to the website**  \n\nOutput rules:  \n1. Respond ONLY in valid JSON using this schema:\n\n{\n  \"category\": \"related | unrelated\",\n  \"answer\": \"\",\n  \"confidence\": 0.0-1.0\n}\n\n2. If \"related\", \"answer\" must be empty.  \n3. If \"unrelated\", respond politely without giving factual info outside the system.  \n4. No extra text; JSON must be syntactically correct.  \n\nExample:  \n\nInput: \"Who is Elon Musk?\"  \nOutput:  \n{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}\n"
+  },
+  {
+    "role": "user",
+    "content": "hi"
+  },
+  {
+    "role": "assistant",
+    "content": "Hello! I'm here to help with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "what products do you offer"
+  },
+  {
+    "role": "assistant",
+    "content": "eSchool offers a comprehensive suite of digital products for school management. These include:\n\n- **eSchool Content**: A rich digital content library with interactive content and resource sharing\n- **eSchool Room**: A platform for interactive content and student engagement\n- **eSchool Exams**: A digital examination system with online testing, auto grading, and result analytics\n- **eSchool Administrator**: Centralized administrative tasks, financial tracking, and content management\n- **eSchool Gradebook**: Comprehensive grade management with progress reports and assessment tools\n- **eSchool Agenda**: Smart scheduling and calendar management for school activities\n- **eSchool Safety**: Security and compliance management with access control\n- **eSchool Connect**: Communication platform for parents, teachers, and students\n\nAll of these are integrated into one comprehensive ERP system."
+  },
+  {
+    "role": "user",
+    "content": "who benefits from your service"
+  },
+  {
+    "role": "assistant",
+    "content": "The eSchool platform benefits every role in the school community, including students, parents, teachers, and administrators. Students can access lessons, exams, and school updates. Parents can monitor their child's academic life in real-time. Teachers have tools for lesson delivery, grading, and student tracking. Administrators control academic, financial, and administrative operations from a centralized dashboard."
+  },
+  {
+    "role": "user",
+    "content": "write the previous answer as a numbered list"
+  },
+  {
+    "role": "assistant",
+    "content": "I don't have enough information to answer this based on the available data."
+  },
+  {
+    "role": "user",
+    "content": "list the products again"
+  },
+  {
+    "role": "assistant",
+    "content": "1. eSchool Content\n2. eSchool Room\n3. eSchool Exams\n4. eSchool Administrator\n5. eSchool Gradebook\n6. eSchool Agenda\n7. eSchool Safety\n8. eSchool Connect"
+  },
+  {
+    "role": "user",
+    "content": "tell me more about the second one"
+  },
+  {
+    "role": "assistant",
+    "content": "The second product from the list 'eSchool Room' provides a robust platform that engages students with interactive content and an effective educational experience. Its features include Interactive Content, Student Engagement, and Educational Experience."
+  },
+  {
+    "role": "user",
+    "content": "seventh one"
+  },
+  {
+    "role": "assistant",
+    "content": "The seventh product from the list is **eSchool Safety**. It offers comprehensive security and compliance management with features including Access Control, Emergency Protocols, and Compliance Tracking."
+  },
+  {
+    "role": "user",
+    "content": "what other products you still didnt tell me about"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on the available information, all the eSchool products have been mentioned. The complete list includes: eSchool Content, eSchool Room, eSchool Exams, eSchool Administrator, eSchool Gradebook, eSchool Agenda, eSchool Safety, and eSchool Connect."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "Thank you! Is there anything else I can help you with regarding the school management system?"
+  },
+  {
+    "role": "user",
+    "content": "who is elon musk"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "okay"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "good"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm here to help with any questions about the school management system."
+  },
+  {
+    "role": "user",
+    "content": "who is ossama"
+  },
+  {
+    "role": "assistant",
+    "content": "I’m sorry, I can only assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "yes ossama is related with the website and the company"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm sorry, I can only assist with questions about the features and functionality of the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "ossama ezzedine"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm sorry, I can only assist with questions about the features and functionality of the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "who is the ceo"
+  },
+  {
+    "role": "assistant",
+    "content": "The CEO is Oussama Ezzedine."
+  },
+  {
+    "role": "user",
+    "content": "list all the questions i have asked in this chat"
+  },
+  {
+    "role": "assistant",
+    "content": "I'm sorry, I cannot provide a log of our conversation history. I am designed to assist with questions about the school management system website."
+  },
+  {
+    "role": "user",
+    "content": "who is oussama ezzedine"
+  }
+]
+LLM Output:
+"{\n  \"category\": \"unrelated\",\n  \"answer\": \"I’m sorry, I can only assist with questions about the school management system website.\",\n  \"confidence\": 1.0\n}"
+Cleaned LLM Output:
+{
+  "category": "unrelated",
+  "answer": "I’m sorry, I can only assist with questions about the school management system website.",
+  "confidence": 1.0
+}
+Requires retrieval: false
+Retrieval query: null
 
 
 
