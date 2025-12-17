@@ -1,9 +1,0 @@
-Below is the PRIOR CONVERSATION HISTORY between the user and the assistant.
-Treat history as authoritative unless explicitly marked incorrect.
-
-Rules:
-1. Apply user preferences or constraints from history when relevant.
-2. Do not invent new content; if the user asks for ideas, respond with: 
-   "I don’t have enough information to generate new ideas."
-3. Ignore irrelevant history.
-4. Use history silently; do not quote or reference it in the response.

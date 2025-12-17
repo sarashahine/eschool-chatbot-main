@@ -5,17 +5,15 @@ import re
 from dotenv import load_dotenv
 from ollama import Client
 from qdrant_client import QdrantClient
-from sentence_transformers import SentenceTransformer
-from qdrant_client.http import models as rest
-
-from qdrant_client.http.models import Distance, VectorParams, PointIdsList
+from qdrant_client.http import models as rest 
+from qdrant_client.http.models import PointIdsList
 from google import genai
 from google.genai import types
 
 # -----------------------------
 # Configuration
 # -----------------------------
-from config import QDRANT_HTTP, TOP_K, VECTOR_SIZE, MODEL_NAME, TOKEN_LIMIT
+from config import QDRANT_HTTP, NUM_RETRIEVED_CHUNKS, VECTOR_SIZE, MODEL_NAME, TOKEN_LIMIT
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -76,19 +74,19 @@ init_next_chunk_id()
 # Load prompts from external files
 # -----------------------------
 try:
-    with open("prompts/system_prompt.txt", "r", encoding="utf-8") as f:
+    with open("prompts/answer_generation_system_prompt.txt", "r", encoding="utf-8") as f:
         SYSTEM_PROMPT_BASE = f.read()
         print("SYSTEM_PROMPT_BASE read successfully")
 except Exception:
     SYSTEM_PROMPT_BASE = ""
-    print("Warning: 'prompts/system_prompt.txt' not found. Using empty system prompt.")
+    print("Warning: 'prompts/answer_generation_system_prompt.txt' not found. Using empty system prompt.")
 try:
-    with open("prompts/preprocess_prompt.txt", "r", encoding="utf-8") as f:
+    with open("prompts/decision_system_prompt.txt", "r", encoding="utf-8") as f:
         PREPROCESS_PROMPT_BASE = f.read()
         print("PREPROCESS_PROMPT_BASE read successfully")
 except Exception:
     PREPROCESS_PROMPT_BASE = ""
-    print("Warning: 'prompts/preprocess_prompt.txt' not found. Using empty history prompt.")
+    print("Warning: 'prompts/decision_system_prompt.txt' not found. Using empty history prompt.")
 
 
 # -----------------------------
@@ -105,14 +103,14 @@ def embed_texts(texts):
 
 
 
-def retrieve(query: str, top_k: int = TOP_K):
+def retrieve(query: str, NUM_RETRIEVED_CHUNKS: int = NUM_RETRIEVED_CHUNKS):
     query_vector = embed_texts([query])[0]
     print("Query vector shape:", len(query_vector), "Vector snippet:", query_vector[:5])
 
     results = qdrant_client.query_points( # try search()
         collection_name=COLLECTION_NAME,
         query=query_vector,
-        limit=top_k,
+        limit=NUM_RETRIEVED_CHUNKS,
     )
     print("Raw results from Qdrant:", results)
 
@@ -334,7 +332,7 @@ def query():
 
 
         print("retrieval_query:", retrieval_query)
-        results = retrieve(retrieval_query, top_k=TOP_K)
+        results = retrieve(retrieval_query, top_k=NUM_RETRIEVED_CHUNKS)
 
         context_block = "\n\n".join(
             f"Text: {r['text']}\nSection: {r['metadata'].get('section_title','')}\nURL: {r['metadata'].get('url','')}"
