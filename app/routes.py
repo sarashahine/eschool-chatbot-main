@@ -3,7 +3,7 @@ from qdrant_client.http import models as rest
 import uuid
 
 from config import BLOCK_THRESHOLD, BLOCK_MESSAGE, COLLECTION_NAME
-from .utils import retrieve, truncate_history, generate_answer, pre_process_query, is_valid_uuid
+from .utils import retrieve, truncate_history, generate_answer, pre_process_query
 
 main_routes = Blueprint("main", __name__)
 
@@ -35,8 +35,8 @@ def query():
             current_app.preprocess_prompt
         )
 
-        requires_retrieval = decision["requires_retrieval"]
-        direct_answer = decision["direct_answer"]
+        requires_retrieval = (decision["category"] == "related")
+        direct_answer = decision["answer"]
         category = decision["category"]
         unrelated_streak = unrelated_streak + 1 if category == "unrelated" else 0
 
@@ -110,16 +110,14 @@ def insert_chunk():
 # -----------------------------
 # Get a single chunk
 # -----------------------------
-@main_routes.route("/chunks/<chunk_id>", methods=["GET"])
+@main_routes.route("/chunks/<int:chunk_id>", methods=["GET"])
 def get_chunk(chunk_id):
-    if not is_valid_uuid(chunk_id):
-        return jsonify({"error": "Invalid chunk ID format"}), 400
-
     existing = current_app.qdrant_client.retrieve(
         collection_name=COLLECTION_NAME,
         ids=[chunk_id],
         with_vectors=False
     )
+    print(existing)
     if not existing:
         return jsonify({"error": "Not found"}), 404
 
@@ -137,11 +135,8 @@ def get_chunk(chunk_id):
 # -----------------------------
 # Update a chunk
 # -----------------------------
-@main_routes.route("/chunks/<chunk_id>", methods=["PUT"])
+@main_routes.route("/chunks/<int:chunk_id>", methods=["PUT"])
 def update_chunk(chunk_id):
-    if not is_valid_uuid(chunk_id):
-        return jsonify({"error": "Invalid chunk ID format"}), 400
-
     try:
         data = request.json or {}
         new_text = data.get("text")
@@ -177,11 +172,8 @@ def update_chunk(chunk_id):
 # -----------------------------
 # Delete a chunk
 # -----------------------------
-@main_routes.route("/chunks/<chunk_id>", methods=["DELETE"])
+@main_routes.route("/chunks/<int:chunk_id>", methods=["DELETE"])
 def delete_chunk(chunk_id):
-    if not is_valid_uuid(chunk_id):
-        return jsonify({"error": "Invalid chunk ID format"}), 400
-
     try:    
         current_app.qdrant_client.delete(
             collection_name=COLLECTION_NAME,

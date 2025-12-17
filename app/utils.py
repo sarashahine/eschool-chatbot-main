@@ -32,7 +32,7 @@ def safe_json(response: str):
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
-        print("No answer")
+        print("No answer: ", response)
         return None
 
 def retrieve(query, embedder, qdrant_client):
@@ -57,22 +57,25 @@ def retrieve(query, embedder, qdrant_client):
 
 def pre_process_query(query, history, ollama_client, preprocess_prompt):
     messages = [{"role": "system", "content": preprocess_prompt}]
+
     for h in history:
         messages.append({"role": "user", "content": h["question"]})
         messages.append({"role": "assistant", "content": h["answer"]})
+        
     messages.append({"role": "user", "content": query})
 
     response = ollama_client.chat(model=MODEL_NAME, messages=messages, format="json")
     result = safe_json(response.message.content)
 
     if not result:
-        return {"category": "related", "requires_retrieval": True, "direct_answer": None}
+        return {"category": "related", "answer": query}
 
     category = result.get("category", "related")
+    answer = result.get("answer", query)
+    
     return {
         "category": category,
-        "requires_retrieval": category == "related",
-        "direct_answer": result.get("answer"),
+        "answer": answer,
     }
 
 def truncate_history(history, user_query, context_block, ollama_client, system_prompt):
@@ -101,8 +104,8 @@ def generate_answer(user_prompt, history_msgs, ollama_client, system_prompt):
     messages.append({"role": "user", "content": user_prompt})
 
     response = ollama_client.chat(model=MODEL_NAME, messages=messages, format="json")
+    
     try:
         content_json = json.loads(response.message.content)
         return content_json.get("answer", "")
-    except Exception:
-        return ""
+    except Exception: return ""

@@ -26,7 +26,7 @@ def create_app():
     app.embedder = SentenceTransformer(EMBEDDING_MODEL)
 
     app.system_prompt = load_prompt("prompts/answer_generation_system_prompt.txt")
-    app.preprocess_prompt = load_prompt("prompts/decision_system_prompt.txt")
+    app.preprocess_prompt = load_prompt("prompts/decision_making_system_prompt.txt")
 
     # Register routes
     app.register_blueprint(main_routes)
