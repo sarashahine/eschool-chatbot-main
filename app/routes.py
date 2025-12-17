@@ -167,7 +167,7 @@ def update_chunk(chunk_id):
             payload.update({k: v for k, v in metadata_updates.items() if k in {"page_title", "url", "section_title"}})
 
         updated_point = rest.PointStruct(id=chunk_id, vector=vector, payload=payload)
-        current_app.qdrant_client.upsert(collection_name=collection_name, points=[updated_point], wait=True)
+        current_app.qdrant_client.upsert(collection_name=COLLECTION_NAME, points=[updated_point], wait=True)
 
         return jsonify({"message": "Updated chunk"})
 
