@@ -182,7 +182,7 @@ def delete_chunk(chunk_id):
     if not is_valid_uuid(chunk_id):
         return jsonify({"error": "Invalid chunk ID format"}), 400
 
-    try:
+    try:    
         current_app.qdrant_client.delete(
             collection_name=COLLECTION_NAME,
             points_selector=rest.PointIdsList(points=[chunk_id]),

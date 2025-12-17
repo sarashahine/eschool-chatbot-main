@@ -75,18 +75,16 @@ init_next_chunk_id()
 # -----------------------------
 try:
     with open("prompts/answer_generation_system_prompt.txt", "r", encoding="utf-8") as f:
-        SYSTEM_PROMPT_BASE = f.read()
-        print("SYSTEM_PROMPT_BASE read successfully")
+        ANSWER_GENERATION_PROMPT = f.read()
 except Exception:
-    SYSTEM_PROMPT_BASE = ""
-    print("Warning: 'prompts/answer_generation_system_prompt.txt' not found. Using empty system prompt.")
+    ANSWER_GENERATION_PROMPT = ""
+    print("Warning: Using empty prompt.")
 try:
-    with open("prompts/decision_system_prompt.txt", "r", encoding="utf-8") as f:
-        PREPROCESS_PROMPT_BASE = f.read()
-        print("PREPROCESS_PROMPT_BASE read successfully")
+    with open("prompts/decision_making_system_prompt.txt", "r", encoding="utf-8") as f:
+        DECISION_MAKING_PROMPT = f.read()
 except Exception:
-    PREPROCESS_PROMPT_BASE = ""
-    print("Warning: 'prompts/decision_system_prompt.txt' not found. Using empty history prompt.")
+    DECISION_MAKING_PROMPT = ""
+    print("Warning: Using empty prompt.")
 
 
 # -----------------------------
@@ -168,7 +166,7 @@ def pre_process_query(user_query, history=None, log_file2="reformulator_log.txt"
     messages.append({"role": "user", "content": user_query})
 
     try:
-        messages=[{"role": "system", "content": PREPROCESS_PROMPT_BASE}, *messages]
+        messages=[{"role": "system", "content": DECISION_MAKING_PROMPT}, *messages]
         response = ollama_client.chat(model=MODEL_NAME, messages=messages, format='json')
         llm_output = response.message.content
         print("Raw llm_output:", repr(llm_output))
@@ -231,7 +229,7 @@ def count_tokens(text):
          
 def truncate_history(history, user_query, context_block, token_limit=TOKEN_LIMIT):
 
-    system_tokens = count_tokens(SYSTEM_PROMPT_BASE)
+    system_tokens = count_tokens(ANSWER_GENERATION_PROMPT)
     user_tokens = count_tokens(user_query)
     context_tokens = count_tokens(context_block)
 
@@ -349,7 +347,7 @@ def query():
             if turn.get("answer"):
                 history_entries.append({"role": "assistant", "content": turn["answer"]})
 
-        system_prompt = SYSTEM_PROMPT_BASE
+        system_prompt = ANSWER_GENERATION_PROMPT
         user_prompt = f"""
     Context:
     {context_block}
