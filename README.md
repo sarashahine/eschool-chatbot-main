@@ -37,7 +37,7 @@ It uses sentence embeddings (EmbeddingGemma via `sentence-transformers`) and Qdr
   - `POST /query` – Main chat endpoint:
     - Runs `pre_process_query` to decide if retrieval is needed.
     - Retrieves top‑K chunks from Qdrant (`retrieve` in `app/utils.py`).
-    - Truncates history (`truncate_history`) based on `TOKEN_LIMIT`.
+    - Truncates history (`truncate_answer_generation_history`) based on `TOKEN_LIMIT`.
     - Calls `generate_answer` with system prompt, history, and context.
     - Tracks an `unrelated_streak` and enforces blocking based on `BLOCK_THRESHOLD` / `BLOCK_MESSAGE`.
   - CRUD routes for Qdrant chunks:
@@ -52,7 +52,7 @@ It uses sentence embeddings (EmbeddingGemma via `sentence-transformers`) and Qdr
   - `retrieve(query, embedder, qdrant_client)` – Semantic search in Qdrant (`NUM_RETRIEVED_CHUNKS`).
   - `pre_process_query(...)` – Uses LLM (via `MODEL_NAME`) and decision‑making prompts to classify the query and optionally generate a direct answer.
   - `count_tokens(text, ollama_client)` – Estimate token usage via Ollama.
-  - `truncate_history(...)` – Enforce `TOKEN_LIMIT` by trimming older turns.
+  - `truncate_answer_generation_history(...)` – Enforce `TOKEN_LIMIT` by trimming older turns.
   - `generate_answer(...)` – Chat completion via Ollama, expects JSON with an `"answer"` field.
 - **`app/templates/index.html`** – Single‑page chat UI:
   - Chat stream with user/assistant messages.

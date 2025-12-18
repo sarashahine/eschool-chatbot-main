@@ -4,7 +4,7 @@ import uuid
 
 from flask import current_app
 from config import BLOCK_THRESHOLD, BLOCK_MESSAGE, COLLECTION_NAME
-from .utils import retrieve, truncate_history, generate_answer, pre_process_query, OllamaUnavailable
+from .utils import retrieve, truncate_answer_generation_history, generate_answer, pre_process_query, OllamaUnavailable
 
 main_routes = Blueprint("main", __name__)
 
@@ -28,6 +28,8 @@ def query():
 
         if not user_query:
             return jsonify({"error": "No query provided"}), 400
+
+
 
         decision = pre_process_query(
             user_query,
@@ -55,12 +57,12 @@ def query():
             for r in results
         )
 
-        history = truncate_history(
-            history,
+        history = truncate_answer_generation_history(
+            current_app.answer_generation_system_prompt_tokens,
             user_query,
             context_block,
-            current_app.ollama_client,
-            current_app.answer_generation_system_prompt_tokens
+            history,
+            current_app.ollama_client
         )
 
         history_msgs = []

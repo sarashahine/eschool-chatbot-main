@@ -122,9 +122,9 @@ def count_tokens(text, ollama_client):
         except Exception:
             return len(text.split())
 
-def truncate_history(history, user_query, context_block, ollama_client, answer_generation_system_prompt_tokens):
+def truncate_answer_generation_history(fixed_prompt_tokens, user_query, context_block, history, ollama_client):
 
-    total = answer_generation_system_prompt_tokens + count_tokens(user_query,ollama_client) + count_tokens(context_block,ollama_client)
+    total = fixed_prompt_tokens + count_tokens(user_query,ollama_client) + count_tokens(context_block,ollama_client)
     kept = []
 
     for h in reversed(history):
