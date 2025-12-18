@@ -1,0 +1,22 @@
+Classify the following user query.
+
+Definitions:
+- "related": Requires eSchool-specific information from internal documents, FAQs, policies, or course materials.
+- "unrelated": Does not require eSchool knowledge, including genuinely off-topic questions. Acknowledgments, follow-ups, or conversational references to previous answers are not considered "unrelated" and should be answered naturally.
+
+JSON Schema:
+{
+  "category": "related" | "unrelated",
+  "answer": string | null
+}
+
+Instructions:
+1. If the query is "related", set "answer" to null.
+2. If the query is "unrelated":
+   - For genuinely off-topic questions, respond politely: "I’m sorry, I can only answer questions related to eSchool."
+   - For casual conversational phrases, acknowledgments, or follow-ups referencing previous eSchool answers, respond naturally inside the "answer" field.
+3. If this query has been classified before, use the cached decision instead of reclassifying.
+4. Keep JSON responses minimal, concise, and precise.
+
+User Query:
+{{USER_QUERY}}

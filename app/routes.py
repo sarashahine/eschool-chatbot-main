@@ -1,9 +1,10 @@
-from flask import Blueprint, request, jsonify, current_app, render_template
+from flask import Blueprint, request, jsonify, render_template
 from qdrant_client.http import models as rest
 import uuid
 
+from flask import current_app
 from config import BLOCK_THRESHOLD, BLOCK_MESSAGE, COLLECTION_NAME
-from .utils import retrieve, truncate_history, generate_answer, pre_process_query
+from .utils import retrieve, truncate_history, generate_answer, pre_process_query, OllamaUnavailable
 
 main_routes = Blueprint("main", __name__)
 
@@ -23,20 +24,21 @@ def query():
         data = request.json
         user_query = data.get("query", "")
         history = data.get("history", [])
-        unrelated_streak = int(data.get("unrelated_streak", 0) or 0)
+        unrelated_streak = int(data.get("unrelated_streak", 0))
 
         if not user_query:
             return jsonify({"error": "No query provided"}), 400
 
         decision = pre_process_query(
             user_query,
+            current_app.decision_making_user_prompt,
             history,
             current_app.ollama_client,
-            current_app.preprocess_prompt
+            current_app.decision_making_system_prompt
         )
 
         requires_retrieval = (decision["category"] == "related")
-        direct_answer = decision["answer"]
+        answer = decision["answer"]
         category = decision["category"]
         unrelated_streak = unrelated_streak + 1 if category == "unrelated" else 0
 
@@ -44,7 +46,6 @@ def query():
             return jsonify({"answer": BLOCK_MESSAGE, "blocked": True})
 
         if not requires_retrieval:
-            answer = direct_answer
             history.append({"question": user_query, "answer": answer})
             return jsonify({"answer": answer, "blocked": False})
 
@@ -59,7 +60,7 @@ def query():
             user_query,
             context_block,
             current_app.ollama_client,
-            current_app.system_prompt
+            current_app.answer_generation_system_prompt_tokens
         )
 
         history_msgs = []
@@ -67,20 +68,26 @@ def query():
             history_msgs.append({"role": "user", "content": h["question"]})
             history_msgs.append({"role": "assistant", "content": h["answer"]})
 
-        user_prompt = f"Context:\n{context_block}\n\nQuestion:\n{user_query}\n\nAnswer:"
+        user_prompt_for_answer_generation = f"Context:\n{context_block}\n\nQuestion:\n{user_query}\n\nAnswer:"
         answer = generate_answer(
-            user_prompt,
+            user_prompt_for_answer_generation,
             history_msgs,
             current_app.ollama_client,
-            current_app.system_prompt
+            current_app.answer_generation_system_prompt
         )
 
         history.append({"question": user_query, "answer": answer})
 
         return jsonify({"answer": answer, "blocked": False, "unrelated_streak": unrelated_streak})
 
+    except OllamaUnavailable:
+        # Specific, user-friendly message when Ollama keeps failing
+        return jsonify({
+            "error": "The AI model is temporarily unavailable. Please try again in a little while."
+        }), 503
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        # Fallback for any other unexpected server error
+        return jsonify({"error": "Unexpected server error."}), 500
 
 # -----------------------------
 # Insert chunk
