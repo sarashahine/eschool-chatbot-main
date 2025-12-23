@@ -22,11 +22,11 @@ Output (JSON only):
 
 Input:
 
+Retrieved Context:
+{{retrieved_chunks}}
+
 Conversation History:
 {{chat_history}}
 
 User Question:
 {{user_query}}
-
-Retrieved Context:
-{{retrieved_chunks}}

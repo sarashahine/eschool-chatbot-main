@@ -30,8 +30,6 @@ def query():
         if not user_query:
             return jsonify({"error": "No query provided"}), 400
 
-
-
         decision = pre_process_query(
             user_query,
             current_app.decision_making_user_prompt,
@@ -72,13 +70,18 @@ def query():
             history_msgs.append({"role": "user", "content": h["question"]})
             history_msgs.append({"role": "assistant", "content": h["answer"]})
 
-        user_prompt_for_answer_generation = f"Context:\n{context_block}\n\nQuestion:\n{user_query}\n\nAnswer:"
+        chunks = context_block.split("\n\n")
+        flattened_chunks = [" ".join(chunk.splitlines()).strip() for chunk in chunks]
+        log_context = "\n".join(flattened_chunks)
+
         answer = generate_answer(
-            user_prompt_for_answer_generation,
+            user_query,
             history_msgs,
+            log_context,
             current_app.ollama_client,
+            current_app.answer_generation_user_prompt,
             current_app.answer_generation_system_prompt,
-            user_ip=user_ip,
+            user_ip=user_ip
         )
 
         history.append({"question": user_query, "answer": answer})

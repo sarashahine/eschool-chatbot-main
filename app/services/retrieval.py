@@ -2,7 +2,7 @@ import json
 
 from config import COLLECTION_NAME, NUM_RETRIEVED_CHUNKS, TOKEN_LIMIT, MODEL_NAME
 from app.services.utils import call_ollama_with_retries, safe_json
-from app.services.logging_utils import get_preprocess_logger
+from app.services.logging_utils import log_decision_making
 
 def retrieve(query, embedder, qdrant_client):
     vector = embedder.encode(query).tolist()
@@ -38,19 +38,14 @@ def pre_process_query(query, decision_making_user_prompt, history, ollama_client
         lambda: ollama_client.chat(model=MODEL_NAME, messages=messages, format="json")
     )
 
-    # Log full interaction for decision making / preprocessing
-    preprocess_logger = get_preprocess_logger()
     try:
-        prompt_payload = json.dumps(messages, ensure_ascii=False)
         raw_response = getattr(getattr(response, "message", None), "content", str(response))
-        preprocess_logger.info(
-            "",
-            extra={
-                "ip": user_ip,
-                "user_query": query,
-                "prompt": prompt_payload,
-                "response": raw_response,
-            },
+        log_decision_making(
+                ip = user_ip,
+                user_query = query,
+                response = raw_response,
+                prompt = messages,
+                history = "",
         )
     except Exception:
         # Logging should never break the main flow

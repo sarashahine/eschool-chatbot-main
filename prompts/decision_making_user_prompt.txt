@@ -1,2 +1,1 @@
-User Query:
-{{USER_QUERY}}
+User Query: {{USER_QUERY}}

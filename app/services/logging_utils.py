@@ -2,33 +2,28 @@ import logging
 import os
 from datetime import datetime
 
-from config import DECISION_MAKING_LOGGING_FILE, ANSWER_GENERATION_LOGGING_FILE, LOG_MAX_LINES
+from config import LOGGING_FILE, LOG_MAX_LINES
 
 
 class LineRotatingFileHandler(logging.Handler):
-    """
-    A simple line-based rotating file handler.
-
-    - Writes to a base file path (e.g. logs/preprocess.log)
-    - When the number of lines in the active file exceeds LOG_MAX_LINES,
-      the current file is renamed to baseName{n}.ext (e.g. preprocess1.log,
-      preprocess2.log, ...) and a fresh base file is created.
-    - Existing numbered files are never deleted; the next index is always
-      max(existing_indices) + 1. If no numbered files exist, rotation starts
-      from 1.
-    """
-
     def __init__(self, base_filepath: str, max_lines: int):
         super().__init__()
-        self.base_filepath = base_filepath
         self.max_lines = max_lines
+        directory, filename = os.path.split(base_filepath)
+        name, ext = os.path.splitext(filename)
 
-        base_dir = os.path.dirname(self.base_filepath)
-        if base_dir and not os.path.exists(base_dir):
-            os.makedirs(base_dir, exist_ok=True)
+        if directory and not os.path.exists(directory):
+            os.makedirs(directory, exist_ok=True)
+
+        if not os.path.exists(base_filepath):
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            self.base_filepath = os.path.join(directory, f"{name}_{timestamp}{ext}")
+        else:
+            self.base_filepath = base_filepath
 
         self.stream = open(self.base_filepath, "a", encoding="utf-8")
         self.current_lines = self._count_existing_lines()
+
 
     def _count_existing_lines(self) -> int:
         try:
@@ -38,37 +33,28 @@ class LineRotatingFileHandler(logging.Handler):
             return 0
 
     def _get_next_index(self) -> int:
-        """
-        Look for files like baseName<N>.ext and return next integer index.
-        If none exist, return 1.
-        """
         directory, filename = os.path.split(self.base_filepath)
+        print("base_filepath: ", self.base_filepath)
+
+        print("directory: ", directory)
+        print("filename: ", filename)
+        
         name, ext = os.path.splitext(filename)
 
+        print("name: ", name)
+        print("ext: ", ext)
+
         max_index = 0
-        if not directory:
-            directory = "."
+        directory = directory or "."
 
-        try:
-            for f in os.listdir(directory):
-                if not f.startswith(name) or not f.endswith(ext):
-                    continue
-                # try to parse suffix between name and ext as int
-                suffix = f[len(name) : len(f) - len(ext)]
-                if not suffix:
-                    # this is the base file (e.g. preprocess.log)
-                    continue
-                try:
-                    idx = int(suffix)
-                    if idx > max_index:
-                        max_index = idx
-                except ValueError:
-                    continue
-        except FileNotFoundError:
-            # directory may not exist yet; treated as no files
-            pass
+        for f in os.listdir(directory):
+            if f.startswith(name) and f.endswith(ext):
+                suffix = f[len(name):-len(ext)]
+                if suffix.startswith("_") and suffix[1:].isdigit():
+                    max_index = max(max_index, int(suffix[1:]))
 
-        return max_index + 1 if max_index >= 0 else 1
+        return max_index + 1
+
 
     def _rotate(self):
         """Rotate the current base file to the next numbered file."""
@@ -76,64 +62,105 @@ class LineRotatingFileHandler(logging.Handler):
 
         directory, filename = os.path.split(self.base_filepath)
         name, ext = os.path.splitext(filename)
-        next_index = self._get_next_index()
-        rotated_name = f"{name}{next_index}{ext}"
-        rotated_path = os.path.join(directory, rotated_name) if directory else rotated_name
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        rotated_path = os.path.join(directory, f"{name}_{timestamp}{ext}")
 
-        if os.path.exists(self.base_filepath):
-            os.replace(self.base_filepath, rotated_path)
+        os.replace(self.base_filepath, rotated_path)
 
         self.stream = open(self.base_filepath, "a", encoding="utf-8")
         self.current_lines = 0
 
     def emit(self, record: logging.LogRecord) -> None:
-        try:
-            msg = self.format(record)
-            # Count how many newlines we are about to write
-            # We add one because logging frameworks typically append a newline.
-            lines_to_add = msg.count("\n") + 1
+        msg = self.format(record)
+        # Count how many newlines we are about to write
+        # We add one because logging frameworks typically append a newline.
+        lines_to_add = msg.count("\n") + 1
 
-            if self.current_lines + lines_to_add > self.max_lines:
-                self._rotate()
+        if self.current_lines + lines_to_add > self.max_lines:
+            self._rotate()
 
-            self.stream.write(msg + "\n")
-            self.stream.flush()
-            self.current_lines += lines_to_add
-        except Exception:
-            self.handleError(record)
+        self.stream.write(msg + "\n")
+        self.stream.flush()
+        self.current_lines += lines_to_add
 
 
-def get_preprocess_logger() -> logging.Logger:
-    logger = logging.getLogger("preprocess_logger")
+# ---------------------------------------------------------------------
+# Shared logger
+# ---------------------------------------------------------------------
+
+def get_chatbot_logger() -> logging.Logger:
+    logger = logging.getLogger("chatbot_logger")
     if logger.handlers:
         return logger
 
-    handler = LineRotatingFileHandler(DECISION_MAKING_LOGGING_FILE, LOG_MAX_LINES)
+    handler = LineRotatingFileHandler(
+        LOGGING_FILE,
+        LOG_MAX_LINES,
+    )
+
     formatter = logging.Formatter(
-        fmt="%(asctime)s | ip=%(ip)s | user_query=%(user_query)s | prompt=%(prompt)s | response=%(response)s",
+        fmt=(
+            "time=%(asctime)s\n"
+            "ip=%(ip)s\n"
+            "user_query=%(user_query)s\n"
+            "stage=%(stage)s\n"
+            "response=%(response)s\n"
+            "prompt=%(prompt)s\n"
+            "history=%(history)s\n"
+            "----------------------------------------"
+        ),
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-    handler.setFormatter(formatter)
 
+    handler.setFormatter(formatter)
     logger.setLevel(logging.INFO)
     logger.addHandler(handler)
     logger.propagate = False
+
     return logger
 
 
-def get_answer_generation_logger() -> logging.Logger:
-    logger = logging.getLogger("answer_generation_logger")
-    if logger.handlers:
-        return logger
+# ---------------------------------------------------------------------
+# Logging helpers
+# ---------------------------------------------------------------------
 
-    handler = LineRotatingFileHandler(ANSWER_GENERATION_LOGGING_FILE, LOG_MAX_LINES)
-    formatter = logging.Formatter(
-        fmt="%(asctime)s | ip=%(ip)s | prompt=%(prompt)s | response=%(response)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
+def log_decision_making(
+    *,
+    ip: str,
+    user_query: str,
+    response: str,
+    prompt,
+    history: str = "",
+):
+    get_chatbot_logger().info(
+        "",
+        extra={
+            "ip": ip,
+            "user_query": user_query,
+            "stage": "decision making",
+            "response": response,
+            "prompt": prompt,
+            "history": history,
+        },
     )
-    handler.setFormatter(formatter)
 
-    logger.setLevel(logging.INFO)
-    logger.addHandler(handler)
-    logger.propagate = False
-    return logger
+
+def log_answer_generation(
+    *,
+    ip: str,
+    user_query: str,
+    response: str,
+    prompt,
+    history: str = "",
+):
+    get_chatbot_logger().info(
+        "",
+        extra={
+            "ip": ip,
+            "user_query": user_query,
+            "stage": "answer generation",
+            "response": response,
+            "prompt": prompt,
+            "history": history,
+        },
+    )

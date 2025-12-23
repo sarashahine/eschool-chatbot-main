@@ -1,0 +1,7 @@
+Retrieved Context:
+{{CONTEXT_BLOCK}}
+
+User Question:
+{{USER_QUERY}}
+
+Answer:

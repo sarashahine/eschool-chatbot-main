@@ -43,8 +43,7 @@ FLASK_DEBUG = os.getenv("FLASK_DEBUG")
 # Logging settings
 # -----------------------------
 LOG_MAX_LINES = int(os.getenv("LOG_MAX_LINES"))
-DECISION_MAKING_LOGGING_FILE = os.getenv("DECISION_MAKING_LOGGING_FILE")
-ANSWER_GENERATION_LOGGING_FILE = os.getenv("ANSWER_GENERATION_LOGGING_FILE")
+LOGGING_FILE = os.getenv("LOGGING_FILE")
 
 # -----------------------------
 # Blocking / Filters

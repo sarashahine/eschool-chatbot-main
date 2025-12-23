@@ -29,6 +29,7 @@ def create_app():
     app.embedder = SentenceTransformer(EMBEDDING_MODEL)
 
     app.answer_generation_system_prompt = load_prompt("prompts/answer_generation_system_prompt.txt")
+    app.answer_generation_user_prompt = load_prompt("prompts/answer_generation_user_prompt.txt")
 
     app.decision_making_system_prompt = load_prompt("prompts/decision_making_system_prompt.txt")
     app.decision_making_user_prompt = load_prompt("prompts/decision_making_user_prompt.txt")
