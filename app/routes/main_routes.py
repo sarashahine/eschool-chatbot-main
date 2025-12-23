@@ -69,15 +69,11 @@ def query():
         for h in history:
             history_msgs.append({"role": "user", "content": h["question"]})
             history_msgs.append({"role": "assistant", "content": h["answer"]})
-
-        chunks = context_block.split("\n\n")
-        flattened_chunks = [" ".join(chunk.splitlines()).strip() for chunk in chunks]
-        log_context = "\n".join(flattened_chunks)
-
+        
         answer = generate_answer(
             user_query,
             history_msgs,
-            log_context,
+            context_block,
             current_app.ollama_client,
             current_app.answer_generation_user_prompt,
             current_app.answer_generation_system_prompt,

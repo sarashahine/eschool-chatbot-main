@@ -7,9 +7,12 @@ from app.services.logging_utils import log_answer_generation
 
 def generate_answer(user_query, history_msgs, context_block, ollama_client, answer_generation_user_prompt, answer_generation_system_prompt, user_ip):
     messages = [{"role": "system", "content": answer_generation_system_prompt}]
+
     messages.extend(history_msgs)
 
-    user_prompt = answer_generation_user_prompt.replace("{{CONTEXT_BLOCK}}", context_block).replace("{{USER_QUERY}}", user_query)
+    messages.append({"role": "system", "content": "Retrieved Chunks\n: " + context_block})
+
+    user_prompt = answer_generation_user_prompt.replace("{{USER_QUERY}}", user_query)
     messages.append({"role": "user", "content": user_prompt})
 
     response = call_ollama_with_retries(
