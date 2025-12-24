@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template
 
 from flask import current_app
-from config import BLOCK_THRESHOLD, BLOCK_MESSAGE
+from config import HISTORY_START_MESSAGE, HISTORY_END_MESSAGE, BLOCK_THRESHOLD, BLOCK_MESSAGE
 from ..services.utils import OllamaUnavailable
 from ..services.retrieval import retrieve, truncate_answer_generation_history, pre_process_query
 from ..services.answer_generation import generate_answer
@@ -53,7 +53,7 @@ def query():
 
         results = retrieve(user_query, current_app.embedder, current_app.qdrant_client)
         context_block = "\n\n".join(
-            f"Text: {r['text']}\nSection: {r['metadata'].get('section_title','')}\nURL: {r['metadata'].get('url','')}"
+            f" Text: {r['text']}\n Section: {r['metadata'].get('section_title','')}\n URL: {r['metadata'].get('url','')} . "
             for r in results
         )
 
@@ -65,14 +65,19 @@ def query():
             current_app.ollama_client
         )
 
-        history_msgs = []
-        for h in history:
-            history_msgs.append({"role": "user", "content": h["question"]})
-            history_msgs.append({"role": "assistant", "content": h["answer"]})
-        
+        history_block = ""
+        if history:
+            history_block = HISTORY_START_MESSAGE
+            for h in history:
+                history_block += (
+                    f"  User: {h['question']}\n"
+                    f"  Assistant: {h['answer']}\n"
+                )
+            history_block += HISTORY_END_MESSAGE
+
         answer = generate_answer(
             user_query,
-            history_msgs,
+            history_block,
             context_block,
             current_app.ollama_client,
             current_app.answer_generation_user_prompt,

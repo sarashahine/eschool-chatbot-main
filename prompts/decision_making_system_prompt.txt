@@ -15,9 +15,9 @@ Output rules:
 1. Respond ONLY in valid JSON using this schema:
 
 {
-  'category': 'related | unrelated',
-  'answer': '',
-  'confidence': 0.0-1.0
+  "category": "related | unrelated",
+  "answer": "",
+  "confidence": 0.0-1.0
 }
 
 2. If 'related', 'answer' must be empty.  
@@ -30,15 +30,15 @@ Example:
 Input: 'Who is Elon Musk?'  
 Output:  
 {
-  'category': 'unrelated',
-  'answer': 'I’m sorry, I can only assist with questions about the school management system website.',
-  'confidence': 1.0
+  "category": 'unrelated',
+  "answer": 'I’m sorry, I can only assist with questions about the school management system website.',
+  "confidence": 1.0
 }
 
 Input: 'Hi'  
 Output:  
 {
-  'category': 'unrelated',
-  'answer': 'Hello! How can I assist you with the school management system today?',
-  'confidence': 1.0
+  "category": 'unrelated',
+  "answer": 'Hello! How can I assist you with the school management system today?',
+  "confidence": 1.0
 }

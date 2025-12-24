@@ -9,20 +9,32 @@ class LineRotatingFileHandler(logging.Handler):
     def __init__(self, base_filepath: str, max_lines: int):
         super().__init__()
         self.max_lines = max_lines
+
         directory, filename = os.path.split(base_filepath)
         name, ext = os.path.splitext(filename)
 
         if directory and not os.path.exists(directory):
             os.makedirs(directory, exist_ok=True)
 
-        if not os.path.exists(base_filepath):
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            self.base_filepath = os.path.join(directory, f"{name}_{timestamp}{ext}")
+        existing_file = self._find_existing_log(directory, name, ext)
+
+        if existing_file:
+            self.base_filepath = existing_file
         else:
-            self.base_filepath = base_filepath
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            self.base_filepath = os.path.join(
+                directory, f"{name}_{timestamp}{ext}"
+            )
 
         self.stream = open(self.base_filepath, "a", encoding="utf-8")
         self.current_lines = self._count_existing_lines()
+
+
+    def _find_existing_log(self, directory: str, name: str, ext: str) -> str | None:
+        for file in os.listdir(directory):
+            if file.startswith(f"{name}_") and file.endswith(ext):
+                return os.path.join(directory, file)
+        return None
 
 
     def _count_existing_lines(self) -> int:
@@ -32,29 +44,6 @@ class LineRotatingFileHandler(logging.Handler):
         except FileNotFoundError:
             return 0
 
-    def _get_next_index(self) -> int:
-        directory, filename = os.path.split(self.base_filepath)
-        print("base_filepath: ", self.base_filepath)
-
-        print("directory: ", directory)
-        print("filename: ", filename)
-        
-        name, ext = os.path.splitext(filename)
-
-        print("name: ", name)
-        print("ext: ", ext)
-
-        max_index = 0
-        directory = directory or "."
-
-        for f in os.listdir(directory):
-            if f.startswith(name) and f.endswith(ext):
-                suffix = f[len(name):-len(ext)]
-                if suffix.startswith("_") and suffix[1:].isdigit():
-                    max_index = max(max_index, int(suffix[1:]))
-
-        return max_index + 1
-
 
     def _rotate(self):
         """Rotate the current base file to the next numbered file."""
@@ -62,10 +51,11 @@ class LineRotatingFileHandler(logging.Handler):
 
         directory, filename = os.path.split(self.base_filepath)
         name, ext = os.path.splitext(filename)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        rotated_path = os.path.join(directory, f"{name}_{timestamp}{ext}")
 
-        os.replace(self.base_filepath, rotated_path)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.base_filepath = os.path.join(
+            directory, f"{name.split('_')[0]}_{timestamp}{ext}"
+        )
 
         self.stream = open(self.base_filepath, "a", encoding="utf-8")
         self.current_lines = 0
@@ -105,8 +95,6 @@ def get_chatbot_logger() -> logging.Logger:
             "user_query=%(user_query)s\n"
             "stage=%(stage)s\n"
             "response=%(response)s\n"
-            "prompt=%(prompt)s\n"
-            "history=%(history)s\n"
             "----------------------------------------"
         ),
         datefmt="%Y-%m-%d %H:%M:%S",
@@ -129,8 +117,6 @@ def log_decision_making(
     ip: str,
     user_query: str,
     response: str,
-    prompt,
-    history: str = "",
 ):
     get_chatbot_logger().info(
         "",
@@ -139,8 +125,6 @@ def log_decision_making(
             "user_query": user_query,
             "stage": "decision making",
             "response": response,
-            "prompt": prompt,
-            "history": history,
         },
     )
 
@@ -150,8 +134,6 @@ def log_answer_generation(
     ip: str,
     user_query: str,
     response: str,
-    prompt,
-    history: str = "",
 ):
     get_chatbot_logger().info(
         "",
@@ -160,7 +142,5 @@ def log_answer_generation(
             "user_query": user_query,
             "stage": "answer generation",
             "response": response,
-            "prompt": prompt,
-            "history": history,
         },
     )

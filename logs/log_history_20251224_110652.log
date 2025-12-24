@@ -1,0 +1,325 @@
+time=2025-12-24 11:06:52
+ip=127.0.0.1
+user_query=hello
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:07:01
+ip=127.0.0.1
+user_query=what is eschool
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:07:05
+ip=127.0.0.1
+user_query=what is eschool
+stage=answer generation
+response={
+  "answer": "eSchool Portal is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as the preferred choice for educational institutions worldwide and aims to empower educational institutions with a user-friendly platform.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:07:27
+ip=127.0.0.1
+user_query=who is ossama ezzedine?
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I'm sorry, I can only assist with questions about the school management system website.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:07:54
+ip=127.0.0.1
+user_query=who is the company ceo?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-24 11:07:56
+ip=127.0.0.1
+user_query=who is the company ceo?
+stage=answer generation
+response={
+  "answer": "The CEO is Oussama Ezzedine.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:08:16
+ip=127.0.0.1
+user_query=who is he
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I'm sorry, I can only assist with questions about the school management system website.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:26:16
+ip=127.0.0.1
+user_query=hello
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:26:22
+ip=127.0.0.1
+user_query=what is eschool
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I'm sorry, I can only assist with questions about the school management system website https://web.myeschoolhome.com.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:28:55
+ip=127.0.0.1
+user_query=hello
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:29:05
+ip=127.0.0.1
+user_query=what is eschool
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-24 11:29:08
+ip=127.0.0.1
+user_query=what is eschool
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system designed to empower educational institutions with a user-friendly platform. The system includes various products such as eSchool Content (for digital learning resources), eSchool Exams (for exam management), eSchool Room (for virtual learning), eSchool Connect (for communication), eSchool Gradebook (for grading), eSchool Administrator (for school administration), and eSchool Safety (for attendance and bus tracking).",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:29:23
+ip=127.0.0.1
+user_query=who is ossama ezzedine?
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I'm sorry, I can only assist with questions about the school management system website.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:29:33
+ip=127.0.0.1
+user_query=who is the company ceo?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:29:36
+ip=127.0.0.1
+user_query=who is the company ceo?
+stage=answer generation
+response={
+  "answer": "The CEO of the company is Oussama Ezzedine.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:29:40
+ip=127.0.0.1
+user_query=who is he
+stage=decision making
+response=I'm sorry, I can only assist with questions about the school management system website.
+----------------------------------------
+time=2025-12-24 11:29:42
+ip=127.0.0.1
+user_query=who is he
+stage=answer generation
+response={
+  "answer": "Oussama Ezzedine is the CEO of the company.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:29:59
+ip=127.0.0.1
+user_query=tell me more about him
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I'm sorry, I can only assist with questions about the school management system website, its features, and usage.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:30:43
+ip=127.0.0.1
+user_query=what do you like to tell me?
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I'm designed to provide information specifically about the school management system. How can I help you with features like student records, attendance, or grades today?",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:31:07
+ip=127.0.0.1
+user_query=what products do you offer?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:31:11
+ip=127.0.0.1
+user_query=what products do you offer?
+stage=answer generation
+response={
+  "answer": "eSchool offers a suite of digital products including: eSchool Content (digital learning resources), eSchool Exams (exam management), eSchool Room (virtual learning), eSchool Connect (communication), eSchool Gradebook (grading), eSchool Administrator (school administration), eSchool Safety (attendance and security), and eSchool Agenda (scheduling and calendar management).",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:31:30
+ip=127.0.0.1
+user_query=write the previous answer as a numbered list
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I'm sorry, I can only assist with questions about the school management system website and cannot format responses as numbered lists.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:31:59
+ip=127.0.0.1
+user_query=what products do you offer? write as a numbered list
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:32:02
+ip=127.0.0.1
+user_query=what products do you offer? write as a numbered list
+stage=answer generation
+response={
+  "answer": "eSchool offers products including: eSchool Content (digital learning resources), eSchool Exams (exam management), eSchool Room (virtual learning), eSchool Connect (communication), eSchool Gradebook (grading), eSchool Administrator (school administration), eSchool Safety (attendance and security), and eSchool Agenda (scheduling and calendar management).",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-24 11:32:21
+ip=127.0.0.1
+user_query=tell me more about the second one
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I'm sorry, I can only assist with questions about the school management system website and cannot format responses as numbered lists or refer to items by position.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:32:34
+ip=127.0.0.1
+user_query=what is the second one?
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I'm sorry, I can only assist with general information about the school management system and its features, not by referring to items in a numbered list.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:32:49
+ip=127.0.0.1
+user_query=who uses eschool
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-24 11:32:51
+ip=127.0.0.1
+user_query=who uses eschool
+stage=answer generation
+response={
+  "answer": "eSchool is used by educational institutions, including teachers, parents, and students.",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-24 11:33:18
+ip=127.0.0.1
+user_query=only these three types of users?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-24 11:33:22
+ip=127.0.0.1
+user_query=only these three types of users?
+stage=answer generation
+response={
+  "answer": "No, the platform is built for students, parents, teachers, and administrators, creating a unified educational ecosystem for every role in the school community.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:34:01
+ip=127.0.0.1
+user_query=how does each of them benefit from eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-24 11:34:03
+ip=127.0.0.1
+user_query=how does each of them benefit from eschool?
+stage=answer generation
+response={
+  "answer": "The platform is built for students, parents, teachers, and administrators, creating a unified educational ecosystem for every role in the school community.",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-24 11:34:18
+ip=127.0.0.1
+user_query=how do parents benefit from eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-24 11:34:24
+ip=127.0.0.1
+user_query=how do parents benefit from eschool?
+stage=answer generation
+response={
+  "answer": "Parents benefit from eSchool through several products. eSchool Connect provides a communication platform allowing them to stay informed with messages, announcements, and real-time updates. It also offers features like posts, comments, likes, polls, and access to statistical data for reviewing academic performance and attendance. eSchool Safety enables parents to track their children's school bus in real-time, switch between children from one dashboard, view live GPS positions, and receive instant arrival alerts. eSchool Agenda empowers parents with real-time insights into attendance, performance, and behavior. Additionally, eSchool Administrator sends automatic notifications about behavioral incidents and provides a comprehensive student profile for a holistic view of their child's educational journey.",
+  "confidence": 1.0
+}
+----------------------------------------
