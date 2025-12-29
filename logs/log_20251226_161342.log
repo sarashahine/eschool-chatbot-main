@@ -1,0 +1,997 @@
+time=2025-12-26 16:13:42
+ip=127.0.0.1
+user_query=what is eschool
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:13:46
+ip=127.0.0.1
+user_query=what is eschool
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations, including a digital learning resources platform (eSchool Content), an exam management system (eSchool Exams), a virtual classroom platform (eSchool Room), a parent-teacher communication platform (eSchool Connect), an online gradebook system (eSchool Gradebook), a school administration platform (eSchool Administrator), and a safety and attendance monitoring system (eSchool Safety). It aims to empower educational institutions with a user-friendly platform for modern school management.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:10
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:12
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:14:13
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:14:14
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:14
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system designed for educational institutions.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:16
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:17
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:18
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:19
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide. The platform provides a suite of digital products to streamline education operations, including tools for attendance tracking, grade reporting, financial management, and communication.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:20
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:21
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:22
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:27
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system designed for educational institutions. It offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It serves as a modern school information management system or portal.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:29
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:33
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:38
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:39
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:14:39
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system. It serves as a modern school information management system (portal) offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:41
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:42
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:14:44
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool Portal is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system designed to empower educational institutions with a user-friendly platform.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:45
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide. The platform includes various products such as eSchool Content (a digital content library), eSchool Exams (a digital examination system), eSchool Room (a virtual classroom platform), eSchool Connect (a communication platform), eSchool Gradebook (an online gradebook system), eSchool Administrator (a school administration platform), eSchool Safety (a safety and attendance monitoring system), and eSchool Agenda (a smart scheduling tool). Its goal is to empower educational institutions with a user-friendly platform for managing school operations.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:48
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:14:50
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:14:51
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:14:53
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:53
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:55
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:55
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:56
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:14:56
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:14:57
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:14:57
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:14:59
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:00
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a digital platform that serves as a modern school information management system for educational institutions.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:01
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool Portal is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system designed to empower educational institutions with a user-friendly platform.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:01
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:02
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:03
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:04
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a digital learning platform that provides a suite of products including a content library, exam management system, virtual classroom, gradebook, communication platform, safety tracking, and administrative tools.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:05
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:07
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:09
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system and digital learning platform. It is a modern school information management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It provides a suite of products including eSchool Content (a digital content library), eSchool Exams (a digital examination system), eSchool Room (a virtual classroom platform), eSchool Connect (a parent-teacher communication platform), eSchool Gradebook (an online gradebook system), eSchool Administrator (a school administration platform), eSchool Safety (a school safety and attendance monitoring system), and eSchool Agenda (a smart school scheduling tool).",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:10
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:10
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:11
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:12
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:12
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:14
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:15
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:15
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:16
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:16
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:17
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:18
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:19
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:20
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:21
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system designed for educational institutions.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:21
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:23
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:23
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:24
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:25
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system (also called eSchool Portal) that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is designed as a modern school information management system and is the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:26
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:27
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:28
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a platform designed to empower educational institutions with a suite of digital products for streamlined education operations.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:29
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "ESchool is a comprehensive, AI-powered school management system that offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system designed as a user-friendly platform to empower educational institutions.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:31
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:31
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:32
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:32
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:35
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:36
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:36
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system that serves as a modern school information management system. It offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations, ranging from attendance tracking and grade reporting to financial and communication tools for modern schools.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:37
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:37
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:39
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:40
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:41
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system (also called eSchool Portal) offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations for modern schools.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:41
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.95
+}
+----------------------------------------
+time=2025-12-26 16:15:43
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool Portal is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:45
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:47
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It provides a suite of digital products designed to streamline education operations.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:48
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool Portal is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system and is the preferred choice for educational institutions worldwide. The platform offers a suite of digital products designed to streamline education operations, including a virtual classroom platform, a digital examination system, a gradebook, a communication platform, a safety and attendance monitoring system, a content library, and administrative tools.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:49
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool Portal is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:49
+ip=127.0.0.1
+user_query=what is eschool?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+----------------------------------------
+time=2025-12-26 16:15:51
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:52
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:53
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system (Portal) offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:15:56
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:00
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system and online learning platform. It offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:02
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system (also referred to as a Portal) that offers integrated solutions for modern educational institutions. It provides a suite of digital products designed to streamline education operations, including student enrollment, attendance tracking, grade reporting, financial tools, communication, and online learning. It serves as a digital learning resources platform, an exam management system, a virtual classroom platform, and a communication platform for parents, teachers, and students.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:02
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system (Portal) offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a suite of digital products designed to streamline education operations.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:04
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system described as the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:04
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a platform designed to empower educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:07
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:10
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system designed to empower educational institutions with a user-friendly platform.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:13
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system and online learning platform. It offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. The platform includes a suite of products such as eSchool Content (a digital content library), eSchool Exams (a digital examination system), eSchool Room (a virtual classroom platform), eSchool Connect (a parent-teacher communication platform), eSchool Gradebook (an online gradebook system), eSchool Administrator (a school administration platform), eSchool Safety (a safety and attendance monitoring system), and eSchool Agenda (a smart school scheduling tool).",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:16
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:17
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system and the preferred choice for educational institutions worldwide. The platform includes various products such as a digital content library, exam management system, virtual classroom platform, gradebook, communication tools, safety monitoring, and administrative tools.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:20
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a modern school information management system and the preferred choice for educational institutions worldwide.",
+  "confidence": 1.0
+}
+----------------------------------------
+time=2025-12-26 16:16:20
+ip=127.0.0.1
+user_query=what is eschool?
+stage=answer generation
+response={
+  "answer": "eSchool is a comprehensive, AI-powered school management system that serves as a Modern School Information Management System. It offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as a digital learning platform providing a suite of products for school management.",
+  "confidence": 1.0
+}
+----------------------------------------

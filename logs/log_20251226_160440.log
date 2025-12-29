@@ -1,4 +1,4 @@
-time=2025-12-24 11:06:52
+time=2025-12-26 16:04:40
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -8,65 +8,67 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:07:01
+time=2025-12-26 16:04:40
 ip=127.0.0.1
-user_query=what is eschool
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:07:05
+time=2025-12-26 16:04:42
 ip=127.0.0.1
-user_query=what is eschool
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "eSchool Portal is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as the preferred choice for educational institutions worldwide and aims to empower educational institutions with a user-friendly platform.",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:07:27
+time=2025-12-26 16:04:42
 ip=127.0.0.1
-user_query=who is ossama ezzedine?
+user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "I'm sorry, I can only assist with questions about the school management system website.",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:07:54
+time=2025-12-26 16:04:44
 ip=127.0.0.1
-user_query=who is the company ceo?
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
-  "confidence": 0.9
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:07:56
+time=2025-12-26 16:04:44
 ip=127.0.0.1
-user_query=who is the company ceo?
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "The CEO is Oussama Ezzedine.",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:08:16
+time=2025-12-26 16:04:45
 ip=127.0.0.1
-user_query=who is he
+user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "I'm sorry, I can only assist with questions about the school management system website.",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:26:16
+time=2025-12-26 16:04:46
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -76,17 +78,17 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:26:22
+time=2025-12-26 16:05:02
 ip=127.0.0.1
-user_query=what is eschool
+user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "I'm sorry, I can only assist with questions about the school management system website https://web.myeschoolhome.com.",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:28:55
+time=2025-12-26 16:05:04
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -96,272 +98,277 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:29:05
+time=2025-12-26 16:05:11
 ip=127.0.0.1
-user_query=what is eschool
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
-  "confidence": 0.95
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:29:08
+time=2025-12-26 16:05:11
 ip=127.0.0.1
-user_query=what is eschool
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is a modern school information management system designed to empower educational institutions with a user-friendly platform. The system includes various products such as eSchool Content (for digital learning resources), eSchool Exams (for exam management), eSchool Room (for virtual learning), eSchool Connect (for communication), eSchool Gradebook (for grading), eSchool Administrator (for school administration), and eSchool Safety (for attendance and bus tracking).",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:29:23
+time=2025-12-26 16:05:13
 ip=127.0.0.1
-user_query=who is ossama ezzedine?
+user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "I'm sorry, I can only assist with questions about the school management system website.",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:29:33
+time=2025-12-26 16:05:14
 ip=127.0.0.1
-user_query=who is the company ceo?
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:29:36
+time=2025-12-26 16:05:15
 ip=127.0.0.1
-user_query=who is the company ceo?
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "The CEO of the company is Oussama Ezzedine.",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:29:40
+time=2025-12-26 16:05:16
 ip=127.0.0.1
-user_query=who is he
+user_query=hello
 stage=decision making
-response=I'm sorry, I can only assist with questions about the school management system website.
-----------------------------------------
-time=2025-12-24 11:29:42
-ip=127.0.0.1
-user_query=who is he
-stage=answer generation
 response={
-  "answer": "Oussama Ezzedine is the CEO of the company.",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:29:59
+time=2025-12-26 16:05:16
 ip=127.0.0.1
-user_query=tell me more about him
+user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "I'm sorry, I can only assist with questions about the school management system website, its features, and usage.",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:30:43
+time=2025-12-26 16:05:18
 ip=127.0.0.1
-user_query=what do you like to tell me?
+user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "I'm designed to provide information specifically about the school management system. How can I help you with features like student records, attendance, or grades today?",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:31:07
+time=2025-12-26 16:05:20
 ip=127.0.0.1
-user_query=what products do you offer?
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:31:11
+time=2025-12-26 16:05:20
 ip=127.0.0.1
-user_query=what products do you offer?
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "eSchool offers a suite of digital products including: eSchool Content (digital learning resources), eSchool Exams (exam management), eSchool Room (virtual learning), eSchool Connect (communication), eSchool Gradebook (grading), eSchool Administrator (school administration), eSchool Safety (attendance and security), and eSchool Agenda (scheduling and calendar management).",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:31:30
+time=2025-12-26 16:05:22
 ip=127.0.0.1
-user_query=write the previous answer as a numbered list
+user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "I'm sorry, I can only assist with questions about the school management system website and cannot format responses as numbered lists.",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:31:59
+time=2025-12-26 16:05:22
 ip=127.0.0.1
-user_query=what products do you offer? write as a numbered list
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:32:02
+time=2025-12-26 16:05:24
 ip=127.0.0.1
-user_query=what products do you offer? write as a numbered list
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "eSchool offers products including: eSchool Content (digital learning resources), eSchool Exams (exam management), eSchool Room (virtual learning), eSchool Connect (communication), eSchool Gradebook (grading), eSchool Administrator (school administration), eSchool Safety (attendance and security), and eSchool Agenda (scheduling and calendar management).",
-  "confidence": 0.9
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:32:21
+time=2025-12-26 16:05:24
 ip=127.0.0.1
-user_query=tell me more about the second one
+user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "I'm sorry, I can only assist with questions about the school management system website and cannot format responses as numbered lists or refer to items by position.",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:32:34
+time=2025-12-26 16:05:25
 ip=127.0.0.1
-user_query=what is the second one?
+user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "I'm sorry, I can only assist with general information about the school management system and its features, not by referring to items in a numbered list.",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:32:49
+time=2025-12-26 16:05:26
 ip=127.0.0.1
-user_query=who uses eschool
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
-  "confidence": 0.95
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:32:51
+time=2025-12-26 16:05:27
 ip=127.0.0.1
-user_query=who uses eschool
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "eSchool is used by educational institutions, including teachers, parents, and students.",
-  "confidence": 0.9
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:33:18
+time=2025-12-26 16:05:29
 ip=127.0.0.1
-user_query=only these three types of users?
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
-  "confidence": 0.9
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:33:22
+time=2025-12-26 16:05:29
 ip=127.0.0.1
-user_query=only these three types of users?
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "No, the platform is built for students, parents, teachers, and administrators, creating a unified educational ecosystem for every role in the school community.",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:34:01
+time=2025-12-26 16:05:30
 ip=127.0.0.1
-user_query=how does each of them benefit from eschool?
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
-  "confidence": 0.9
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:34:03
+time=2025-12-26 16:05:31
 ip=127.0.0.1
-user_query=how does each of them benefit from eschool?
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "The platform is built for students, parents, teachers, and administrators, creating a unified educational ecosystem for every role in the school community.",
-  "confidence": 0.9
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:34:18
+time=2025-12-26 16:05:32
 ip=127.0.0.1
-user_query=how do parents benefit from eschool?
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-24 11:34:24
+time=2025-12-26 16:05:32
 ip=127.0.0.1
-user_query=how do parents benefit from eschool?
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "Parents benefit from eSchool through several products. eSchool Connect provides a communication platform allowing them to stay informed with messages, announcements, and real-time updates. It also offers features like posts, comments, likes, polls, and access to statistical data for reviewing academic performance and attendance. eSchool Safety enables parents to track their children's school bus in real-time, switch between children from one dashboard, view live GPS positions, and receive instant arrival alerts. eSchool Agenda empowers parents with real-time insights into attendance, performance, and behavior. Additionally, eSchool Administrator sends automatic notifications about behavioral incidents and provides a comprehensive student profile for a holistic view of their child's educational journey.",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:21:08
+time=2025-12-26 16:05:34
 ip=127.0.0.1
-user_query=what is eschool
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
-  "confidence": 0.95
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:21:12
+time=2025-12-26 16:05:35
 ip=127.0.0.1
-user_query=what is eschool
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "eSchool is a comprehensive, AI-powered school management system offering integrated solutions for student enrollment, attendance, grades, communication, and online learning. It is described as the preferred choice for educational institutions worldwide and aims to empower educational institutions with a user-friendly platform.",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:21:55
+time=2025-12-26 16:05:35
 ip=127.0.0.1
-user_query=what is eschool
+user_query=hello
 stage=decision making
 response={
-  "category": "related",
-  "answer": "",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:21:59
+time=2025-12-26 16:05:37
 ip=127.0.0.1
-user_query=what is eschool
-stage=answer generation
+user_query=hello
+stage=decision making
 response={
-  "answer": "eSchool is a comprehensive, AI-powered school management system and the preferred choice for educational institutions worldwide. It offers integrated solutions for student enrollment, attendance, grades, communication, and online learning. The platform includes various products such as eSchool Content (a digital learning resources library), eSchool Exams (a digital examination system), eSchool Room (a virtual classroom platform), eSchool Connect (a parent-teacher communication platform), eSchool Gradebook (an online gradebook system), eSchool Administrator (a school administration platform), and eSchool Safety (a school safety and attendance monitoring system). Its aim is to empower educational institutions with a user-friendly platform.",
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:18
+time=2025-12-26 16:05:51
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -371,7 +378,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:19
+time=2025-12-26 16:05:52
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -381,7 +388,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:20
+time=2025-12-26 16:05:53
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -391,7 +398,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:21
+time=2025-12-26 16:05:54
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -401,7 +408,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:22
+time=2025-12-26 16:05:55
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -411,17 +418,17 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:23
+time=2025-12-26 16:05:56
 ip=127.0.0.1
 user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "Hello! How can I assist you with the school management system today?",
+  "answer": "Hello! Welcome to the school management system. How can I help you today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:24
+time=2025-12-26 16:05:57
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -431,7 +438,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:27
+time=2025-12-26 16:05:58
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -441,7 +448,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:27
+time=2025-12-26 16:05:59
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -451,7 +458,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:29
+time=2025-12-26 16:06:00
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -461,7 +468,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:29
+time=2025-12-26 16:06:01
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -471,7 +478,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:31
+time=2025-12-26 16:06:01
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -481,7 +488,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:31
+time=2025-12-26 16:06:02
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -491,7 +498,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:32
+time=2025-12-26 16:06:03
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -501,7 +508,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:32
+time=2025-12-26 16:06:04
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -511,7 +518,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:33
+time=2025-12-26 16:06:06
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -521,7 +528,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:33
+time=2025-12-26 16:06:06
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -531,7 +538,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:35
+time=2025-12-26 16:06:07
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -541,7 +548,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:35
+time=2025-12-26 16:06:08
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -551,7 +558,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:36
+time=2025-12-26 16:06:09
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -561,7 +568,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:36
+time=2025-12-26 16:06:10
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -571,7 +578,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:38
+time=2025-12-26 16:06:11
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -581,7 +588,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:38
+time=2025-12-26 16:06:11
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -591,7 +598,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:39
+time=2025-12-26 16:06:12
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -601,7 +608,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:40
+time=2025-12-26 16:06:13
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -611,7 +618,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:41
+time=2025-12-26 16:06:15
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -621,7 +628,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:41
+time=2025-12-26 16:06:15
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -631,7 +638,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:42
+time=2025-12-26 16:06:16
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -641,7 +648,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:42
+time=2025-12-26 16:06:17
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -651,7 +658,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:43
+time=2025-12-26 16:06:18
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -661,7 +668,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:44
+time=2025-12-26 16:06:19
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -671,7 +678,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:47
+time=2025-12-26 16:06:19
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -681,7 +688,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:47
+time=2025-12-26 16:06:20
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -691,7 +698,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:49
+time=2025-12-26 16:06:21
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -701,7 +708,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:49
+time=2025-12-26 16:06:22
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -711,7 +718,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:50
+time=2025-12-26 16:06:29
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -721,7 +728,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:50
+time=2025-12-26 16:06:30
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -731,7 +738,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:52
+time=2025-12-26 16:06:32
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -741,7 +748,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:52
+time=2025-12-26 16:06:32
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -751,7 +758,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:53
+time=2025-12-26 16:06:34
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -761,7 +768,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:53
+time=2025-12-26 16:06:35
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -771,7 +778,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:55
+time=2025-12-26 16:06:35
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -781,7 +788,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:55
+time=2025-12-26 16:06:37
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -791,7 +798,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:56
+time=2025-12-26 16:06:37
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -801,7 +808,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:58
+time=2025-12-26 16:06:39
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -811,7 +818,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:58
+time=2025-12-26 16:06:39
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -821,7 +828,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:59
+time=2025-12-26 16:06:41
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -831,7 +838,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:22:59
+time=2025-12-26 16:06:41
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -841,7 +848,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:04
+time=2025-12-26 16:06:42
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -851,7 +858,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:04
+time=2025-12-26 16:06:42
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -861,7 +868,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:05
+time=2025-12-26 16:06:44
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -871,7 +878,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:06
+time=2025-12-26 16:06:44
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -881,7 +888,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:06
+time=2025-12-26 16:06:46
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -891,7 +898,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:07
+time=2025-12-26 16:06:46
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -901,7 +908,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:08
+time=2025-12-26 16:06:48
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -911,17 +918,17 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:08
+time=2025-12-26 16:06:48
 ip=127.0.0.1
 user_query=hello
 stage=decision making
 response={
   "category": "unrelated",
-  "answer": "Hello! How can I assist you with the school management system today?",
+  "answer": "Hello! Welcome to the school management system support. How can I help you today?",
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:09
+time=2025-12-26 16:06:49
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -931,7 +938,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:10
+time=2025-12-26 16:06:57
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -941,7 +948,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:12
+time=2025-12-26 16:06:57
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -951,7 +958,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:13
+time=2025-12-26 16:06:59
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -961,7 +968,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:13
+time=2025-12-26 16:06:59
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -971,7 +978,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:14
+time=2025-12-26 16:07:00
 ip=127.0.0.1
 user_query=hello
 stage=decision making
@@ -981,7 +988,7 @@ response={
   "confidence": 1.0
 }
 ----------------------------------------
-time=2025-12-25 09:23:16
+time=2025-12-26 16:07:00
 ip=127.0.0.1
 user_query=hello
 stage=decision making

@@ -9,7 +9,7 @@ class MyUser(HttpUser):
     @task
     def post_query(self):
         payload = {
-            "query": "hello",
+            "query": "what is eschool?",
             "history": [],
             "unrelated_streak": 0
         }
