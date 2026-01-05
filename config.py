@@ -41,6 +41,7 @@ RETRIEVAL_END_MESSAGE=os.getenv("RETRIEVAL_END_MESSAGE")
 # Flask settings
 # -----------------------------
 PORT = os.getenv("PORT")
+NOMIC_PORT = os.getenv("NOMIC_PORT")
 FLASK_DEBUG = os.getenv("FLASK_DEBUG")
 
 # -----------------------------
@@ -48,9 +49,17 @@ FLASK_DEBUG = os.getenv("FLASK_DEBUG")
 # -----------------------------
 LOG_MAX_LINES = int(os.getenv("LOG_MAX_LINES"))
 LOGGING_FILE = os.getenv("LOGGING_FILE")
+NOMIC_LOGGING_FILE = os.getenv("NOMIC_LOGGING_FILE")
 
 # -----------------------------
 # Blocking / Filters
 # -----------------------------
 BLOCK_THRESHOLD = int(os.getenv("BLOCK_THRESHOLD"))
 BLOCK_MESSAGE = os.getenv("BLOCK_MESSAGE")
+
+# -----------------------------
+# Nomic Embedding settings
+# -----------------------------
+NOMIC_EMBED_URL = os.getenv("NOMIC_EMBED_URL")
+NOMIC_MODEL_NAME = os.getenv("NOMIC_MODEL_NAME")
+NOMIC_COLLECTION_NAME = os.getenv("NOMIC_COLLECTION_NAME")

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Qdrant Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; 
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .clear-btn {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .clear-btn:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+        
+        .clear-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        #chatContainer {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.user {
+            align-self: flex-end;
+        }
+        
+        .message.assistant {
+            align-self: flex-start;
+        }
+        
+        .message-label {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            opacity: 0.7;
+        }
+        
+        .message.user .message-label {
+            text-align: right;
+            color: #007bff;
+        }
+        
+        .message.assistant .message-label {
+            color: #28a745;
+        }
+        
+        .message-content {
+            padding: 12px 16px;
+            border-radius: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+        
+        .message.user .message-content {
+            background-color: #007bff;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message.assistant .message-content {
+            background-color: white;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+        
+        .input-container {
+            background-color: white;
+            padding: 15px 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+        }
+        
+        #query {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 24px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        #query:focus {
+            border-color: #007bff;
+        }
+        
+        .send-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .send-btn:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        
+        .send-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #999;
+            margin-top: 50px;
+            font-size: 18px;
+        }
+
+        .admin-wrapper {
+            position: relative;
+            background-color: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            box-shadow: 0 -1px 3px rgba(0,0,0,0.03);
+        }
+
+        .admin-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background-color: #f7f9fb;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .admin-toggle-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            color: #333;
+            font-size: 12px;
+        }
+
+        .admin-toggle-text strong {
+            font-size: 13px;
+        }
+
+        .admin-panel {
+            padding: 12px 20px 16px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            transition: max-height 0.2s ease, opacity 0.2s ease, padding 0.2s ease;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .admin-panel.compact {
+            max-height: 180px;
+        }
+
+        .admin-panel.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding: 0 20px;
+            overflow: hidden;
+            border-top: none;
+        }
+
+        .admin-handle {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 72px;
+            border-radius: 8px 0 0 8px;
+            background-color: #007bff;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: ns-resize;
+            user-select: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+
+        .admin-handle:hover {
+            background-color: #0056b3;
+        }
+
+        .admin-handle:active {
+            background-color: #004494;
+        }
+
+        .admin-handle span {
+            display: inline-block;
+            transform: rotate(90deg);
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .admin-section {
+            flex: 1 1 260px;
+            min-width: 240px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            background-color: #fafafa;
+        }
+
+        .admin-section h3 {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .admin-section label {
+            display: block;
+            font-size: 12px;
+            margin-top: 6px;
+            margin-bottom: 2px;
+            color: #555;
+        }
+
+        .admin-section input,
+        .admin-section textarea {
+            width: 100%;
+            font-size: 12px;
+            padding: 6px 8px;
+            border-radius: 4px;
+            border: 1px solid #d0d0d0;
+            resize: vertical;
+        }
+
+        .admin-section textarea {
+            min-height: 50px;
+        }
+
+        .admin-actions {
+            margin-top: 8px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .admin-btn {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .admin-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .view-text {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #333;
+            max-height: 80px;
+            overflow-y: auto;
+            padding: 6px 8px;
+            border-radius: 4px;
+            border: 1px dashed #d0d0d0;
+            background-color: #fff;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Qdrant Chatbot</h2>
+        <button class="clear-btn" id="clearBtn" onclick="clearHistory()" disabled>Clear History</button>
+    </div>
+    
+    <div id="chatContainer">
+        <div class="empty-state">Start a conversation by asking a question below...</div>
+    </div>
+
+    <!-- Simple chunk management panel -->
+    <div class="admin-wrapper">
+        <div class="admin-toggle">
+            <div class="admin-toggle-text">
+                <strong>Qdrant controls</strong>
+                <span id="adminToggleStatus">Expanded</span>
+            </div>
+        </div>
+        <div class="admin-panel" id="adminPanel">
+        <div class="admin-section">
+            <h3>Insert Chunk</h3>
+            <label for="insert-text">Text *</label>
+            <textarea id="insert-text" placeholder="Chunk text"></textarea>
+            <label for="insert-page-title">Page title</label>
+            <input id="insert-page-title" type="text" placeholder="Optional page title">
+            <label for="insert-url">URL</label>
+            <input id="insert-url" type="text" placeholder="Optional URL">
+            <label for="insert-section-title">Section title</label>
+            <input id="insert-section-title" type="text" placeholder="Optional section title">
+            <div class="admin-actions">
+                <button class="admin-btn" id="insert-btn" onclick="handleInsertChunk()">Insert</button>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h3>Update Chunk</h3>
+            <label for="update-id">Chunk ID *</label>
+            <div style="display: flex; gap: 6px; align-items: center;">
+                <input id="update-id" type="number" min="1" placeholder="Existing chunk ID" style="flex: 1;">
+                <button class="admin-btn" type="button" onclick="handleViewChunk()">View</button>
+            </div>
+            <label for="update-text">New text (optional)</label>
+            <textarea id="update-text" placeholder="Leave empty to keep existing text"></textarea>
+            <label for="update-page-title">Page title (optional)</label>
+            <input id="update-page-title" type="text" placeholder="New or updated page title">
+            <label for="update-url">URL (optional)</label>
+            <input id="update-url" type="text" placeholder="New or updated URL">
+            <label for="update-section-title">Section title (optional)</label>
+            <input id="update-section-title" type="text" placeholder="New or updated section title">
+            <div id="view-chunk-text" class="view-text" style="display:none;"></div>
+            <div class="admin-actions">
+                <button class="admin-btn" id="update-btn" onclick="handleUpdateChunk()">Update</button>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h3>Delete Chunk</h3>
+            <label for="delete-id">Chunk ID *</label>
+            <input id="delete-id" type="number" min="1" placeholder="Existing chunk ID">
+            <div class="admin-actions">
+                <button class="admin-btn" id="delete-btn" onclick="handleDeleteChunk()">Delete</button>
+            </div>
+        </div>
+    </div>
+        <div class="admin-handle" id="adminHandle" title="Drag up/down or click to toggle">
+            <span>❮</span>
+        </div>
+    </div>
+    
+    <div class="input-container">
+        <input type="text" id="query" placeholder="Type your question here..." onkeypress="handleKeyPress(event)">
+        <button class="send-btn" id="sendBtn" onclick="sendQuery()">Send</button>
+    </div>
+
+    <script>
+        // ---------------------------------------
+        // Session History (Frontend Array)
+        // Structure matches backend expectations:
+        // chatHistory = [
+        //     { question: "...", answer: "..." },
+        //     { question: "...", answer: "..." }
+        // ];
+        // ---------------------------------------
+        let chatHistory = [];
+        let unrelatedStreak = 0;
+        let isBlocked = false;
+
+        function setInputDisabled(disabled) {
+            const queryInput = document.getElementById('query');
+            const sendBtn = document.getElementById('sendBtn');
+            queryInput.disabled = disabled;
+            sendBtn.disabled = disabled;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendQuery();
+            }
+        }
+
+        function addMessageToUI(role, content) {
+            const chatContainer = document.getElementById('chatContainer');
+            const emptyState = chatContainer.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            const labelDiv = document.createElement('div');
+            labelDiv.className = 'message-label';
+            labelDiv.textContent = role === 'user' ? 'You' : 'Assistant';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = content;
+            
+            messageDiv.appendChild(labelDiv);
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear the conversation history?')) {
+                chatHistory = [];
+                unrelatedStreak = 0;
+                isBlocked = false;
+                const chatContainer = document.getElementById('chatContainer');
+                chatContainer.innerHTML = '<div class="empty-state">Start a conversation by asking a question below...</div>';
+                updateClearButton();
+                setInputDisabled(false);
+                console.log("History cleared");
+            }
+        }
+
+        function updateClearButton() {
+            const clearBtn = document.getElementById('clearBtn');
+            clearBtn.disabled = chatHistory.length === 0;
+        }
+
+        async function sendQuery() {
+            const queryInput = document.getElementById('query');
+            const sendBtn = document.getElementById('sendBtn');
+            const query = queryInput.value.trim();
+
+            if (!query || isBlocked) return;
+
+            // Disable input and button while processing
+            setInputDisabled(true);
+
+            // Clear input field
+            queryInput.value = '';
+
+            // Add user message to UI immediately
+            addMessageToUI('user', query);
+
+            // Show loading indicator
+            const chatContainer = document.getElementById('chatContainer');
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message assistant';
+            loadingDiv.id = 'loading-message';
+            loadingDiv.innerHTML = `
+                <div class="message-label">Assistant</div>
+                <div class="message-content loading">Thinking</div>
+            `;
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            try {
+                // Prepare history in the format expected by backend (question/answer)
+                const historyForBackend = chatHistory.map(item => ({
+                    question: item.question,
+                    answer: item.answer
+                }));
+
+                const response = await fetch('/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        query: query,
+                        history: historyForBackend,  // Send history to backend
+                        unrelated_streak: unrelatedStreak
+                    })
+                });
+
+                // Remove loading indicator
+                const loadingMsg = document.getElementById('loading-message');
+                if (loadingMsg) {
+                    loadingMsg.remove();
+                }
+
+                if (!response.ok) {
+                    const errorText = "⚠️ Error: " + response.statusText;
+                    addMessageToUI('assistant', errorText);
+                    return;
+                }
+
+                const data = await response.json();
+                const answer = data.answer || "No answer returned.";
+                unrelatedStreak = typeof data.unrelated_streak === 'number' ? data.unrelated_streak : unrelatedStreak;
+                isBlocked = Boolean(data.blocked);
+
+                // Add assistant response to UI
+                addMessageToUI('assistant', answer);
+
+                // ---------------------------------------
+                // Save new pair into history array
+                // Using question/answer format to match backend expectations
+                // ---------------------------------------
+                chatHistory.push({
+                    question: query,
+                    answer: answer
+                });
+
+                // Update clear button state
+                updateClearButton();
+
+                console.log("Updated history:", chatHistory);
+                console.log("History length:", chatHistory.length, "exchanges");
+
+            } catch (err) {
+                console.error(err);
+                
+                // Remove loading indicator
+                const loadingMsg = document.getElementById('loading-message');
+                if (loadingMsg) {
+                    loadingMsg.remove();
+                }
+                
+                addMessageToUI('assistant', "⚠️ Network or server error. Please try again.");
+            } finally {
+                setInputDisabled(isBlocked);
+                if (!isBlocked) {
+                    queryInput.focus();
+                }
+            }
+        }
+
+        function buildMetadata(prefix) {
+            const pageTitle = document.getElementById(prefix + '-page-title')?.value.trim();
+            const url = document.getElementById(prefix + '-url')?.value.trim();
+            const sectionTitle = document.getElementById(prefix + '-section-title')?.value.trim();
+            const meta = {};
+            if (pageTitle) meta.page_title = pageTitle;
+            if (url) meta.url = url;
+            if (sectionTitle) meta.section_title = sectionTitle;
+            return meta;
+        }
+
+        async function handleInsertChunk() {
+            const btn = document.getElementById('insert-btn');
+            const textEl = document.getElementById('insert-text');
+            const text = textEl.value.trim();
+            if (!text) {
+                alert('Text is required to insert a chunk.');
+                return;
+            }
+            btn.disabled = true;
+            try {
+                const metadata = buildMetadata('insert');
+                const res = await fetch('/chunks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text, metadata })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert('Insert failed: ' + (data.error || res.statusText));
+                } else {
+                    alert('Inserted chunk with ID ' + data.id);
+                    textEl.value = '';
+                    const pageTitleEl = document.getElementById('insert-page-title');
+                    const urlEl = document.getElementById('insert-url');
+                    const sectionTitleEl = document.getElementById('insert-section-title');
+                    if (pageTitleEl) pageTitleEl.value = '';
+                    if (urlEl) urlEl.value = '';
+                    if (sectionTitleEl) sectionTitleEl.value = '';
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Network error while inserting chunk.');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function handleUpdateChunk() {
+            const btn = document.getElementById('update-btn');
+            const idValue = document.getElementById('update-id').value;
+            const chunkId = parseInt(idValue, 10);
+            if (!chunkId || chunkId <= 0) {
+                alert('Please enter a valid numeric chunk ID to update.');
+                return;
+            }
+            const newText = document.getElementById('update-text').value.trim();
+            const metadata = buildMetadata('update');
+            if (!newText && Object.keys(metadata).length === 0) {
+                alert('Provide new text and/or metadata to update.');
+                return;
+            }
+            btn.disabled = true;
+            try {
+                const body = {};
+                if (newText) body.text = newText;
+                if (Object.keys(metadata).length > 0) body.metadata = metadata;
+                const res = await fetch('/chunks/' + chunkId, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert('Update failed: ' + (data.error || res.statusText));
+                } else {
+                    alert(data.message || ('Updated chunk ' + chunkId));
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Network error while updating chunk.');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function handleDeleteChunk() {
+            const btn = document.getElementById('delete-btn');
+            const idValue = document.getElementById('delete-id').value;
+            const chunkId = parseInt(idValue, 10);
+            if (!chunkId || chunkId <= 0) {
+                alert('Please enter a valid numeric chunk ID to delete.');
+                return;
+            }
+            if (!confirm('Are you sure you want to delete chunk ID ' + chunkId + '?')) {
+                return;
+            }
+            btn.disabled = true;
+            try {
+                const res = await fetch('/chunks/' + chunkId, { method: 'DELETE' });
+                const data = await res.json();
+                if (!res.ok) {
+                    alert('Delete failed: ' + (data.error || res.statusText));
+                } else {
+                    alert(data.message || ('Deleted chunk ' + chunkId));
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Network error while deleting chunk.');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function handleViewChunk() {
+            const idValue = document.getElementById('update-id').value;
+            const chunkId = parseInt(idValue, 10);
+            const viewBox = document.getElementById('view-chunk-text');
+            if (!chunkId || chunkId <= 0) {
+                alert('Please enter a valid numeric chunk ID to view.');
+                return;
+            }
+            viewBox.style.display = 'none';
+            viewBox.textContent = '';
+            try {
+                const res = await fetch('/chunks/' + chunkId);
+                const data = await res.json();
+                if (!res.ok) {
+                    alert('View failed: ' + (data.error || res.statusText));
+                    return;
+                }
+                const text = data.text || '';
+                viewBox.textContent = text ? text : '(No text payload on this chunk)';
+                viewBox.style.display = 'block';
+            } catch (e) {
+                console.error(e);
+                alert('Network error while viewing chunk.');
+            }
+        }
+
+        // -------- Admin panel drag handle --------
+        const ADMIN_MIN_HEIGHT = 0;
+        const ADMIN_MAX_HEIGHT = 420;
+        const ADMIN_COMPACT_HEIGHT = 180;
+        const ADMIN_DEFAULT_HEIGHT = 260;
+        let adminHeight = ADMIN_DEFAULT_HEIGHT;
+        let lastOpenHeight = ADMIN_DEFAULT_HEIGHT;
+        let isDraggingHandle = false;
+        let handleMoved = false;
+        let dragStartY = 0;
+        let dragStartHeight = ADMIN_DEFAULT_HEIGHT;
+
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function applyAdminHeight(px) {
+            const panel = document.getElementById('adminPanel');
+            const status = document.getElementById('adminToggleStatus');
+            if (!panel || !status) return;
+
+            adminHeight = clamp(px, ADMIN_MIN_HEIGHT, ADMIN_MAX_HEIGHT);
+            panel.style.maxHeight = adminHeight + 'px';
+            panel.classList.remove('compact', 'collapsed');
+
+            if (adminHeight <= 8) {
+                panel.classList.add('collapsed');
+                status.textContent = 'Hidden';
+            } else if (adminHeight <= ADMIN_COMPACT_HEIGHT) {
+                panel.classList.add('compact');
+                status.textContent = 'Compact';
+                lastOpenHeight = ADMIN_COMPACT_HEIGHT;
+            } else {
+                status.textContent = 'Expanded';
+                lastOpenHeight = adminHeight;
+            }
+        }
+
+        function handleDragStart(event) {
+            isDraggingHandle = true;
+            dragStartY = event.clientY;
+            dragStartHeight = adminHeight;
+            event.preventDefault();
+            handleMoved = false;
+        }
+
+        function handleDragMove(event) {
+            if (!isDraggingHandle) return;
+            const delta = event.clientY - dragStartY;
+            if (Math.abs(delta) > 2) {
+                handleMoved = true;
+            }
+            const nextHeight = dragStartHeight + delta;
+            applyAdminHeight(nextHeight);
+        }
+
+        function handleDragEnd() {
+            isDraggingHandle = false;
+        }
+
+        function handleAdminToggleClick() {
+            if (adminHeight <= 8) {
+                applyAdminHeight(lastOpenHeight || ADMIN_DEFAULT_HEIGHT);
+            } else {
+                applyAdminHeight(0);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyAdminHeight(ADMIN_DEFAULT_HEIGHT);
+            const handle = document.getElementById('adminHandle');
+            if (handle) {
+                handle.addEventListener('pointerdown', handleDragStart);
+                window.addEventListener('pointermove', handleDragMove);
+                window.addEventListener('pointerup', handleDragEnd);
+                handle.addEventListener('click', (e) => {
+                    // Ignore click that immediately follows a drag
+                    if (isDraggingHandle || handleMoved) return;
+                    handleAdminToggleClick();
+                    e.preventDefault();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
