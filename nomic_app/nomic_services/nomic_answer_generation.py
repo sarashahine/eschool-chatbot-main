@@ -2,7 +2,7 @@ import json
 
 from config import MODEL_NAME, RETRIEVAL_START_MESSAGE, RETRIEVAL_END_MESSAGE
 from nomic_app.nomic_services.utils import call_ollama_with_retries
-from nomic_app.nomic_services.nomic_logging_utils import log_answer_generation
+from nomic_app.nomic_services.nomic_logging_utils import nomic_log_answer_generation
 
 
 def generate_answer(user_query, history, context_block, ollama_client, answer_generation_user_prompt, answer_generation_system_prompt, user_ip):
@@ -36,10 +36,12 @@ def generate_answer(user_query, history, context_block, ollama_client, answer_ge
     try:
         raw_response = getattr(getattr(response, "message", None), "content", str(response))
 
-        log_answer_generation(
+        nomic_log_answer_generation(
                 ip = user_ip,
                 user_query = user_query,
                 response = raw_response,
+                embedding_model = "nomic",
+                retrieved_chunks = context_block,
         )
     except Exception:
         # Logging must not break normal behavior

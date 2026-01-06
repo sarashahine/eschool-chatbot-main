@@ -4,9 +4,9 @@ from flask import current_app
 from config import HISTORY_START_MESSAGE, HISTORY_END_MESSAGE, BLOCK_THRESHOLD, BLOCK_MESSAGE
 from ..nomic_services.utils import OllamaUnavailable
 from ..nomic_services.nomic_retrieval import retrieve, truncate_answer_generation_history, pre_process_query
-from ..nomic_services.answer_generation import generate_answer
+from ..nomic_services.nomic_answer_generation import generate_answer
 
-nomic_main_routes = Blueprint("main", __name__)
+nomic_main_routes = Blueprint("nomic_main", __name__)
 
 # -----------------------------
 # HTML route

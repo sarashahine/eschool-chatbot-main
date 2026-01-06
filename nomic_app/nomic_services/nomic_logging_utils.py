@@ -5,13 +5,18 @@ from datetime import datetime
 from config import NOMIC_LOGGING_FILE, LOG_MAX_LINES
 
 
-class LineRotatingFileHandler(logging.Handler):
+class NomicLineRotatingFileHandler(logging.Handler):
     def __init__(self, base_filepath: str, max_lines: int):
         super().__init__()
         self.max_lines = max_lines
 
-        directory, filename = os.path.split(base_filepath)
-        name, ext = os.path.splitext(filename)
+        directory, filename = os.path.split(base_filepath)  # directory=nomic_logs      filename=nomic_log_history.log
+        name, ext = os.path.splitext(filename)              # name=nomic_log_history    ext=.log
+
+        print("directoy: ", directory)
+        print("filename: ", filename)
+        print("name: ", name)
+        print("ext: ", ext)
 
         if directory and not os.path.exists(directory):
             os.makedirs(directory, exist_ok=True)
@@ -78,12 +83,12 @@ class LineRotatingFileHandler(logging.Handler):
 # Shared logger
 # ---------------------------------------------------------------------
 
-def get_chatbot_logger() -> logging.Logger:
-    logger = logging.getLogger("chatbot_logger")
+def nomic_get_chatbot_logger() -> logging.Logger:
+    logger = logging.getLogger("nomic_chatbot_logger")
     if logger.handlers:
         return logger
 
-    handler = LineRotatingFileHandler(
+    handler = NomicLineRotatingFileHandler(
         NOMIC_LOGGING_FILE,
         LOG_MAX_LINES,
     )
@@ -95,6 +100,8 @@ def get_chatbot_logger() -> logging.Logger:
             "user_query=%(user_query)s\n"
             "stage=%(stage)s\n"
             "response=%(response)s\n"
+            "embedding_model=%(embedding_model)s\n"
+            "retrieved_chunks=%(retrieved_chunks)s\n"
             "----------------------------------------"
         ),
         datefmt="%Y-%m-%d %H:%M:%S",
@@ -112,35 +119,43 @@ def get_chatbot_logger() -> logging.Logger:
 # Logging helpers
 # ---------------------------------------------------------------------
 
-def log_decision_making(
+def nomic_log_decision_making(
     *,
     ip: str,
     user_query: str,
     response: str,
+    embedding_model,
+    retrieved_chunks,
 ):
-    get_chatbot_logger().info(
+    nomic_get_chatbot_logger().info(
         "",
         extra={
             "ip": ip,
             "user_query": user_query,
             "stage": "decision making",
             "response": response,
+            "embedding_model": embedding_model,
+            "retrieved_chunks": retrieved_chunks,
         },
     )
 
 
-def log_answer_generation(
+def nomic_log_answer_generation(
     *,
     ip: str,
     user_query: str,
     response: str,
+    embedding_model,
+    retrieved_chunks,
 ):
-    get_chatbot_logger().info(
+    nomic_get_chatbot_logger().info(
         "",
         extra={
             "ip": ip,
             "user_query": user_query,
             "stage": "answer generation",
             "response": response,
+            "embedding_model": embedding_model,
+            "retrieved_chunks": retrieved_chunks,
         },
     )

@@ -44,6 +44,8 @@ def pre_process_query(query, decision_making_user_prompt, history, ollama_client
                 ip = user_ip,
                 user_query = query,
                 response = raw_response,
+                embedding_model = "embedding-gemma",
+                retrieved_chunks = "",
         )
     except Exception:
         # Logging should never break the main flow

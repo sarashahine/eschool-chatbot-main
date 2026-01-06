@@ -95,6 +95,8 @@ def get_chatbot_logger() -> logging.Logger:
             "user_query=%(user_query)s\n"
             "stage=%(stage)s\n"
             "response=%(response)s\n"
+            "embedding_model=%(embedding_model)s\n"
+            "retrieved_chunks=%(retrieved_chunks)s\n"
             "----------------------------------------"
         ),
         datefmt="%Y-%m-%d %H:%M:%S",
@@ -117,6 +119,8 @@ def log_decision_making(
     ip: str,
     user_query: str,
     response: str,
+    embedding_model,
+    retrieved_chunks,
 ):
     get_chatbot_logger().info(
         "",
@@ -125,6 +129,8 @@ def log_decision_making(
             "user_query": user_query,
             "stage": "decision making",
             "response": response,
+            "embedding_model": embedding_model,
+            "retrieved_chunks": retrieved_chunks,
         },
     )
 
@@ -134,6 +140,8 @@ def log_answer_generation(
     ip: str,
     user_query: str,
     response: str,
+    embedding_model,
+    retrieved_chunks,
 ):
     get_chatbot_logger().info(
         "",
@@ -142,5 +150,7 @@ def log_answer_generation(
             "user_query": user_query,
             "stage": "answer generation",
             "response": response,
+            "embedding_model": embedding_model,
+            "retrieved_chunks": retrieved_chunks,
         },
     )

@@ -1,0 +1,2 @@
+Translate the following text into clear, accurate Modern Standard Arabic. Preserve the full meaning exactly, maintain consistent terminology throughout, and do not add or omit information. Use neutral, formal MSA suitable for knowledge-base embeddings. Output only the Arabic text, with no explanations or extra formatting.
+

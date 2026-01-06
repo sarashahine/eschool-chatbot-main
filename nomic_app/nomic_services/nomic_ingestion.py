@@ -28,17 +28,19 @@ def upsert_batch(client: QdrantClient, items: List[Dict]):
     texts = [item["text"] for item in items]
     ids = [item["id"] for item in items]
 
-    response = requests.post(
-        NOMIC_EMBED_URL,
-        json={
-            "model": NOMIC_MODEL_NAME,
-            "prompt": texts,  # Ollama supports batch prompts
-        },
-        timeout=60,
-    )
-    response.raise_for_status()
+    embeddings = []
 
-    embeddings = response.json()["embedding"]
+    for text in texts:
+        response = requests.post(
+            NOMIC_EMBED_URL,
+            json={
+                "model": NOMIC_MODEL_NAME,
+                "prompt": text,  # Ollama supports batch prompts
+            },
+            timeout=60,
+        )
+        response.raise_for_status()
+        embeddings.append(response.json()["embedding"])
 
     points = [
         rest.PointStruct(

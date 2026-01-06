@@ -1,9 +1,8 @@
-import json
 import requests
 
 from config import NOMIC_COLLECTION_NAME, NUM_RETRIEVED_CHUNKS, TOKEN_LIMIT, MODEL_NAME, NOMIC_EMBED_URL, NOMIC_MODEL_NAME
 from nomic_app.nomic_services.utils import call_ollama_with_retries, safe_json
-from nomic_app.nomic_services.nomic_logging_utils import log_decision_making
+from nomic_app.nomic_services.nomic_logging_utils import nomic_log_decision_making
 
 def retrieve(query, qdrant_client):
     # 1. Get embedding from local Ollama (Nomic)
@@ -54,13 +53,16 @@ def pre_process_query(query, decision_making_user_prompt, history, ollama_client
 
     try:
         raw_response = getattr(getattr(response, "message", None), "content", str(response))
-        log_decision_making(
+        nomic_log_decision_making(
                 ip = user_ip,
                 user_query = query,
                 response = raw_response,
+                embedding_model = "nomic",
+                retrieved_chunks = "",
         )
-    except Exception:
+    except Exception as ex:
         # Logging should never break the main flow
+        print(ex)
         pass
 
     result = safe_json(response.message.content)

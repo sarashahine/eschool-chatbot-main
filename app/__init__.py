@@ -36,6 +36,8 @@ def create_app():
 
     app.answer_generation_system_prompt_tokens = count_tokens(app.answer_generation_system_prompt, app.ollama_client)
 
+    app.translation_prompt = load_prompt("prompts/translation_prompt.txt")
+
     # Register routes
     app.register_blueprint(main_routes)
     app.register_blueprint(chunk_routes)

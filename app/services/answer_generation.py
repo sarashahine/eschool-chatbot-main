@@ -40,6 +40,8 @@ def generate_answer(user_query, history, context_block, ollama_client, answer_ge
                 ip = user_ip,
                 user_query = user_query,
                 response = raw_response,
+                embedding_model = "embedding-gemma",
+                retrieved_chunks = context_block,
         )
     except Exception:
         # Logging must not break normal behavior
