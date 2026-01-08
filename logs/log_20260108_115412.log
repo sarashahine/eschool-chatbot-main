@@ -1,0 +1,38 @@
+time=2026-01-08 11:54:12
+ip=127.0.0.1
+user_query=where is the company located?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+embedding_model=embedding-gemma
+retrieved_chunks=
+----------------------------------------
+time=2026-01-08 11:54:13
+ip=127.0.0.1
+user_query=where is the company located?
+stage=answer generation
+response={
+  "answer": "The company is located at Hamra - Sanayeh, Beirut, Lebanon, BAC Center building, Third floor.",
+  "confidence": 1.0
+}
+embedding_model=embedding-gemma
+retrieved_chunks= Text: Get in Touch | Email: info@eschooledu.com
+Get in Touch | Location Addresss: Hamra - Sanayeh, Beirut, Lebanon, BAC Center building, Third floor
+Get in Touch | Facebook: https://www.facebook.com/eschooledu/#
+Get in Touch | Instagram: https://www.instagram.com/eschool.leb/?igshid=OGQ2MjdiOTE%3D
+Get in Touch | LinkedIn: https://www.linkedin.com/company/eschool-edu/
+Get in Touch | Send Us a Message: Fill the form on website, fill you First Name, Last Name, Email, Phone, and Message
+ Section: Get in Touch
+ URL: https://web.myeschoolhome.com/contact . 
+
+ Text: Our Journey - 2007: Empowering Education Through Innovation. Our company’s dedication to spearheading digital transformation in education across Arab educational institutions became a priority. We envisioned a future where innovative technologies enhance learning experiences, making education more accessible and impactful for everyone. Our mission was and is still to collaborate with stakeholders to build robust digital infrastructure, develop tailored educational resources, and advocate for policies that support the integration of technology in education.
+ Section: Our Journey - 2007
+ URL: https://web.myeschoolhome.com/about . 
+
+ Text: It's an honor for us to receive this certificate. We would like to thank you and your team for all the support you gave and for always being there. We wish you continuous success in your business. Thank you. Written by: Mrs. Rabab Abdullah Juma, Director
+ Section: What Our Clients Say
+ URL: https://web.myeschoolhome.com/ . 
+----------------------------------------

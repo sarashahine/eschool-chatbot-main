@@ -35,7 +35,7 @@ def upsert_batch(client: QdrantClient, items: List[Dict]):
             NOMIC_EMBED_URL,
             json={
                 "model": NOMIC_MODEL_NAME,
-                "prompt": text,  # Ollama supports batch prompts
+                "prompt": text,
             },
             timeout=60,
         )

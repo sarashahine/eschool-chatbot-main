@@ -1,0 +1,155 @@
+time=2026-01-08 10:54:12
+ip=127.0.0.1
+user_query=who are eschool audience?
+stage=answer generation
+response={
+  "answer": "Teachers, students, parents, and schools are the audience for eSchool.",
+  "confidence": 1.0
+}
+embedding_model=nomic
+retrieved_chunks= Text: eSchool Room Overview: This is a Live Online Classes | Virtual Learning Platform – eSchool. Virtual Classroom Platform. It provides a robust platform that engages students with interactive content, and effective educational experience through virtual classroom features. Deliver interactive virtual classes with eSchool Live. Host real-time lessons, share presentations, and engage students in a secure online classroom.Keywords: eschool live class, virtual classroom, online teaching, real-time school classes, digital lessons, remote learning platform Google Play: https://play.google.com/store/apps/details?id=com.eschool.liveclass App Store: https://apps.apple.com/us/app/eschool-rooms/id1585677892 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/room . 
+
+ Text: Overview: This is a Our Products | Comprehensive School Management Solutions – eSchool. Explore eSchool's suite of digital products designed to streamline education operations—ranging from attendance tracking and grade reporting to financial and communication tools for modern schools.Keywords: eschool products, school software, education technology, attendance system, gradebook software, school financial tools, online school platform, school digital transformation
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products . 
+
+ Text: eSchool Content Overview: This is a Digital Learning Resources | Upload & Share Educational Content – eSchool. Digital Learning Resources. Rich digital content library and learning resources platform that delivers educational materials—articles, videos, interactive content—to support student learning. Distribute educational materials and digital content through eSchool. Empower teachers and students with access to files, lectures, and multimedia resources.Keywords: eschool content, digital education materials, learning resources, e-learning platform, school content sharing, online lectures Google Play: https://play.google.com/store/apps/details?id=eschool.apps.eschoolshelves App Store: https://apps.apple.com/us/app/eschool-content/id1296241492 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/content . 
+
+ Text: eSchool Connect Overview: This is a Parent-Teacher Online Communication Platform | eSchool Connect. School Communication. A secure communication platform uniting teachers, parents, and students. Integrated within eSchool LMS and mobile app, it supports smooth, safe communication across your school community. Enhance online communication between parents, students, and teachers with eSchool Connect. Stay updated with messages, announcements, and school updates in real-time.Keywords: eschool connect, parent-teacher communication, school notifications, online school messaging, real-time updates, school announcements Google Play: https://play.google.com/store/apps/details?id=xdk.intel.cordova.eSchoolApp App Store: https://apps.apple.com/us/app/eschool-connect/id1056313709 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/connect . 
+
+ Text: eSchool Exams Overview: This is a Exam Management System | Schedule & Track School Exams – eSchool. Digital Examination System. Digital examination system with automated grading and comprehensive exam management features. Organize exams efficiently with eSchool. Plan exam schedules, publish results, and provide students with seamless access to performance feedback.Keywords: eschool exams, exam scheduling, school assessments, student results, online exam platform, exam results management Google Play:  App Store:  Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F#/!/home
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/exams . 
+
+ Text: eSchool Gradebook Overview: This is a Online Gradebook System | Real-Time Student Grades – eSchool. Grades Made Smarter. The eSchool Gradebook is an all-in-one digital tool that allows teachers to record, manage, and share student grades in real time. It simplifies grading, supports transparent academic communication, and helps schools maintain accurate performance records effortlessly. Track and manage student performance with eSchool’s Gradebook. Access real-time grades, averages, and assessment reports for transparent academic tracking.Keywords: eschool gradebook, student grades online, digital report card, academic performance tracking, online assessment, school grading system Google Play: https://play.google.com/store/apps/details?id=com.eschool.gradebook App Store: https://apps.apple.com/us/app/eschool-gradebook/id1322901106 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/gradebook . 
+
+ Text: eSchool Room: Create a Webinar from Agenda App: Teachers are able to create engaging webinars for students. This fosters interactive learning, allowing for group discussions, presentations, and real-time participation. The feature enhances student engagement and fosters a sense of community in the virtual classroom.
+ Section: Create a Webinar from Agenda App
+ URL: https://web.myeschoolhome.com/products/room . 
+
+ Text: Overview: Contact Us | Get in Touch with eSchool Team. Have questions or need support? Reach out to the eSchool team for product inquiries, partnerships, or customer service assistance. We're here to help. eschool contact, get in touch, school software support, edtech contact, education solutions inquiry, eschool Lebanon.
+ Section: Overview
+ URL: https://web.myeschoolhome.com/contact . 
+
+ Text: eSchool Administrator Overview: This is a School Administration Platform | eSchool Administrator. Complete School Management. It centralizes administrative tasks, financial tracking, and educational content, fostering a cohesive and organized environment for effective school management. Centralize administrative tasks, financial tracking, and content management with eSchool Administrator.Keywords: eschool administrator, school management, financial tracking, content management Google Play:  App Store:  Web Version:
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/administrator . 
+
+ Text: eSchool Agenda Overview: This is a Smart School Scheduling | eSchool Agenda. A Paperless Agenda. Organize assignments, deadlines, and live classes all in one eco-friendly planner. Manage school events, classes, and deadlines efficiently with eSchool Agenda.Keywords: eschool agenda, school calendar, event management, scheduling, deadline tracking Google Play: https://play.google.com/store/apps/details?id=com.eschool.agenda App Store: https://apps.apple.com/us/app/eschool-agenda/id1434284896 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/agenda . 
+
+ Text: eSchool Safety Overview: This is a School Safety & Attendance Monitoring | Secure Student Check-ins – eSchool. Always Know They’re Safe. eSchool Safety is a sophisticated mobile application designed for parents to seamlessly track their children's school bus in real-time, providing invaluable peace of mind. Ensure student safety with real-time attendance tracking, secure bus monitoring, and digital check-in systems via the eSchool platform.Keywords: eschool safety, student check-in, school attendance monitoring, student bus tracking, school security system, digital attendance Google Play: https://play.google.com/store/apps/details?id=com.eschool.safety App Store: https://apps.apple.com/us/app/eschool-safety/id1239307419 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/safety . 
+
+ Text: Overview: Insights & Articles | Education Technology Blog by eSchool. Read expert insights, guides, and thought leadership articles on digital education, school management, and the future of learning from the eSchool team. eschool blog, education articles, school management tips, edtech blog, digital learning, school leadership, modern education.
+ Section: Overview
+ URL: https://web.myeschoolhome.com/blog . 
+
+ Text: eSchool Connect: Messages, Discussions and Rooms: This feature provides students with a powerful platform that facilitates vibrant communication and discussions, fostering engaging dialogues and collaborative learning opportunities within the school setting. It enhances the educational experience by encouraging interactive exchanges and shared knowledge among students. It includes Rooms section which allows participants to have live meetings, Messages section which insurers efficient communication among students, parents, teachers and administration. Last there is the Discussions section of which teachers can discuss various issues through scheduled chatting live with students.
+ Section: Messages, Discussions and Rooms
+ URL: https://web.myeschoolhome.com/products/connect . 
+
+ Text: eSchool Room: Productive Meetings: eSchool Rooms offers a dynamic learning environment with whiteboard writing, video, and voice communication for real-time interaction. Features like commenting, media sharing, quizzes, and polls enhance engagement and comprehension, while recording sessions ensure accessibility. Interactive chat fosters communication and community among students and instructors, creating an immersive and effective online learning experience.
+ Section: Productive Meetings
+ URL: https://web.myeschoolhome.com/products/room . 
+
+ Text: Product eSchool Connect: Seamless communication between parents, teachers, and students. Features: Parent Portal. Teacher Chat. Student Community
+ Section: eSchool Connect
+ URL: https://web.myeschoolhome.com/products/connect . 
+----------------------------------------
+time=2026-01-08 10:55:16
+ip=127.0.0.1
+user_query=what is eschool room used for?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+embedding_model=nomic
+retrieved_chunks=
+----------------------------------------
+time=2026-01-08 10:55:20
+ip=127.0.0.1
+user_query=what is eschool room used for?
+stage=answer generation
+response={
+  "answer": "eSchool Room is a virtual classroom platform used to deliver interactive virtual classes. It is used to host real-time lessons, share presentations, and engage students in a secure online classroom. Teachers can use it to create webinars directly from the agenda app for interactive learning, group discussions, and real-time participation. Teachers can also manage the room by controlling who can enter, muting or removing participants, limiting screen sharing, and locking rooms to keep classes organized and disruption-free.",
+  "confidence": 1.0
+}
+embedding_model=nomic
+retrieved_chunks= Text: eSchool Room Overview: This is a Live Online Classes | Virtual Learning Platform – eSchool. Virtual Classroom Platform. It provides a robust platform that engages students with interactive content, and effective educational experience through virtual classroom features. Deliver interactive virtual classes with eSchool Live. Host real-time lessons, share presentations, and engage students in a secure online classroom.Keywords: eschool live class, virtual classroom, online teaching, real-time school classes, digital lessons, remote learning platform Google Play: https://play.google.com/store/apps/details?id=com.eschool.liveclass App Store: https://apps.apple.com/us/app/eschool-rooms/id1585677892 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/room . 
+
+ Text: eSchool Content Overview: This is a Digital Learning Resources | Upload & Share Educational Content – eSchool. Digital Learning Resources. Rich digital content library and learning resources platform that delivers educational materials—articles, videos, interactive content—to support student learning. Distribute educational materials and digital content through eSchool. Empower teachers and students with access to files, lectures, and multimedia resources.Keywords: eschool content, digital education materials, learning resources, e-learning platform, school content sharing, online lectures Google Play: https://play.google.com/store/apps/details?id=eschool.apps.eschoolshelves App Store: https://apps.apple.com/us/app/eschool-content/id1296241492 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/content . 
+
+ Text: Overview: This is a Our Products | Comprehensive School Management Solutions – eSchool. Explore eSchool's suite of digital products designed to streamline education operations—ranging from attendance tracking and grade reporting to financial and communication tools for modern schools.Keywords: eschool products, school software, education technology, attendance system, gradebook software, school financial tools, online school platform, school digital transformation
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products . 
+
+ Text: eSchool Room: Give teachers the access to easily manage the room: Hosts decide who can enter, mute or remove participants, limit screen sharing, and lock rooms, ensuring every virtual class stays organized and disruption-free.
+ Section: Give teachers the access to easily manage the room
+ URL: https://web.myeschoolhome.com/products/room . 
+
+ Text: eSchool Gradebook Overview: This is a Online Gradebook System | Real-Time Student Grades – eSchool. Grades Made Smarter. The eSchool Gradebook is an all-in-one digital tool that allows teachers to record, manage, and share student grades in real time. It simplifies grading, supports transparent academic communication, and helps schools maintain accurate performance records effortlessly. Track and manage student performance with eSchool’s Gradebook. Access real-time grades, averages, and assessment reports for transparent academic tracking.Keywords: eschool gradebook, student grades online, digital report card, academic performance tracking, online assessment, school grading system Google Play: https://play.google.com/store/apps/details?id=com.eschool.gradebook App Store: https://apps.apple.com/us/app/eschool-gradebook/id1322901106 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/gradebook . 
+
+ Text: eSchool Exams Overview: This is a Exam Management System | Schedule & Track School Exams – eSchool. Digital Examination System. Digital examination system with automated grading and comprehensive exam management features. Organize exams efficiently with eSchool. Plan exam schedules, publish results, and provide students with seamless access to performance feedback.Keywords: eschool exams, exam scheduling, school assessments, student results, online exam platform, exam results management Google Play:  App Store:  Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F#/!/home
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/exams . 
+
+ Text: eSchool Agenda Overview: This is a Smart School Scheduling | eSchool Agenda. A Paperless Agenda. Organize assignments, deadlines, and live classes all in one eco-friendly planner. Manage school events, classes, and deadlines efficiently with eSchool Agenda.Keywords: eschool agenda, school calendar, event management, scheduling, deadline tracking Google Play: https://play.google.com/store/apps/details?id=com.eschool.agenda App Store: https://apps.apple.com/us/app/eschool-agenda/id1434284896 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/agenda . 
+
+ Text: eSchool Administrator Overview: This is a School Administration Platform | eSchool Administrator. Complete School Management. It centralizes administrative tasks, financial tracking, and educational content, fostering a cohesive and organized environment for effective school management. Centralize administrative tasks, financial tracking, and content management with eSchool Administrator.Keywords: eschool administrator, school management, financial tracking, content management Google Play:  App Store:  Web Version:
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/administrator . 
+
+ Text: eSchool Connect Overview: This is a Parent-Teacher Online Communication Platform | eSchool Connect. School Communication. A secure communication platform uniting teachers, parents, and students. Integrated within eSchool LMS and mobile app, it supports smooth, safe communication across your school community. Enhance online communication between parents, students, and teachers with eSchool Connect. Stay updated with messages, announcements, and school updates in real-time.Keywords: eschool connect, parent-teacher communication, school notifications, online school messaging, real-time updates, school announcements Google Play: https://play.google.com/store/apps/details?id=xdk.intel.cordova.eSchoolApp App Store: https://apps.apple.com/us/app/eschool-connect/id1056313709 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/connect . 
+
+ Text: Overview: Contact Us | Get in Touch with eSchool Team. Have questions or need support? Reach out to the eSchool team for product inquiries, partnerships, or customer service assistance. We're here to help. eschool contact, get in touch, school software support, edtech contact, education solutions inquiry, eschool Lebanon.
+ Section: Overview
+ URL: https://web.myeschoolhome.com/contact . 
+
+ Text: eSchool Safety Overview: This is a School Safety & Attendance Monitoring | Secure Student Check-ins – eSchool. Always Know They’re Safe. eSchool Safety is a sophisticated mobile application designed for parents to seamlessly track their children's school bus in real-time, providing invaluable peace of mind. Ensure student safety with real-time attendance tracking, secure bus monitoring, and digital check-in systems via the eSchool platform.Keywords: eschool safety, student check-in, school attendance monitoring, student bus tracking, school security system, digital attendance Google Play: https://play.google.com/store/apps/details?id=com.eschool.safety App Store: https://apps.apple.com/us/app/eschool-safety/id1239307419 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/safety . 
+
+ Text: Get in Touch | Email: info@eschooledu.com
+Get in Touch | Location Addresss: Hamra - Sanayeh, Beirut, Lebanon, BAC Center building, Third floor
+Get in Touch | Facebook: https://www.facebook.com/eschooledu/#
+Get in Touch | Instagram: https://www.instagram.com/eschool.leb/?igshid=OGQ2MjdiOTE%3D
+Get in Touch | LinkedIn: https://www.linkedin.com/company/eschool-edu/
+Get in Touch | Send Us a Message: Fill the form on website, fill you First Name, Last Name, Email, Phone, and Message
+ Section: Get in Touch
+ URL: https://web.myeschoolhome.com/contact . 
+
+ Text: eSchool Connect: Resources, Ebook, Shelves and Shared folder: It provides students with a user-friendly interface, allowing them to effortlessly explore an extensive library that encompasses both traditional and digital book resources. This seamless navigation enhances the overall academic experience, as students can easily access a diverse range of materials tailored to their educational needs. Whether opting for conventional textbooks or embracing the convenience of e-books, the app creates a dynamic environment for enriched academic exploration, promoting self-directed learning and catering to various learning preferences.
+ Section: Resources, Ebook, Shelves and Shared folder
+ URL: https://web.myeschoolhome.com/products/connect . 
+
+ Text: eSchool Connect: Messages, Discussions and Rooms: This feature provides students with a powerful platform that facilitates vibrant communication and discussions, fostering engaging dialogues and collaborative learning opportunities within the school setting. It enhances the educational experience by encouraging interactive exchanges and shared knowledge among students. It includes Rooms section which allows participants to have live meetings, Messages section which insurers efficient communication among students, parents, teachers and administration. Last there is the Discussions section of which teachers can discuss various issues through scheduled chatting live with students.
+ Section: Messages, Discussions and Rooms
+ URL: https://web.myeschoolhome.com/products/connect . 
+
+ Text: eSchool Room: Create a Webinar from Agenda App: Teachers are able to create engaging webinars for students. This fosters interactive learning, allowing for group discussions, presentations, and real-time participation. The feature enhances student engagement and fosters a sense of community in the virtual classroom.
+ Section: Create a Webinar from Agenda App
+ URL: https://web.myeschoolhome.com/products/room . 
+----------------------------------------

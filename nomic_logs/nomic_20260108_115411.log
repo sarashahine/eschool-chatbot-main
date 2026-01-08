@@ -1,0 +1,33 @@
+time=2026-01-08 11:54:11
+ip=127.0.0.1
+user_query=where is the company located?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+embedding_model=nomic
+retrieved_chunks=
+----------------------------------------
+time=2026-01-08 11:54:17
+ip=127.0.0.1
+user_query=where is the company located?
+stage=answer generation
+response={
+  "answer": "I don't have enough information to answer this based on the available data.",
+  "confidence": 0.0
+}
+embedding_model=nomic
+retrieved_chunks= Text: Our Journey - Today: Leading Innovation. eSchool company stands as a beacon of educational excellence in the digital realm. With years of innovation and dedication under our belt, we continue to redefine the landscape of learning, adapting to the evolving needs of students and educators alike. Our commitment to providing top-tier digital school services remains unwavering, as we strive to empower learners and facilitate seamless educational experiences. From interactive lessons to collaborative platforms, we remain at the forefront of educational technology, shaping the future of learning with every click and connection.
+ Section: Our Journey - Today
+ URL: https://web.myeschoolhome.com/about . 
+
+ Text: It's an honor for us to receive this certificate. We would like to thank you and your team for all the support you gave and for always being there. We wish you continuous success in your business. Thank you. Written by: Mrs. Rabab Abdullah Juma, Director
+ Section: What Our Clients Say
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: Our Journey - 2007: Empowering Education Through Innovation. Our company’s dedication to spearheading digital transformation in education across Arab educational institutions became a priority. We envisioned a future where innovative technologies enhance learning experiences, making education more accessible and impactful for everyone. Our mission was and is still to collaborate with stakeholders to build robust digital infrastructure, develop tailored educational resources, and advocate for policies that support the integration of technology in education.
+ Section: Our Journey - 2007
+ URL: https://web.myeschoolhome.com/about . 
+----------------------------------------
