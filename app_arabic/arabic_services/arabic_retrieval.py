@@ -1,11 +1,14 @@
-from config import COLLECTION_NAME, NUM_RETRIEVED_CHUNKS, TOKEN_LIMIT, MODEL_NAME, EMBEDDING_MODEL
-from app.services.utils import call_ollama_with_retries, safe_json
-from app.services.logging_utils import log_decision_making
+from config import ARABIC_COLLECTION_NAME, NUM_RETRIEVED_CHUNKS, TOKEN_LIMIT, MODEL_NAME, NORMALIZE_EMBEDDINGS, ARABIC_EMBEDDING_MODEL
+from app_arabic.arabic_services.utils import call_ollama_with_retries, safe_json
+from app_arabic.arabic_services.logging_utils import log_decision_making
 
 def retrieve(query, embedder, qdrant_client):
-    vector = embedder.encode(query).tolist()
+    vector = embedder.encode(
+        query,
+        normalize_embeddings=NORMALIZE_EMBEDDINGS,
+        ).tolist()
     results = qdrant_client.query_points(
-        collection_name=COLLECTION_NAME,
+        collection_name=ARABIC_COLLECTION_NAME,
         query=vector,
         limit=NUM_RETRIEVED_CHUNKS,
     )
@@ -42,8 +45,8 @@ def pre_process_query(query, decision_making_user_prompt, history, ollama_client
                 ip = user_ip,
                 user_query = query,
                 response = raw_response,
-                embedding_model = EMBEDDING_MODEL,
-                collection_name = COLLECTION_NAME,
+                embedding_model = ARABIC_EMBEDDING_MODEL,
+                collection_name = ARABIC_COLLECTION_NAME,
                 retrieved_chunks = "",
         )
     except Exception:

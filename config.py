@@ -44,14 +44,16 @@ RETRIEVAL_END_MESSAGE=os.getenv("RETRIEVAL_END_MESSAGE")
 # -----------------------------
 PORT = os.getenv("PORT")
 NOMIC_PORT = os.getenv("NOMIC_PORT")
+ARABIC_PORT = os.getenv("ARABIC_PORT")
 FLASK_DEBUG = os.getenv("FLASK_DEBUG")
 
 # -----------------------------
 # Logging settings
 # -----------------------------
 LOG_MAX_LINES = int(os.getenv("LOG_MAX_LINES"))
-LOGGING_FILE = os.getenv("LOGGING_FILE")
-NOMIC_LOGGING_FILE = os.getenv("NOMIC_LOGGING_FILE")
+LOG_DIR = os.getenv("LOG_DIR")
+LOG_FILE_BASENAME = os.getenv("LOG_FILE_BASENAME")
+LOG_FILE_EXT = os.getenv("LOG_FILE_EXT")
 
 # -----------------------------
 # Blocking / Filters
@@ -65,3 +67,10 @@ BLOCK_MESSAGE = os.getenv("BLOCK_MESSAGE")
 NOMIC_EMBED_URL = os.getenv("NOMIC_EMBED_URL")
 NOMIC_MODEL_NAME = os.getenv("NOMIC_MODEL_NAME")
 NOMIC_COLLECTION_NAME = os.getenv("NOMIC_COLLECTION_NAME")
+
+# -----------------------------
+# Arabic settings
+# -----------------------------
+ARABIC_EMBEDDING_MODEL = os.getenv("ARABIC_EMBEDDING_MODEL")
+ARABIC_COLLECTION_NAME = os.getenv("ARABIC_COLLECTION_NAME")
+ARABIC_MODEL_NAME = os.getenv("ARABIC_MODEL_NAME")

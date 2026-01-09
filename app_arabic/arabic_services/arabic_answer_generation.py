@@ -1,8 +1,8 @@
 import json
 
-from config import MODEL_NAME, RETRIEVAL_START_MESSAGE, RETRIEVAL_END_MESSAGE, COLLECTION_NAME, EMBEDDING_MODEL
-from app.services.utils import call_ollama_with_retries
-from app.services.logging_utils import log_answer_generation
+from config import MODEL_NAME, RETRIEVAL_START_MESSAGE, RETRIEVAL_END_MESSAGE, ARABIC_EMBEDDING_MODEL, ARABIC_COLLECTION_NAME
+from app_arabic.arabic_services.utils import call_ollama_with_retries
+from app_arabic.arabic_services.logging_utils import log_answer_generation
 
 
 def generate_answer(user_query, history, context_block, ollama_client, answer_generation_user_prompt, answer_generation_system_prompt, user_ip):
@@ -40,8 +40,8 @@ def generate_answer(user_query, history, context_block, ollama_client, answer_ge
                 ip = user_ip,
                 user_query = user_query,
                 response = raw_response,
-                embedding_model = EMBEDDING_MODEL,
-                collection_name = COLLECTION_NAME,
+                embedding_model = ARABIC_EMBEDDING_MODEL,
+                collection_name = ARABIC_COLLECTION_NAME,
                 retrieved_chunks = context_block,
         )
     except Exception:
