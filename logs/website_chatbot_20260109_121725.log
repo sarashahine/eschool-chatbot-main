@@ -94,3 +94,447 @@ retrieved_chunks= Text: eSchool Content Overview: This is a Digital Learning Res
  Section: eSchool Connect
  URL: https://web.myeschoolhome.com/products/connect . 
 ----------------------------------------
+time=2026-01-12 10:31:56
+ip=127.0.0.1
+user_query=hello
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "Hello! Welcome to the school management system. How can I assist you today?",
+  "confidence": 1.0
+}
+embedding_model=nomic-embed-text
+collection_name=nomic_docs
+retrieved_chunks=
+----------------------------------------
+time=2026-01-12 10:31:56
+ip=127.0.0.1
+user_query=hello
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "مرحباً! كيف يمكنني مساعدتك اليوم في نظام إدارة المدرسة؟",
+  "confidence": 1.0
+}
+embedding_model=C:\Users\ADMIN\Documents\GitHub\eschool-chatbot-main\embeddinggemma-300m
+collection_name=arabic_docs
+retrieved_chunks=
+----------------------------------------
+time=2026-01-12 10:31:57
+ip=127.0.0.1
+user_query=hello
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "Hello! How can I assist you with the school management system today?",
+  "confidence": 1.0
+}
+embedding_model=C:\Users\ADMIN\Documents\GitHub\eschool-chatbot-main\embeddinggemma-300m
+collection_name=docs
+retrieved_chunks=
+----------------------------------------
+time=2026-01-12 10:32:14
+ip=127.0.0.1
+user_query=who are you?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 0.9
+}
+embedding_model=C:\Users\ADMIN\Documents\GitHub\eschool-chatbot-main\embeddinggemma-300m
+collection_name=arabic_docs
+retrieved_chunks=
+----------------------------------------
+time=2026-01-12 10:32:15
+ip=127.0.0.1
+user_query=who are you?
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I am an assistant for the school management system at web.myeschoolhome.com. I can help you with questions about student records, attendance, grades, fees, and other system features.",
+  "confidence": 1.0
+}
+embedding_model=nomic-embed-text
+collection_name=nomic_docs
+retrieved_chunks=
+----------------------------------------
+time=2026-01-12 10:32:15
+ip=127.0.0.1
+user_query=who are you?
+stage=decision making
+response={
+  "category": "unrelated",
+  "answer": "I'm the assistant for the school management system. How can I help you with the website today?",
+  "confidence": 1.0
+}
+embedding_model=C:\Users\ADMIN\Documents\GitHub\eschool-chatbot-main\embeddinggemma-300m
+collection_name=docs
+retrieved_chunks=
+----------------------------------------
+time=2026-01-12 10:32:17
+ip=127.0.0.1
+user_query=who are you?
+stage=answer generation
+response={
+  "answer": "أنا مُساعِدٌ يستخدم المعلومات المنشورة على موقع ويب أي سكول هوم (eSchool Home website) للرد على استفساراتك.",
+  "confidence": 1.0
+}
+embedding_model=C:\Users\ADMIN\Documents\GitHub\eschool-chatbot-main\embeddinggemma-300m
+collection_name=arabic_docs
+retrieved_chunks= Text: يشرفنا تلقي هذه الشهادة (certificate). نود أن نشكركم أنتم وفريقكم (team) على كل الدعم (support) الذي قدمتموه وعلى وجودكم الدائم بجانبنا. نتمنى لكم دوام التوفيق والنجاح في أعمالكم (business). شكراً لكم. كتبته: السيدة رباب عبد الله جمعة، المديرة (Director)
+ Section: What Our Clients Say
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: نظرة عامة: اتصل بنا | تواصل مع فريق إيسكول (eSchool Team). هل لديك أسئلة أو تحتاج إلى دعم؟ تواصل مع فريق إيسكول (eSchool team) للاستفسارات عن المنتجات، أو الشراكات، أو المساعدة في خدمة العملاء. نحن هنا لمساعدتك. اتصل بإيسكول (eschool contact)، تواصل معنا (get in touch)، دعم برنامج المدرسة (school software support)، اتصل بإدتيك (edtech contact)، استفسار حول حلول التعليم (education solutions inquiry)، إيسكول لبنان (eschool Lebanon).
+ Section: Overview
+ URL: https://web.myeschoolhome.com/contact . 
+
+ Text: نظرة عامة: أثرنا العالمي بالأرقام. تشمل الإحصائيات الرئيسية ما يلي: الدول: +١٠؛ الطلاب: +١ مليون؛ المعلمون: +٥٠٠ ألف.
+ Section: At a Glance
+ URL: https://web.myeschoolhome.com/about . 
+
+ Text: الجمهور المستهدف للمنصة (Platform Audience): مصممة لكل دور في مجتمعك المدرسي. تتكيف منصتنا (our platform) لتلبي الاحتياجات الفريدة للطلاب (students)، وأولياء الأمور (parents)، والمعلمين (teachers)، والإداريين (administrators)، مما يخلق نظامًا تعليميًا موحدًا (unified educational ecosystem).
+
+١. الطلاب (Students)، متعلمون أذكياء (Smart Learners):
+   الوصول إلى دروسك واختباراتك (exams) وتحديثات المدرسة من أي مكان. تعلم وتعاون وابقَ على اطلاع من خلال منصة مخصصة (personalized platform).
+   الميزات (Features): مواد وفيديوهات المقرر (Course Materials & Videos)، عرض الجدول الزمني والجدول الأعمال (Timetable & Agenda View)، الاختبارات والنتائج عبر الإنترنت (Online Exams & Results)، المراسلة مع المعلمين (Messaging with Teachers).
+
+٢. أولياء الأمور (Parents)، أولياء أمور مُطّلعون (Informed Guardians):
+   راقب الحياة الأكاديمية لطفلك في الوقت الحقيقي (real time) — الدرجات (grades)، والحضور (attendance)، وتتبع الحافلة (bus tracking)، والمزيد — كل ذلك من خلال تطبيق واحد.
+   الميزات (Features): الدرجات والحضور في الوقت الحقيقي (Real-Time Grades & Attendance)، إشعارات الحافلة والمدرسة (Bus & School Notifications)، المراسلة مع المعلمين والإداريين (Teacher & Admin Messaging)، التقويم السنوي للأحداث (Calendar of Events).
+
+٣. المعلمون (Teachers)، قادة أكاديميون (Academic Leaders):
+   بسّط تقديم الدروس، وتقييم الطلاب، وتتبعهم باستخدام أدوات ذكية مصممة خصيصًا لكفاءة التدريس (teaching efficiency).
+   الميزات (Features): خطط الدروس الرقمية وتحميلها (Digital Lesson Plans & Uploads)، إدخال التقديرات والدرجات (Grading & Mark Entry)، تحليلات أداء الطلاب (Student Performance Analytics)، تسجيل الحضور (Attendance Recording).
+
+٤. الإداريون (Administrators)، خبراء عمليات (Operational Experts):
+   تحكم في العمليات الأكاديمية والمالية والإدارية عبر جميع الأقسام من لوحة تحكم مركزية واحدة (centralized dashboard).
+   الميزات (Features): لوحة التحكم مع المقاييس الرئيسية (Dashboard with Key Metrics)، إدارة الموظفين والطلاب (Staff & Student Management)، التتبع المالي ورسوم الدراسة (Financial & Fee Tracking)، الامتثال والتقارير (Compliance & Reports).
+ Section: Platform Audience
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: اتصل بنا (Get in Touch) | رقم الهاتف لبنان (Phone number Lebanon) 1: ٨١ ٨٥٣ ٨٣٢ ٩٦١+
+اتصل بنا (Get in Touch) | رقم الهاتف لبنان (Phone number Lebanon) 2: ٣ ٦٢٣ ٣٥٢ ٩٦١+
+اتصل بنا (Get in Touch) | رقم الهاتف لبنان (Phone number Lebanon) 3: ٧٦ ٧٦٤ ٢٥٢ ٩٦١+
+اتصل بنا (Get in Touch) | رقم الهاتف العراق (Phone number Iraq): ٧٨٦ ١١٣ ٨٨٥٧ ٩٦٤+
+اتصل بنا (Get in Touch) | رقم الهاتف عُمان (Phone number Oman): ٩٠ ١٢٣ ٧٥٧ ٩٦٨+
+اتصل بنا (Get in Touch) | رقم الهاتف تركيا (Phone number Turkey): ٥٠٧ ٩٢٥ ٧٥٠١ ٩٠+
+اتصل بنا (Get in Touch) | واتساب (WhatsApp): ٨١ ٨٥٣ ٨٣٢ ٩٦١+ ٧٦ ٧٦٤ ٢٥٢ ٩٦١+
+ Section: Get in Touch
+ URL: https://web.myeschoolhome.com/contact . 
+
+ Text: نظرة عامة: رؤى ومقالات | مدونة تكنولوجيا التعليم (Education Technology Blog) بواسطة إي سكول (eSchool). اقرأ رؤى الخبراء، والأدلة الإرشادية، ومقالات الريادة الفكرية حول التعليم الرقمي (Digital Education)، وإدارة المدرسة (School Management)، ومستقبل التعلم (Future of Learning) من فريق إي سكول (eSchool team). مدونة إي سكول (eschool blog)، مقالات التعليم (education articles)، نصائح إدارة المدرسة (school management tips)، مدونة تكنولوجيا التعليم (edtech blog)، التعلم الرقمي (digital learning)، قيادة المدرسة (school leadership)، التعليم الحديث (modern education).
+ Section: Overview
+ URL: https://web.myeschoolhome.com/blog . 
+
+ Text: استعراف: ٩٫١ مليون أجندة (agenda). ٤٫٧ مليون مورد (resource). ٢٫١ مليون فصل دراسي مباشر (live class). ١٧١٫٩ ألف اختبار عبر الإنترنت (online exam).
+ Section: Insights
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: منتج إسكول سيفتي (eSchool Safety): إدارة شاملة للأمن والامتثال. الميزات: التحكم في الوصول (Access Control). بروتوكولات الطوارئ (Emergency Protocols). تتبع الامتثال (Compliance Tracking).
+ Section: eSchool Safety
+ URL: https://web.myeschoolhome.com/products/safety . 
+
+ Text: امتحانات إي سكول (eSchool Exams): أنواع أسئلة متنوعة: يمكنك بسهولة الحصول على مجموعة من أنواع الأسئلة، مثل الأسئلة متعددة الخيارات (multiple-choice)، والصح أم الخطأ (true/false)، والإجابة القصيرة (short answer)، والموضوعية (essay)، وأسئلة الوسائط المتعددة (multimedia questions). هذه الخيارات المتنوعة تلبي احتياجات التقييم المختلفة، وتخدم أساليب التعلم المتنوعة والأهداف التعليمية في إطار مهني.
+ Section: Varied Question Types
+ URL: https://web.myeschoolhome.com/products/exams . 
+
+ Text: محتوى المنتج إيسكول (eSchool Content): مكتبة محتوى رقمي غنية وموارد تعليمية. الميزات: المكتبة الرقمية (Digital Library). محتوى تفاعلي (Interactive Content). مشاركة الموارد (Resource Sharing).
+ Section: eSchool Content
+ URL: https://web.myeschoolhome.com/products/content . 
+
+ Text: السمات: 1. أنظمة المدارس الأكثر تقدمًا في منطقة الشرق الأوسط وشمال أفريقيا (MENA)، نظام إدارة المدرسة (School Management System)، نظام إدارة التعلم (Learning Management System)، نظام إدارة المحتوى (Content Management System). 2. نمّن مدرستك بالذكاء الاصطناعي (AI). 3. ابْنِ مستقبل مدرستك. 4. تفاعل مع مجتمع مدرستك. 5. جميعها في نظام تخطيط موارد المؤسسات (ERP) متكامل موحد.
+ Section: Characteristics
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: منتج (eSchool Room) (إسكول روم): يوفر منصة قوية تشرك الطلاب من خلال محتوى تفاعلي، وتجربة تعليمية فعالة. الميزات: محتوى تفاعلي (Interactive Content). إشراك الطلاب (Student Engagement). تجربة تعليمية (Educational Experience).
+ Section: eSchool Room
+ URL: https://web.myeschoolhome.com/products/room . 
+
+ Text: التَعْلِيمُ التَّفَاعُلِيُّ الْإِلِكْتِرُونِيُّ (Interactive Online Learning): تَقْدِيمُ التَّعْلِيمِ مِنْ خِلَالِ مِنَصَّتِنَا الْإِلِكْتِرُونِيَّةِ الشَّامِلَةِ، مَعَ الْعَرْضِ الدُّرُوسِ التَّفَاعُلِيَّةِ وَإِمْكَانِيَّةِ إِنْشَاءِ بِيئَةٍ مَدْرَسِيَّةٍ افْتِرَاضِيَّةٍ كَامِلَةٍ.
+تَتَبُّعُ الْعَمَلِيَّاتِ الْمُتَقَدِّمُ (Advanced Operations Tracking): تَتْبَعُ الْعَمَلِيَّاتِ مِنْ خِلَالِ تَقَارِيرَ مَالِيَّةٍ شَامِلَةٍ، وَسِجِلَّاتٍ إِدَارِيَّةٍ، وَتَحْلِيلٍ إِحْصَائِيٍّ، وَتَمْثِيلٍ بَصَرِيٍّ لِاتِّخَاذِ الْقَرَارَاتِ عَلَى أَسَاسٍ مِنَ الْمَعْلُومَاتِ.
+الْإِدَارَةُ الذَّكِيَّةُ لِلْحُضُورِ (Smart Attendance Management): إِدَارَةٌ فَعَّالَةٌ لِحُضُورِ الْمُوَظَّفِينَ وَالْغِيَابِ مِنْ خِلَالِ تَطْبِيقٍ مُخْتَصٍّ بِمُزَايَا فَرِيدَةٍ مُصَمَّمَةٍ خِصِّيصًا لِلْمُؤَسَّسَاتِ التَّعْلِيمِيَّةِ.
+حَلُّ الْكُتُبِ الْمَدْرَسِيَّةِ الرَّقْمِيَّةِ (Digital Textbook Solution): تَخْفِيفُ عِبْءِ الْحَقَائِبِ الْمَدْرَسِيَّةِ بِتَحْوِيلِ الْكُتُبِ الْمَدْرَسِيَّةِ إِلَى الصِّيغَةِ الرَّقْمِيَّةِ وَالِاسْتِغْنَاءِ عَنِ النُّسَخِ الْمَادِّيَّةِ. تَجْعَلُ التَّعْلِيمَ الْحَدِيثَ فِي مُتَناوَلِ الْأَيْدِي وَقَابِلًا لِلنَّقْلِ.
+دَعْمُ الِاعْتِمَادِ (Accreditation Support): مُسَاعَدَةُ مَدْرَسَتِكِ فِي نَيْلِ الِاعْتِمَادِ مِنْ خِلَالِ أَدَوَاتٍ شَامِلَةٍ لِلْتُوثِيقِ، وَالتَّقْارِيرِ، وَالْمُطَابَقَةِ، وَهِيَ مُصَمَّمَةٌ لِلِاسْتِجَابَةِ لِلْمَعَايِيرِ التَّعْلِيمِيَّةِ.
+تَعْزِيزُ مُشَارَكَةِ أَوْلِيَاءِ الْأُمُورِ (Enhanced Parent Engagement): تَمْكِينُ أَوْلِيَاءِ الْأُمُورِ مِنْ طَلَبِ الشَّهَادَاتِ وَحَجْزِ الْمَوَاعِيدِ مَعَ الْإِدَارَةِ بِسُهُولَةٍ. تَيْسِيرُ التَّوَاصُلِ السَّلِسِ بَيْنَ جَمِيعِ الْأَطْرَافِ الْمَعْنِيَّةِ.
+الْمُطَابَقَةُ مَعَ وَزَارَةِ التَّرْبِيَةِ وَالتَّعْلِيمِ (Ministry of Education Compliance): مُوَائَمَةٌ عَالِيَةٌ مَعَ مُتَطَلَّبَاتِ وَزَارَةِ التَّرْبِيَةِ وَالتَّعْلِيمِ (Ministry of Education) وَالْمُؤَسَّسَاتِ التَّعْلِيمِيَّةِ الرَّئِيسَةِ، وَالِانْدِمَاجُ بِسُهُولَةٍ فِي شَبَكَةِ الْمَدَارِسِ التَّابِعَةِ عَلَى مُسْتَوَى الْبَلَدِ.
+الْحِفَاظُ عَلَى الذِّكْرَيَاتِ رَقْمِيًّا (Digital Memory Preservation): إِنْشَاءُ سِجِّلٍّ مَدْرَسِيٍّ سَنَوِيٍّ فَرِيدٍ مِنْ نَوْعِهِ، يَضُمُّ الذِّكْرَيَاتِ الثَّمِينَةَ بِطَرِيقَةٍ اسْتِثْنَائِيَّةٍ تُحَيِّي إِنْجَازَاتِ مُؤَسَّسَتِكِ التَّعْلِيمِيَّةِ وَمَحَطَّاتِهَا الْبَارِزَةَ.
+التَّوَاصُلُ مُتَنَوِّعُ الْأَطْرَافِ الْمَعْنِيَّةِ (Multi-Stakeholder Communication): تَيْسِيرُ التَّوَاصُلِ بَيْنَ الْهَيْئَةِ الْإِدَارِيَّةِ، وَالْهَيْئَةِ التَّعْلِيمِيَّةِ، وَأَوْلِيَاءِ الْأُمُورِ، وَالطُّلَّابِ مِنْ خِلَالِ أَدَوَاتِ الرَّسَائِلِ الْمَنْظَمَةِ وَالتَّعَاوُنِ.
+ Section: Why eSchool?
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: أجندة إي سكول (eSchool Agenda): تمكين الوالدين ليبقوا على اطلاع.: مكّن نفسك باستخدام رؤيات آنية حول الرحلة الأكاديمية لطفلك. تطبيقنا هو أكثر من مجرد تطبيق تعقب (tracking app)؛ إنه شريكك في فهم ودعم سلوك طفلك وموقفه في المدرسة. استقبل تحديثات فورية عن الحضور (attendance) والأداء (performance) والسلوك (behavior)، مما يبقيك على اطلاع ومشاركًا في كل خطوة من الطريق. مع ميزات بديهية وإشعارات مخصصة، يمكنك معالجة أي مخاوف بشكل استباقي والاحتفال بالإنجازات معًا. ابق متصلاً، ابق على اطلاع، واعزز نجاح طفلك باستخدام تطبيق التعقب (tracking app) الخاص بنا.
+ Section: Empowering Parents to Stay Informed.
+ URL: https://web.myeschoolhome.com/products/agenda . 
+
+ Text: غرفة المدرسة الإلكترونية (eSchool Room): ضمان السلامة: تضمن التطبيق (application) الأمان من خلال التشفير (encryption)، وبيانات تسجيل الدخول الآمنة (secure login credentials)، والتحديثات المنتظمة (regular updates). نحن نُعطي الأولوية لخصوصية المستخدم (user privacy) ونقوم بإجراء تدقيقات أمنية (security audits) للحفاظ على بيئة تعليمية آمنة (safe learning environment) لجميع المستخدمين.
+ Section: Ensuring Safety
+ URL: https://web.myeschoolhome.com/products/room . 
+----------------------------------------
+time=2026-01-12 10:33:04
+ip=127.0.0.1
+user_query=what products do you provide?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+embedding_model=C:\Users\ADMIN\Documents\GitHub\eschool-chatbot-main\embeddinggemma-300m
+collection_name=arabic_docs
+retrieved_chunks=
+----------------------------------------
+time=2026-01-12 10:33:04
+ip=127.0.0.1
+user_query=what products do you provide?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+embedding_model=nomic-embed-text
+collection_name=nomic_docs
+retrieved_chunks=
+----------------------------------------
+time=2026-01-12 10:33:05
+ip=127.0.0.1
+user_query=what products do you provide?
+stage=decision making
+response={
+  "category": "related",
+  "answer": "",
+  "confidence": 1.0
+}
+embedding_model=C:\Users\ADMIN\Documents\GitHub\eschool-chatbot-main\embeddinggemma-300m
+collection_name=docs
+retrieved_chunks=
+----------------------------------------
+time=2026-01-12 10:33:07
+ip=127.0.0.1
+user_query=what products do you provide?
+stage=answer generation
+response={
+  "answer": "eSchool provides a suite of digital products for school management. These include eSchool Administrator for administrative tasks and financial tracking, eSchool Content for a digital content library, eSchool Room for interactive student engagement, eSchool Exams for digital testing and grading, eSchool Gradebook for grade management, eSchool Agenda for scheduling, eSchool Safety for security management, and eSchool Connect for communication between parents, teachers, and students.",
+  "confidence": 1.0
+}
+embedding_model=C:\Users\ADMIN\Documents\GitHub\eschool-chatbot-main\embeddinggemma-300m
+collection_name=docs
+retrieved_chunks= Text: Overview: This is a Our Products | Comprehensive School Management Solutions – eSchool. Explore eSchool's suite of digital products designed to streamline education operations—ranging from attendance tracking and grade reporting to financial and communication tools for modern schools.Keywords: eschool products, school software, education technology, attendance system, gradebook software, school financial tools, online school platform, school digital transformation
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products . 
+
+ Text: Product eSchool Content: Rich digital content library and learning resources. Features: Digital Library. Interactive Content. Resource Sharing
+ Section: eSchool Content
+ URL: https://web.myeschoolhome.com/products/content . 
+
+ Text: Product eSchool Administrator: It centralizes administrative tasks, financial tracking, and educational content, fostering a cohesive and organized environment for effective school management.. Features: Administrative Tasks. Financial Tracking. Content Management
+ Section: eSchool Administrator
+ URL: https://web.myeschoolhome.com/products/administrator . 
+
+ Text: Characteristics: Most Advanced School Systems in Mena, School Management System, Learning Management System, Content Management System. 2.Empower your school with AI. 3.Build the future of your school. 4.Engage your school community. 5.All in one integrated ERP system
+ Section: Characteristics
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: Product eSchool Room: It provides a robust platform that engages students with interactive content, and effective educational experience.. Features: Interactive Content. Student Engagement. Educational Experience
+ Section: eSchool Room
+ URL: https://web.myeschoolhome.com/products/room . 
+
+ Text: Product eSchool Exams: Digital examination system with automated grading. Features: Online Testing. Auto Grading. Result Analytics
+ Section: eSchool Exams
+ URL: https://web.myeschoolhome.com/products/exams . 
+
+ Text: Product eSchool Gradebook: Comprehensive grade management and progress tracking. Features: Grade Analytics. Progress Reports. Assessment Tools
+ Section: eSchool Gradebook
+ URL: https://web.myeschoolhome.com/products/gradebook . 
+
+ Text: Product eSchool Agenda: Smart scheduling and calendar management for all school activities. Features: Event Management. Class Scheduling. Deadline Tracking
+ Section: eSchool Agenda
+ URL: https://web.myeschoolhome.com/products/agenda . 
+
+ Text: Overview: Contact Us | Get in Touch with eSchool Team. Have questions or need support? Reach out to the eSchool team for product inquiries, partnerships, or customer service assistance. We're here to help. eschool contact, get in touch, school software support, edtech contact, education solutions inquiry, eschool Lebanon.
+ Section: Overview
+ URL: https://web.myeschoolhome.com/contact . 
+
+ Text: eSchool Agenda: A Paperless Agenda: Elevate your student life with our innovative paperless electronic agenda. Say farewell to juggling papers and hello to effortless organization tailored for students. Whether it's keeping track of assignments, deadlines, or extracurricular activities, our digital agenda is your ultimate companion for academic success. Stay ahead of the curve while reducing paper waste, making a positive impact on both your grades and the planet. Embrace the future of student productivity with our user-friendly and eco-conscious agenda – because your success starts with staying organized, digitally.
+Master your moments, seize the day, and reign supreme with our time-saving, life-organizing digital agenda!:
+ Section: A Paperless Agenda
+ URL: https://web.myeschoolhome.com/products/agenda . 
+
+ Text: Product eSchool Safety: Comprehensive security and compliance management. Features: Access Control. Emergency Protocols. Compliance Tracking
+ Section: eSchool Safety
+ URL: https://web.myeschoolhome.com/products/safety . 
+
+ Text: Platform Audience: Built for Every Role in Your School Community. Our platform adapts to meet the unique needs of students, parents, teachers, and administrators, creating a unified educational ecosystem. 1. Students, Smart Learners. Access your lessons, exams, and school updates from anywhere. Learn, collaborate, and stay informed through a personalized platform. Features: Course Materials & Videos, Timetable & Agenda View, Online Exams & Results, Messaging with Teachers. 2.Parents, Informed Guardians. Monitor your child's academic life in real time — grades, attendance, bus tracking, and more — all from one app. Features: Real-Time Grades & Attendance, Bus & School Notifications, Teacher & Admin Messaging, Calendar of Events. 3.Teachers, Academic Leaders. Simplify lesson delivery, grading, and student tracking with smart tools tailored for teaching efficiency. Features: Digital Lesson Plans & Uploads, Grading & Mark Entry, Student Performance Analytics, Attendance Recording. 4.Administrators, Operational Experts. Control academic, financial, and admin operations across all departments from one centralized dashboard. Features: Dashboard with Key Metrics, Staff & Student Management, Financial & Fee Tracking, Compliance & Reports
+ Section: Platform Audience
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: Insights: 9.1 million agendas. 4.7 million resources. 2.1 million live classes. 171.9 thousand online exams.
+ Section: Insights
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: Product eSchool Connect: Seamless communication between parents, teachers, and students. Features: Parent Portal. Teacher Chat. Student Community
+ Section: eSchool Connect
+ URL: https://web.myeschoolhome.com/products/connect . 
+
+ Text: eSchool Content Features: Upload voice recordings, hyperlink collections, HTML lessons, videos, text-based notes, YouTube playlists, and high-resolution images so every content format lives in one structured library ready for distribution.
+ Section: Features
+ URL: https://web.myeschoolhome.com/products/content . 
+----------------------------------------
+time=2026-01-12 10:33:13
+ip=127.0.0.1
+user_query=what products do you provide?
+stage=answer generation
+response={
+  "answer": "تُقدّم إسكول (eSchool) مجموعة متنوعة من المنتجات الرقمية لتبسيط عمليات التعليم، تشمل نظام الحضور (attendance system)، ودفتر الدرجات الإلكتروني (eSchool Gradebook)، ومحتوى إسكول (eSchool Content)، وإسكول سيفتي (eSchool Safety)، وإسكول روم (eSchool Room)، وإسكول أجندة (eSchool Agenda)، ومنتج مدير المدرسة الإلكترونية (eSchool Administrator).",
+  "confidence": 1.0
+}
+embedding_model=C:\Users\ADMIN\Documents\GitHub\eschool-chatbot-main\embeddinggemma-300m
+collection_name=arabic_docs
+retrieved_chunks= Text: نظرة عامة: هذا هو قسم منتجاتنا | حلول إدارة المدارس الشاملة – إسكول (eSchool). استكشف مجموعة المنتجات الرقمية من إسكول (eSchool) المصممة لتبسيط عمليات التعليم - بدءًا من تتبع الحضور (attendance tracking) وإعداد تقارير الدرجات (grade reporting) وصولاً إلى أدوات التواصل والأدوات المالية (financial and communication tools) للمدارس العصرية.الكلمات المفتاحية: منتجات إسكول (eschool products)، برنامج المدرسة (school software)، تكنولوجيا التعليم (education technology)، نظام الحضور (attendance system)، برنامج سجل الدرجات (gradebook software)، الأدوات المالية للمدرسة (school financial tools)، منصة المدرسة عبر الإنترنت (online school platform)، التحول الرقمي للمدرسة (school digital transformation)
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products . 
+
+ Text: محتوى المنتج إيسكول (eSchool Content): مكتبة محتوى رقمي غنية وموارد تعليمية. الميزات: المكتبة الرقمية (Digital Library). محتوى تفاعلي (Interactive Content). مشاركة الموارد (Resource Sharing).
+ Section: eSchool Content
+ URL: https://web.myeschoolhome.com/products/content . 
+
+ Text: نظرة عامة: اتصل بنا | تواصل مع فريق إيسكول (eSchool Team). هل لديك أسئلة أو تحتاج إلى دعم؟ تواصل مع فريق إيسكول (eSchool team) للاستفسارات عن المنتجات، أو الشراكات، أو المساعدة في خدمة العملاء. نحن هنا لمساعدتك. اتصل بإيسكول (eschool contact)، تواصل معنا (get in touch)، دعم برنامج المدرسة (school software support)، اتصل بإدتيك (edtech contact)، استفسار حول حلول التعليم (education solutions inquiry)، إيسكول لبنان (eschool Lebanon).
+ Section: Overview
+ URL: https://web.myeschoolhome.com/contact . 
+
+ Text: منتج إسكول سيفتي (eSchool Safety): إدارة شاملة للأمن والامتثال. الميزات: التحكم في الوصول (Access Control). بروتوكولات الطوارئ (Emergency Protocols). تتبع الامتثال (Compliance Tracking).
+ Section: eSchool Safety
+ URL: https://web.myeschoolhome.com/products/safety . 
+
+ Text: دفتر درجات المنتج الإلكتروني eSchool (Product eSchool Gradebook): إدارة شاملة للدرجات وتتبع للتقدم. الميزات: تحليلات الدرجات (Grade Analytics). تقارير التقدم (Progress Reports). أدوات التقييم (Assessment Tools).
+ Section: eSchool Gradebook
+ URL: https://web.myeschoolhome.com/products/gradebook . 
+
+ Text: الجمهور المستهدف للمنصة (Platform Audience): مصممة لكل دور في مجتمعك المدرسي. تتكيف منصتنا (our platform) لتلبي الاحتياجات الفريدة للطلاب (students)، وأولياء الأمور (parents)، والمعلمين (teachers)، والإداريين (administrators)، مما يخلق نظامًا تعليميًا موحدًا (unified educational ecosystem).
+
+١. الطلاب (Students)، متعلمون أذكياء (Smart Learners):
+   الوصول إلى دروسك واختباراتك (exams) وتحديثات المدرسة من أي مكان. تعلم وتعاون وابقَ على اطلاع من خلال منصة مخصصة (personalized platform).
+   الميزات (Features): مواد وفيديوهات المقرر (Course Materials & Videos)، عرض الجدول الزمني والجدول الأعمال (Timetable & Agenda View)، الاختبارات والنتائج عبر الإنترنت (Online Exams & Results)، المراسلة مع المعلمين (Messaging with Teachers).
+
+٢. أولياء الأمور (Parents)، أولياء أمور مُطّلعون (Informed Guardians):
+   راقب الحياة الأكاديمية لطفلك في الوقت الحقيقي (real time) — الدرجات (grades)، والحضور (attendance)، وتتبع الحافلة (bus tracking)، والمزيد — كل ذلك من خلال تطبيق واحد.
+   الميزات (Features): الدرجات والحضور في الوقت الحقيقي (Real-Time Grades & Attendance)، إشعارات الحافلة والمدرسة (Bus & School Notifications)، المراسلة مع المعلمين والإداريين (Teacher & Admin Messaging)، التقويم السنوي للأحداث (Calendar of Events).
+
+٣. المعلمون (Teachers)، قادة أكاديميون (Academic Leaders):
+   بسّط تقديم الدروس، وتقييم الطلاب، وتتبعهم باستخدام أدوات ذكية مصممة خصيصًا لكفاءة التدريس (teaching efficiency).
+   الميزات (Features): خطط الدروس الرقمية وتحميلها (Digital Lesson Plans & Uploads)، إدخال التقديرات والدرجات (Grading & Mark Entry)، تحليلات أداء الطلاب (Student Performance Analytics)، تسجيل الحضور (Attendance Recording).
+
+٤. الإداريون (Administrators)، خبراء عمليات (Operational Experts):
+   تحكم في العمليات الأكاديمية والمالية والإدارية عبر جميع الأقسام من لوحة تحكم مركزية واحدة (centralized dashboard).
+   الميزات (Features): لوحة التحكم مع المقاييس الرئيسية (Dashboard with Key Metrics)، إدارة الموظفين والطلاب (Staff & Student Management)، التتبع المالي ورسوم الدراسة (Financial & Fee Tracking)، الامتثال والتقارير (Compliance & Reports).
+ Section: Platform Audience
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: السمات: 1. أنظمة المدارس الأكثر تقدمًا في منطقة الشرق الأوسط وشمال أفريقيا (MENA)، نظام إدارة المدرسة (School Management System)، نظام إدارة التعلم (Learning Management System)، نظام إدارة المحتوى (Content Management System). 2. نمّن مدرستك بالذكاء الاصطناعي (AI). 3. ابْنِ مستقبل مدرستك. 4. تفاعل مع مجتمع مدرستك. 5. جميعها في نظام تخطيط موارد المؤسسات (ERP) متكامل موحد.
+ Section: Characteristics
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: منتج مدير المدرسة الإلكترونية (eSchool Administrator): يقوم بتمركز المهام الإدارية (Administrative Tasks)، وتتبع الأمور المالية (Financial Tracking)، والمحتوى التعليمي (Educational Content)، مما يعزز بيئة متماسكة ومنظمة للإدارة المدرسية الفعالة (Effective School Management). الميزات: المهام الإدارية (Administrative Tasks). تتبع الأمور المالية (Financial Tracking). إدارة المحتوى (Content Management).
+ Section: eSchool Administrator
+ URL: https://web.myeschoolhome.com/products/administrator . 
+
+ Text: رحلتنا - اليوم: ريادة الابتكار. تُعد شركة إسكول (eSchool) منارةً للتميز التعليمي في العالم الرقمي. وبفضل سنوات من الابتكار والتفاني التي نملكها، نواصل إعادة تعريف مشهد التعلم، والتكيف مع الاحتياجات المتطورة للطلاب والمعلمين على حد سواء. يظل التزامنا بتقديم خدمات المدرسة الرقمية من أعلى طراز ثابتًا لا يتزعزع، بينما نسعى لتمكين المتعلمين وتسهيل تجارب تعليمية سلسة. من الدروس التفاعلية إلى المنصات التعاونية، نحن ما زلنا في طليعة تقنيات التعليم، نشكل مستقبل التعلم مع كل نقرة واتصال.
+ Section: Our Journey - Today
+ URL: https://web.myeschoolhome.com/about . 
+
+ Text: منتج (eSchool Room) (إسكول روم): يوفر منصة قوية تشرك الطلاب من خلال محتوى تفاعلي، وتجربة تعليمية فعالة. الميزات: محتوى تفاعلي (Interactive Content). إشراك الطلاب (Student Engagement). تجربة تعليمية (Educational Experience).
+ Section: eSchool Room
+ URL: https://web.myeschoolhome.com/products/room . 
+
+ Text: استعراف: ٩٫١ مليون أجندة (agenda). ٤٫٧ مليون مورد (resource). ٢٫١ مليون فصل دراسي مباشر (live class). ١٧١٫٩ ألف اختبار عبر الإنترنت (online exam).
+ Section: Insights
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: جدول أعمال المنتج (eSchool Agenda): جدولة ذكية وإدارة تقويم لجميع الأنشطة المدرسية. الميزات: إدارة الفعاليات (Event Management). جدولة الفصول (Class Scheduling). تتبُّع المواعيد النهائية (Deadline Tracking).
+ Section: eSchool Agenda
+ URL: https://web.myeschoolhome.com/products/agenda . 
+
+ Text: نظرة عامة: الفعاليات والتحديثات المدرسية | أنشطة مجتمع إسكول (eSchool). ابق على اطلاع بأحدث الفعاليات وورش العمل والأنشطة التعليمية التي تقع ضمن شبكة إسكول (eSchool). تمكين المجتمعات المدرسية من خلال المشاركة والتجارب المشتركة. الفعاليات المدرسية (school events)، أنشطة إسكول (eSchool activities)، الفعاليات التعليمية (education events)، المجتمع المدرسي (school community)، مشاركة الطلاب (student engagement)، ورش العمل (workshops)، التقويم الأكاديمي (academic calendar).
+ Section: Overview
+ URL: https://web.myeschoolhome.com/news-events . 
+
+ Text: لماذا إسكول (eSchool)؟ إعداد التقارير بكفاءة: بَسِّط عملية إعداد التقارير في مدرستك من خلال الطباعة الفعالة للبيانات المالية (financial statements) والشهادات (certificates) والدرجات (grades). يضمن نظامنا سهل الاستخدام تلبية جميع المتطلبات بسرعة ودقة. الدعم الفني على مدار الساعة: احصل على الدعم الفني والتدريب المتخصص على مدار الساعة لضمان تقديم الخدمة بسرعة. نحن نعالج جميع استفساراتك واستفساراتك بسرعة وكفاءة، مما يحافظ على سلاسة عملياتك. تجربة مستخدم سلسة: استمتع بتجربة سهلة الاستخدام وواضحة وبديهية مصممة للمعلمين (educators) والطلاب (students) وأولياء الأمور (parents) على حد سواء. تجعل منصتنا إدارة الأنشطة المدرسية بسيطة وممتعة. حماية قوية للبيانات: امّن بيانات مدرستك الحساسة بإجراءات الحماية القوية لدينا. نحن نضمن التحكم في الوصول الآمن بناءً على الوصف الوظيفي (job descriptions)، مما يحمي جميع المعلومات المخزنة. المراقبة والإشراف على الجودة: راقب وأشرف على العملية التعليمية (educational process) لضمان سير العمليات بسلاحة وضبط الجودة (quality control). تتبع التقدم وحافظ على المعايير العالية في جميع الأنشطة المدرسية. خدمات رقمية شاملة: قدّم مجموعة واسعة من الخدمات عبر الإنترنت بما في ذلك تسجيل الطلاب (student enrollment) والتسجيل عبر الإنترنت (online registration) والسداد الآمن للرسوم (secure payment of fees). بسّط المهام الإدارية من خلال منصتنا الرقمية المتكاملة. صديق للبيئة وموفر للتكاليف: قلل التكاليف، وخفّف الأعباء، وساهم في حماية البيئة (environmental protection) من خلال التحول إلى بيئة خالية من الورق. حقّق توفيراً كبيراً في التكاليف مع المساهمة في الاستدامة البيئية (environmental sustainability). تمكين المعلمين: زوّد معلميك (teachers) بأدوات قوية لإجراء تقييمات تفصيلية للطلاب (student assessments) وإدارة الحضور (attendance management) وتتبع السلوك (behavior tracking). عزّز فعالية التدريس ومشاركة الطلاب (student engagement).
+ Section: Why eSchool?
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: يشرفنا تلقي هذه الشهادة (certificate). نود أن نشكركم أنتم وفريقكم (team) على كل الدعم (support) الذي قدمتموه وعلى وجودكم الدائم بجانبنا. نتمنى لكم دوام التوفيق والنجاح في أعمالكم (business). شكراً لكم. كتبته: السيدة رباب عبد الله جمعة، المديرة (Director)
+ Section: What Our Clients Say
+ URL: https://web.myeschoolhome.com/ . 
+----------------------------------------
+time=2026-01-12 10:33:18
+ip=127.0.0.1
+user_query=what products do you provide?
+stage=answer generation
+response={
+  "answer": "eSchool provides a suite of digital products for school management. These include: a comprehensive school management system for attendance tracking, grade reporting, and financial tools; eSchool Content for digital learning resources and a content library; eSchool Exams for exam management and assessments; eSchool Room for virtual classrooms and live online classes; eSchool Gradebook for lesson planning and grade reporting; eSchool Connect for student access to resources and ebooks; and eSchool Administrator for managing employee files and financial information.",
+  "confidence": 1.0
+}
+embedding_model=nomic-embed-text
+collection_name=nomic_docs
+retrieved_chunks= Text: Overview: Contact Us | Get in Touch with eSchool Team. Have questions or need support? Reach out to the eSchool team for product inquiries, partnerships, or customer service assistance. We're here to help. eschool contact, get in touch, school software support, edtech contact, education solutions inquiry, eschool Lebanon.
+ Section: Overview
+ URL: https://web.myeschoolhome.com/contact . 
+
+ Text: Overview: This is a Our Products | Comprehensive School Management Solutions – eSchool. Explore eSchool's suite of digital products designed to streamline education operations—ranging from attendance tracking and grade reporting to financial and communication tools for modern schools.Keywords: eschool products, school software, education technology, attendance system, gradebook software, school financial tools, online school platform, school digital transformation
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products . 
+
+ Text: eSchool Content Overview: This is a Digital Learning Resources | Upload & Share Educational Content – eSchool. Digital Learning Resources. Rich digital content library and learning resources platform that delivers educational materials—articles, videos, interactive content—to support student learning. Distribute educational materials and digital content through eSchool. Empower teachers and students with access to files, lectures, and multimedia resources.Keywords: eschool content, digital education materials, learning resources, e-learning platform, school content sharing, online lectures Google Play: https://play.google.com/store/apps/details?id=eschool.apps.eschoolshelves App Store: https://apps.apple.com/us/app/eschool-content/id1296241492 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/content . 
+
+ Text: eSchool Content: Download Books with an Offline Preview: It offers book downloading feature, allowing users to download textbooks and resources for offline access. This ensures learning continuity even without an internet connection, promoting flexibility and accessibility for students and faculty. Additionally, it supports sustainability by reducing the need for printed materials.
+ Section: Download Books with an Offline Preview
+ URL: https://web.myeschoolhome.com/products/content . 
+
+ Text: eSchool Content Features: Upload voice recordings, hyperlink collections, HTML lessons, videos, text-based notes, YouTube playlists, and high-resolution images so every content format lives in one structured library ready for distribution.
+ Section: Features
+ URL: https://web.myeschoolhome.com/products/content . 
+
+ Text: Why eSchool?: Efficient Report Generation: Streamline your school's reporting process with efficient printing of financial statements, certificates, and grades. Our user-friendly system ensures all requirements are met with speed and accuracy. 24/7 Expert Support: Access round-the-clock expert support and training to ensure prompt service delivery. We address all your questions and inquiries with speed and efficiency, keeping your operations smooth. Seamless User Experience: Enjoy a user-friendly, clear, and intuitive experience designed for educators, students, and parents alike. Our platform makes managing school activities simple and enjoyable. Robust Data Protection: Secure your sensitive school data with our robust protection measures. We ensure secure access control based on job descriptions, safeguarding all stored information. Quality Monitoring & Supervision: Monitor and supervise the educational process to ensure smooth operations and quality control. Track progress and maintain high standards across all school activities. Comprehensive Digital Services: Offer a wide range of online services including student enrollment, online registration, and secure payment of fees. Simplify administrative tasks with our integrated digital platform. Eco-Friendly & Cost-Effective: Reduce costs, burden alleviation, and environmental protection by going paperless. Achieve significant cost savings while contributing to environmental sustainability. Empowering Educators: Equip your teachers with powerful tools for detailed student assessments, attendance management, and behavior tracking. Enhance teaching effectiveness and student engagement.
+ Section: Why eSchool?
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: eSchool Administrator Employee File: It allows users to input personal, administrative, academic, and financial info for employees and teachers. Applicants can apply online or in person, and acceptance is based on interviews or tests. Each employee has a file covering financial, insurance, compensation, loans, contracts, and salary details. Salaries are calculated and sent via eSchool Connect app, with deductions for insurance, compensation, and taxes. The system facilitates tax declarations, annual settlements, and financial obligations to the compensation fund and insurance.
+ Section: Employee File
+ URL: https://web.myeschoolhome.com/products/administrator . 
+
+ Text: eSchool Exams: Varied Question Types: Easily you have a range of question types, such as multiple-choice, true/false, short answer, essay, and multimedia questions. These diverse options accommodate various assessment needs, catering to different learning styles and educational objectives within a professional setting.
+ Section: Varied Question Types
+ URL: https://web.myeschoolhome.com/products/exams . 
+
+ Text: Product eSchool Room: It provides a robust platform that engages students with interactive content, and effective educational experience.. Features: Interactive Content. Student Engagement. Educational Experience
+ Section: eSchool Room
+ URL: https://web.myeschoolhome.com/products/room . 
+
+ Text: eSchool is a greatly efficient and user friendly program that allows students to study remotely and enables teachers to continuously communicate and follow up with their students. Additionally, it is important to note the prompt response of the support service at eSchool that never fails to assist whenever any issue is raised. Written by: Dana Fayad Rafei, Financial manager
+ Section: What Our Clients Say
+ URL: https://web.myeschoolhome.com/ . 
+
+ Text: eSchool Exams: Streamlining Exam Results with Online Tools: Teachers can efficiently manage exam results using an online exam app by saving them directly to the cloud. With the ability to export results to Gradebook, a dedicated app, educators can seamlessly update grades and access detailed statistics in the summary service. This streamlined process enhances organization, simplifies data management, and provides valuable insights for informed decision-making in educational assessment.
+ Section: Streamlining Exam Results with Online Tools
+ URL: https://web.myeschoolhome.com/products/exams . 
+
+ Text: eSchool Exams Overview: This is a Exam Management System | Schedule & Track School Exams – eSchool. Digital Examination System. Digital examination system with automated grading and comprehensive exam management features. Organize exams efficiently with eSchool. Plan exam schedules, publish results, and provide students with seamless access to performance feedback.Keywords: eschool exams, exam scheduling, school assessments, student results, online exam platform, exam results management Google Play:  App Store:  Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F#/!/home
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/exams . 
+
+ Text: eSchool Connect: Resources, Ebook, Shelves and Shared folder: It provides students with a user-friendly interface, allowing them to effortlessly explore an extensive library that encompasses both traditional and digital book resources. This seamless navigation enhances the overall academic experience, as students can easily access a diverse range of materials tailored to their educational needs. Whether opting for conventional textbooks or embracing the convenience of e-books, the app creates a dynamic environment for enriched academic exploration, promoting self-directed learning and catering to various learning preferences.
+ Section: Resources, Ebook, Shelves and Shared folder
+ URL: https://web.myeschoolhome.com/products/connect . 
+
+ Text: eSchool Room Overview: This is a Live Online Classes | Virtual Learning Platform – eSchool. Virtual Classroom Platform. It provides a robust platform that engages students with interactive content, and effective educational experience through virtual classroom features. Deliver interactive virtual classes with eSchool Live. Host real-time lessons, share presentations, and engage students in a secure online classroom.Keywords: eschool live class, virtual classroom, online teaching, real-time school classes, digital lessons, remote learning platform Google Play: https://play.google.com/store/apps/details?id=com.eschool.liveclass App Store: https://apps.apple.com/us/app/eschool-rooms/id1585677892 Web Version: https://www.myeschoolhome.com/account/login.html?lang=en&target=%2F
+ Section: Overview
+ URL: https://web.myeschoolhome.com/products/room . 
+
+ Text: eSchool Gradebook: Prepare Easily by Using Our Daily Planner: Harness the power of the Daily Planner to meticulously prepare lessons, ensuring thorough organization of steps, resources, and objectives. With this tool, you can seamlessly attach files and images, fostering enriched learning experiences. Furthermore, facilitate effective communication by sharing comments with managers, fostering collaboration and alignment with organizational goals.
+ Section: Prepare Easily by Using Our Daily Planner
+ URL: https://web.myeschoolhome.com/products/gradebook . 
+----------------------------------------
