@@ -1,6 +1,12 @@
 ## eSchool Chatbot
 
-An AI-powered retrieval‑augmented chatbot for eSchool website https://web.myeschoolhome.com/
+This repository contains **one main production-style chatbot app (English)** plus two experimental copies:
+
+- **Main app (`app/` + `run.py`)** – the primary version to focus on; this is the one intended for real use.
+- **Arabic app (`app_arabic/` + `run_arabic.py`)** – a copy of the main app adapted for Arabic content and prompts.
+- **Nomic app (`app_nomic/` + `run_nomic.py`)** – a copy of the main app used to test the Nomic embedding model.
+
+An AI-powered retrieval‑augmented chatbot for eSchool website https://web.myeschoolhome.com/  
 It uses sentence embeddings (EmbeddingGemma via `sentence-transformers`) and Qdrant as a vector database to answer user questions about eSchool by searching over a curated knowledge base.
 
 ---
@@ -22,83 +28,92 @@ It uses sentence embeddings (EmbeddingGemma via `sentence-transformers`) and Qdr
 
 ## Project Structure
 
-- **`run.py`** – Entry point for the main Flask web app (uses the `app` package).
-- **`app/__init__.py`** – Application factory (`create_app`) that:
-  - Loads `.env` via `python-dotenv`.
-  - Configures Flask from `config.py`.
-  - Initializes:
-    - `SentenceTransformer` embedder (`EMBEDDING_MODEL`).
-    - `ollama.Client` (`OLLAMA_HOST`, `OLLAMA_API_KEY`, `MODEL_NAME`).
-    - `QdrantClient` (`QDRANT_HTTP`).
-    - System and user prompts from `prompts/`.
-  - Pre‑computes token count for the answer system prompt.
-- **`app/routes.py`** – Core API:
-  - `GET /` – Renders the chat UI (`index.html`).
-  - `POST /query` – Main chat endpoint:
-    - Runs `pre_process_query` to decide if retrieval is needed.
-    - Retrieves top‑K chunks from Qdrant (`retrieve` in `app/utils.py`).
-    - Truncates history (`truncate_answer_generation_history`) based on `TOKEN_LIMIT`.
-    - Calls `generate_answer` with system prompt, history, and context.
-    - Tracks an `unrelated_streak` and enforces blocking based on `BLOCK_THRESHOLD` / `BLOCK_MESSAGE`.
-  - CRUD routes for Qdrant chunks:
-    - `POST /chunks`
-    - `GET /chunks/<int:chunk_id>`
-    - `PUT /chunks/<int:chunk_id>`
-    - `DELETE /chunks/<int:chunk_id>`
-- **`app/utils.py`** – Shared utilities:
-  - `load_prompt(path)` – Load prompt text from file.
-  - `call_ollama_with_retries(fn, ...)` – Retry wrapper for Ollama calls.
-  - `safe_json(response)` – Parse JSON from LLM responses that may be wrapped in fences.
-  - `retrieve(query, embedder, qdrant_client)` – Semantic search in Qdrant (`NUM_RETRIEVED_CHUNKS`).
-  - `pre_process_query(...)` – Uses LLM (via `MODEL_NAME`) and decision‑making prompts to classify the query and optionally generate a direct answer.
-  - `count_tokens(text, ollama_client)` – Estimate token usage via Ollama.
-  - `truncate_answer_generation_history(...)` – Enforce `TOKEN_LIMIT` by trimming older turns.
-  - `generate_answer(...)` – Chat completion via Ollama, expects JSON with an `"answer"` field.
-- **`app/templates/index.html`** – Single‑page chat UI:
-  - Chat stream with user/assistant messages.
-  - “Clear history” button.
-  - Admin panel to manage Qdrant chunks via the REST API.
-- **`config.py`** – Central configuration loaded from environment:
-  - **Embedding / ingestion**
-    - `EMBEDDING_MODEL`
-    - `TEXT_TO_EMBED_PATH`
-    - `VECTOR_SIZE`
-    - `BATCH_SIZE`
-    - `DISTANCE`
-    - `NORMALIZE_EMBEDDINGS`
-  - **Retrieval / chat**
-    - `NUM_RETRIEVED_CHUNKS`
-    - `TOKEN_LIMIT`
-  - **Qdrant**
-    - `COLLECTION_NAME`
-    - `QDRANT_HTTP`
-  - **Ollama**
-    - `OLLAMA_API_KEY`
-    - `MODEL_NAME`
-    - `OLLAMA_HOST`
-  - **Flask**
-    - `PORT`
-    - `FLASK_DEBUG`
-  - **Blocking**
-    - `BLOCK_THRESHOLD`
-    - `BLOCK_MESSAGE`
-- **`create_qdrant_collection.py`** – Offline ingestion script:
-  - Loads items from `TEXT_TO_EMBED_PATH` (`text_to_embed.json` by default).
-  - For each item: embeds `text` with `SentenceTransformer(EMBEDDING_MODEL)` and upserts to Qdrant collection `COLLECTION_NAME` (creating it if needed).
-- **`text_to_embed.json`** – Example knowledge base:
-  - List of objects `{ "id": ..., "text": "...", "metadata": { "page_title": ..., "url": ..., "section_title": ... } }` describing eSchool products, features, etc.
-- **`prompts/`** – Prompt templates:
-  - `answer_generation_system_prompt.txt`
-  - `answer_generation_user_prompt.txt`
-  - `decision_making_system_prompt.txt`
-  - `decision_making_user_prompt.txt`
-- **`embeddinggemma-300m/`** – Local copy of Google’s EmbeddingGemma model for `sentence-transformers`.
-- **`app_api.py`** – Alternative / legacy Flask app combining:
-  - Google Gemini embeddings (`google.genai`) for retrieval.
-  - Ollama LLM for query classification and answer generation.
-  - Its own `/query` and `/chunks` endpoints (separate from the main `app/` package).  
-  Use only if you explicitly want the older API‑style server.
-- **`requirements.txt`** – Python dependencies.
+- **Main app (English, production-like)**  
+  - **`run.py`** – Entry point for the main Flask web app (binds to `PORT` from `.env`).
+  - **`app/`** – Main application package:
+    - **`__init__.py`** – Application factory (`create_app`) that:
+      - Loads `.env` via `python-dotenv`.
+      - Configures Flask from `config.py`.
+      - Initializes:
+        - `SentenceTransformer` embedder (`EMBEDDING_MODEL`).
+        - `ollama.Client` (`OLLAMA_HOST`, `OLLAMA_API_KEY`, `MODEL_NAME`).
+        - `QdrantClient` (`QDRANT_HTTP`).
+      - Loads system and user prompts from `prompts/`.
+      - Pre‑computes token count for the answer system prompt.
+    - **`routes/`** – Flask blueprints / route modules:
+      - Expose the chat UI (`GET /`).
+      - Expose the main chat endpoint (`POST /query`).
+      - Expose CRUD endpoints for Qdrant chunks (`/chunks`).
+    - **`services/`** – Core business logic:
+      - Query preprocessing and classification (related / unrelated to eSchool).
+      - Retrieval of top‑K chunks from Qdrant.
+      - Conversation history management and token‑budget truncation.
+      - Answer generation with Ollama using prompts + retrieved context.
+    - **`templates/index.html`** – Single‑page chat UI:
+      - Chat stream with user/assistant messages.
+      - “Clear history” button.
+      - Admin panel to manage Qdrant chunks via the REST API.
+
+- **Arabic app (experimental)**  
+  - **`run_arabic.py`** – Entry point for the Arabic version.
+  - **`app_arabic/`** – Copy of the main app adapted for Arabic:
+    - Similar structure to `app/` (`__init__.py`, `arabic_routes/`, `arabic_services/`, `templates/`).
+    - Uses Arabic prompts from `prompts/` (e.g. `arabic_answer_generation_system_prompt.txt`).
+    - Can optionally use Arabic embedding models from `arabic_embedding_models/`.
+
+- **Nomic embeddings app (experimental)**  
+  - **`run_nomic.py`** – Entry point for the Nomic‑based experiment.
+  - **`app_nomic/`** – Copy of the main app:
+    - Same high‑level flow (classify → retrieve → generate answer).
+    - Swaps the embedding model to Nomic for experimentation.
+
+- **API‑based experiment (Gemini / other APIs)**  
+  - **`aside/app_api.py`** – Alternative / experimental Flask app:
+    - Uses API‑based embeddings (e.g. Gemini via `google.genai`) instead of the local `SentenceTransformer`.
+    - Exposes its own `/query` and `/chunks` endpoints, separate from the main `app/` package.
+    - Intended only for testing API embedding models; not part of the main deployment path.
+
+- **Shared configuration and data**
+  - **`config.py`** – Central configuration loaded from environment:
+    - **Embedding / ingestion**
+      - `EMBEDDING_MODEL`
+      - `TEXT_TO_EMBED_PATH`
+      - `VECTOR_SIZE`
+      - `BATCH_SIZE`
+      - `DISTANCE`
+      - `NORMALIZE_EMBEDDINGS`
+    - **Retrieval / chat**
+      - `NUM_RETRIEVED_CHUNKS`
+      - `TOKEN_LIMIT`
+    - **Qdrant**
+      - `COLLECTION_NAME`
+      - `QDRANT_HTTP`
+    - **Ollama**
+      - `OLLAMA_API_KEY`
+      - `MODEL_NAME`
+      - `OLLAMA_HOST`
+    - **Flask**
+      - `PORT`
+      - `FLASK_DEBUG`
+    - **Blocking**
+      - `BLOCK_THRESHOLD`
+      - `BLOCK_MESSAGE`
+  - **`create_qdrant_collection.py`** – Offline ingestion script:
+    - Loads items from `TEXT_TO_EMBED_PATH` (`text_to_embed.json` by default).
+    - Embeds `text` with `SentenceTransformer(EMBEDDING_MODEL)` and upserts to Qdrant collection `COLLECTION_NAME`.
+  - **`text_to_embed.json`** / **`text_to_embed_arabic.json`** – Example knowledge bases:
+    - List of objects `{ "id": ..., "text": "...", "metadata": { "page_title": ..., "url": ..., "section_title": ... } }`.
+  - **`prompts/`** – Prompt templates:
+    - `answer_generation_system_prompt.txt`
+    - `answer_generation_user_prompt.txt`
+    - `decision_making_system_prompt.txt`
+    - `decision_making_user_prompt.txt`
+    - `arabic_answer_generation_system_prompt.txt`
+    - `arabic_decision_making_system_prompt.txt`
+    - `translation_prompt.txt`
+  - **`embeddinggemma-300m/`** – Local copy of Google’s EmbeddingGemma model for `sentence-transformers`.
+  - **`arabic_embedding_models/`** – Local Hugging Face‑style folders for Arabic embedding experiments (used only by the Arabic app).
+  - **`requirements.txt`** – Python dependencies.
 
 ---
 
@@ -157,11 +172,10 @@ FLASK_DEBUG=true
 
 # Blocking / filters
 BLOCK_THRESHOLD=3
-BLOCK_MESSAGE=Your queries seem unrelated to eSchool. Please stay on topic.If you use `app_api.py` with Gemini, also set:
+BLOCK_MESSAGE=Your queries seem unrelated to eSchool. Please stay on topic.
 
+# If you use `aside/app_api.py` with Gemini, also set:
 GOOGLE_API_KEY=your_gemini_api_key_here
-
-Adjust values as needed for your environment and models.
 
 ---
 
@@ -208,16 +222,17 @@ You can replace `text_to_embed.json` with your own file in the same format to cu
 
 ## Alternative API Server (Optional)
 
-The `app_api.py` file exposes a similar API (including `/query` and `/chunks`), but:
+The `aside/app_api.py` file exposes a similar API (including `/query` and `/chunks`), but:
 
-- Uses **Gemini embeddings** (`google.genai`) instead of `SentenceTransformer`.
+- Uses **API-based embeddings** (for example, Gemini via `google.genai`) instead of the local `SentenceTransformer`.
 - Manages its own Flask app and Qdrant integration.
 - Listens on port `5001` by default.
 
 Run it with:
 
-python app_api.py.
-Only use this if you specifically need the older Gemini‑based flow; the recommended path is via `run.py` and the `app/` package.
+python aside/app_api.py
+
+Only use this if you specifically need to test an API-based embedding / LLM provider; the recommended path is still via `run.py` and the main `app/` package.
 
 ---
 
